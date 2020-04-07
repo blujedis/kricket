@@ -9,7 +9,7 @@ const testLogger = createLogger('testLogger', {
   transports: [dummyTransport]
 });
 
-describe('Blurpi', () => {
+describe('Kricket', () => {
 
   it('Should write to buffer then log', (done) => {
     testLogger
