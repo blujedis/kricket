@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import { ILoggerOptions, LEVEL, MESSAGE, SPLAT, Filter, Transform, LOGGER, TRANSPORT, Callback, Payload } from './types';
+import { ILoggerOptions, LEVEL, MESSAGE, SPLAT, Filter, Transform, LOGGER, TRANSPORT, Callback, Payload, LogMethods } from './types';
 import { Transport } from './transports';
 import fastJson from 'fast-json-stable-stringify';
 import { format } from 'util';
@@ -9,9 +9,9 @@ import core, { Core } from './core';
 export class Logger<Level extends string> extends EventEmitter {
 
   core: Core = core;
-  children = new Set<Logger<Level>>();
+  children = new Map<string, Logger<Level>>();
 
-  constructor(public label: string, public options: ILoggerOptions<Level>, public parent?: Logger<Level>) {
+  constructor(public label: string, public options: ILoggerOptions<Level>) {
 
     super();
 
@@ -27,9 +27,6 @@ export class Logger<Level extends string> extends EventEmitter {
       if (typeof transport.options.level === 'undefined')
         transport.options.level = this.options.level;
     });
-
-    if (parent)
-      parent.children.add(this);
 
   }
 
@@ -79,7 +76,7 @@ export class Logger<Level extends string> extends EventEmitter {
       if (transport.level && !this.isLevelActive(transport.level as Level)) continue;
       payload[TRANSPORT] = transport;
 
-      if (transport.muted || (this.parent && this.parent.muted) || this.filtered(transport, payload))
+      if (transport.muted || this.filtered(transport, payload))
         continue;
 
       payload = this.transformed(transport, payload);
@@ -238,11 +235,28 @@ export class Logger<Level extends string> extends EventEmitter {
    * Gets a new child Logger.
    * 
    * @param label the Logger label to be used.
+   * @param meta child metadata for child.
    */
-  get(label: string) {
-    const logger = this.core.cloneLogger<Level>(this.label + ':' + label);
-    this.children.add(logger);
-    return logger;
+  get(label: string, meta?: { [key: string]: any }): Logger<Level> & LogMethods<Logger<Level>, Level> {
+
+    let child = this.children.get(label);
+    if (child)
+      return child as any;
+    meta = meta || { [label]: true };
+    child = Object.create(this, {
+      label: {
+        value: label
+      },
+      write: {
+        value: (level: Level | '__write__' | '__writeLn__', message: string = '', ...args: any[]) => {
+          args.push(meta);
+          this.writer(level, message, ...args);
+          return this;
+        }
+      }
+    });
+    this.children.set(label, child);
+    return child as any;
   }
 
   /**

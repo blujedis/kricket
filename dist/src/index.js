@@ -6,5 +6,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./types"));
 __export(require("./transports"));
 __export(require("./logger"));
-__export(require("./blurpi"));
+__export(require("./kricket"));
 //# sourceMappingURL=index.js.map

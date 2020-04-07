@@ -12,14 +12,6 @@ export declare class Core {
      */
     getLogger(label: string): Logger<any>;
     /**
-     * Clones an existing Logger using it's options.
-     *
-     * @param label the label to use for the child logger.
-     * @param from The Logger to use as source.
-     * @param asChild When true the Logger is set with a parent.
-     */
-    cloneLogger<Level extends string>(label: string, from?: string | Logger<Level>, asChild?: boolean): Logger<Level>;
-    /**
      * Looks up a Transport within a Logger.
      *
      * @param label the Transport label/name to lookup.

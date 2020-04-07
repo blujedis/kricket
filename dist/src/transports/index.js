@@ -7,4 +7,5 @@ __export(require("./console"));
 __export(require("./stream"));
 __export(require("./dummy"));
 __export(require("./transport"));
+__export(require("./file"));
 //# sourceMappingURL=index.js.map

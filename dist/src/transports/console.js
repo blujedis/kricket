@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const transport_1 = require("./transport");
 class ConsoleTransport extends transport_1.Transport {
     constructor(options, alias) {
-        super(alias || 'console', options);
+        super(alias || 'console', { ...{ asJSON: false }, ...options });
     }
     /**
      * Method called by super.

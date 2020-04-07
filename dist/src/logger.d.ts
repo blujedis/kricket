@@ -1,15 +1,14 @@
 /// <reference types="node" />
 import { EventEmitter } from 'events';
-import { ILoggerOptions, Filter, Transform, Callback, Payload } from './types';
+import { ILoggerOptions, Filter, Transform, Callback, Payload, LogMethods } from './types';
 import { Transport } from './transports';
 import { Core } from './core';
 export declare class Logger<Level extends string> extends EventEmitter {
     label: string;
     options: ILoggerOptions<Level>;
-    parent?: Logger<Level>;
     core: Core;
-    children: Set<Logger<Level>>;
-    constructor(label: string, options: ILoggerOptions<Level>, parent?: Logger<Level>);
+    children: Map<string, Logger<Level>>;
+    constructor(label: string, options: ILoggerOptions<Level>);
     /**
      * Internal method to write to Transport streams.
      *
@@ -94,8 +93,11 @@ export declare class Logger<Level extends string> extends EventEmitter {
      * Gets a new child Logger.
      *
      * @param label the Logger label to be used.
+     * @param meta child metadata for child.
      */
-    get(label: string): Logger<Level>;
+    get(label: string, meta?: {
+        [key: string]: any;
+    }): Logger<Level> & LogMethods<Logger<Level>, Level>;
     /**
      * Adds a Filter function.
      *

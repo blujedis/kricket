@@ -1,5 +1,5 @@
 {
-  "name": "blurpi",
+  "name": "kricket",
   "license": "ISC",
   "main": "dist/index.js",
   "scripts": {
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/blujedis/blurpi.git"
+    "url": "git+https://github.com/blujedis/kricket.git"
   },
   "files": [
     "dist",
@@ -24,16 +24,13 @@
   "dependencies": {
     "ansi-colors": "^4.1.1",
     "fast-json-stable-stringify": "^2.1.0",
-    "fs-extra": "^8.1.0",
-    "kawkah-parser": "^1.0.0",
+    "file-stream-rotator": "^0.5.7",
     "readable-stream": "^3.6.0"
   },
   "devDependencies": {
     "@types/chai": "^4.2.7",
-    "@types/command-exists": "^1.2.0",
     "@types/cross-spawn": "^6.0.1",
     "@types/fast-json-stable-stringify": "^2.0.0",
-    "@types/fs-extra": "^8.0.1",
     "@types/mocha": "^5.2.7",
     "@types/node": "^13.1.2",
     "@types/readable-stream": "^2.3.5",
@@ -42,9 +39,7 @@
     "@typescript-eslint/parser": "^2.26.0",
     "chai": "^4.2.0",
     "eslint": "^6.8.0",
-    "eslint-watch": "^6.0.1",
     "mocha": "^6.2.2",
-    "mute-stdout": "^1.0.1",
     "rimraf": "^3.0.0",
     "ts-node": "^8.5.4",
     "tslint": "^6.0.0",

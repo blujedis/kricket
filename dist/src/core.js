@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const logger_1 = require("./logger");
 class Core {
     constructor() {
         /**
@@ -15,22 +14,6 @@ class Core {
      */
     getLogger(label) {
         return this.loggers.get(label);
-    }
-    /**
-     * Clones an existing Logger using it's options.
-     *
-     * @param label the label to use for the child logger.
-     * @param from The Logger to use as source.
-     * @param asChild When true the Logger is set with a parent.
-     */
-    cloneLogger(label, from, asChild = false) {
-        const parent = (typeof from === 'string' ? this.getLogger(from) : from);
-        if (!parent)
-            throw new Error(`Failed to lookup parent Logger "${from}".`);
-        const options = { ...parent.options };
-        const logger = asChild ? new logger_1.Logger(label, options, parent) : new logger_1.Logger(label, options);
-        logger.core = this;
-        return logger;
     }
     /**
      * Looks up a Transport within a Logger.

@@ -10,13 +10,12 @@ const util_1 = require("util");
 const utils_1 = require("./utils");
 const core_1 = __importDefault(require("./core"));
 class Logger extends events_1.EventEmitter {
-    constructor(label, options, parent) {
+    constructor(label, options) {
         super();
         this.label = label;
         this.options = options;
-        this.parent = parent;
         this.core = core_1.default;
-        this.children = new Set();
+        this.children = new Map();
         this.options = { ...{ levels: [], transports: [], filters: [], transforms: [], muted: false, level: null }, ...this.options };
         // Bind levels
         this.levels.forEach(level => {
@@ -27,8 +26,6 @@ class Logger extends events_1.EventEmitter {
             if (typeof transport.options.level === 'undefined')
                 transport.options.level = this.options.level;
         });
-        if (parent)
-            parent.children.add(this);
     }
     /**
      * Internal method to write to Transport streams.
@@ -67,7 +64,7 @@ class Logger extends events_1.EventEmitter {
             if (transport.level && !this.isLevelActive(transport.level))
                 continue;
             payload[types_1.TRANSPORT] = transport;
-            if (transport.muted || (this.parent && this.parent.muted) || this.filtered(transport, payload))
+            if (transport.muted || this.filtered(transport, payload))
                 continue;
             payload = this.transformed(transport, payload);
             transport.write(fast_json_stable_stringify_1.default(payload), 'utf8', cb);
@@ -192,11 +189,27 @@ class Logger extends events_1.EventEmitter {
      * Gets a new child Logger.
      *
      * @param label the Logger label to be used.
+     * @param meta child metadata for child.
      */
-    get(label) {
-        const logger = this.core.cloneLogger(this.label + ':' + label);
-        this.children.add(logger);
-        return logger;
+    get(label, meta) {
+        let child = this.children.get(label);
+        if (child)
+            return child;
+        meta = meta || { [label]: true };
+        child = Object.create(this, {
+            label: {
+                value: label
+            },
+            write: {
+                value: (level, message = '', ...args) => {
+                    args.push(meta);
+                    this.writer(level, message, ...args);
+                    return this;
+                }
+            }
+        });
+        this.children.set(label, child);
+        return child;
     }
     /**
      * Adds a Filter function.

@@ -6,7 +6,7 @@ export class ConsoleTransport<Level extends string> extends Transport<ITransport
   static Type = typeof ConsoleTransport;
 
   constructor(options?: ITransportOptions<Level>, alias?: string) {
-    super(alias || 'console', options);
+    super(alias || 'console', { ...{ asJSON: false }, ...options });
   }
 
   /**

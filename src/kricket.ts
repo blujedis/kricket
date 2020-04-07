@@ -11,7 +11,7 @@ import { ILoggerOptions, LogMethods } from './types';
  * @param options the options used to create the Logger.
  */
 export function createLogger<Level extends string>(label: string, options?: ILoggerOptions<Level>) {
-  const logger = new Logger(label, options, null);
+  const logger = new Logger(label, options);
   core.loggers.set(label, logger);
   return logger as Logger<Level> & LogMethods<Logger<Level>, Level>;
 }
@@ -20,7 +20,6 @@ export const defaultLogger = createLogger('default', {
   level: 'info',
   levels: ['fatal', 'error', 'warn', 'info', 'debug'],
   transports: [
-    new ConsoleTransport({ asJSON: false }),
-    new ConsoleTransport({ asJSON: true }, 'console2')
+    new ConsoleTransport()
   ]
 });
