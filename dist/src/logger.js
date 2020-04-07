@@ -49,29 +49,31 @@ class Logger extends events_1.EventEmitter {
         }, this);
         // eslint-disable-next-line @typescript-eslint/no-this-alias
         const logger = this;
-        for (const k in this.transports) {
-            if (!this.transports.hasOwnProperty(k))
-                continue;
-            let payload = {
-                [types_1.LOGGER]: logger,
-                [types_1.LEVEL]: label,
-                [types_1.MESSAGE]: message,
-                [types_1.SPLAT]: args,
-                message
+        const event = (transport) => {
+            return (done) => {
+                let payload = {
+                    [types_1.LOGGER]: logger,
+                    [types_1.LEVEL]: label,
+                    [types_1.MESSAGE]: message,
+                    [types_1.SPLAT]: args,
+                    message
+                };
+                // Inspect transport level.
+                if ((transport.level && !this.isLevelActive(transport.level)) || transport.muted || this.filtered(transport, payload))
+                    return done();
+                payload[types_1.TRANSPORT] = transport;
+                payload = this.transformed(transport, payload);
+                transport.write(fast_json_stable_stringify_1.default(payload));
+                transport.emit('log', payload, transport, this);
+                if (level !== '__write__')
+                    transport.write('\n');
+                done(null, payload);
             };
-            const transport = this.transports[k];
-            // Inspect transport level.
-            if (transport.level && !this.isLevelActive(transport.level))
-                continue;
-            payload[types_1.TRANSPORT] = transport;
-            if (transport.muted || this.filtered(transport, payload))
-                continue;
-            payload = this.transformed(transport, payload);
-            transport.write(fast_json_stable_stringify_1.default(payload), 'utf8', cb);
-            transport.emit('log', payload, transport, this);
-            if (level !== '__write__')
-                transport.write('\n');
-        }
+        };
+        utils_1.asynceach(this.transports.map(transport => event(transport)), (err, payloads) => {
+            if (cb)
+                cb(payloads);
+        });
         return this;
     }
     /**
