@@ -1,0 +1,3 @@
+# Blurpi
+
+Simple stream logger.

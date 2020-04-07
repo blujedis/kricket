@@ -1,0 +1,1 @@
+{"version":3,"file":"dummy.js","sourceRoot":"","sources":["../../../src/transports/dummy.ts"],"names":[],"mappings":";;AAAA,2CAAwC;AAGxC,MAAa,cAAqC,SAAQ,qBAAmC;IAI3F,YAAY,OAAkC,EAAE,KAAc;QAC5D,KAAK,CAAC,KAAK,IAAI,OAAO,EAAE,OAAO,CAAC,CAAC;IACnC,CAAC;IAED;;;;OAIG;IACH,GAAG,CAAC,OAAe;QACjB,gBAAgB;IAClB,CAAC;;AAfH,wCAiBC;AAfQ,mBAAI,GAAG,OAAO,cAAc,CAAC"}
