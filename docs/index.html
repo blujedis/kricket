@@ -64,10 +64,131 @@
 	<div class="row">
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
-				<a href="#blurpi" id="blurpi" style="color: inherit; text-decoration: none;">
-					<h1>Blurpi</h1>
+				<p align="left">
+					<a href="http://github.com/blujedis/kricket"><img src="https://raw.githubusercontent.com/blujedis/kricket/master/fixtures/logo.jpg" width="200" /></a>
+				</p>
+				<p>A un-opinionated Logger using Transport streams. Kricket makes only one opinion that being to manage log levels for you that you specify. All other filters and transforms are up to you.</p>
+				<a href="#install" id="install" style="color: inherit; text-decoration: none;">
+					<h2>Install</h2>
 				</a>
-				<p>Simple stream logger.</p>
+				<pre><code class="language-sh">npm install kricket -s
+
+OR
+
+yarn add kricket -s</code></pre>
+				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+					<h2>Usage</h2>
+				</a>
+				<p>The default logger contains only one Transport that being a console logger. The default levels are <code>fatal, error, warn, info, debug</code>;</p>
+				<pre><code class="language-ts"><span class="hljs-keyword">import</span> { defaultLogger } <span class="hljs-keyword">from</span> <span class="hljs-string">'kricket'</span>;
+defaultLogger.writeLn(<span class="hljs-string">'write some log message.'</span>);
+defaultLogger.info(<span class="hljs-string">'this is an info message.'</span>);</code></pre>
+				<a href="#filters" id="filters" style="color: inherit; text-decoration: none;">
+					<h2>Filters</h2>
+				</a>
+				<p>Kricket does not filter or prevent any log level from logging. This is entirely up to you. When Kricket is initialized it considers the order of the log levels you have provided.</p>
+				<p>Consider the &quot;defaultLogger&quot; that Kricket ships with.</p>
+				<pre><code class="language-ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> defaultLogger = createLogger(<span class="hljs-string">'default'</span>, {
+
+  <span class="hljs-comment">// This is the current active level</span>
+  level: <span class="hljs-string">'info'</span>,
+
+  <span class="hljs-comment">// Your initialized log levels where fatal = 0 and debug = 4</span>
+  levels: [<span class="hljs-string">'fatal'</span>, <span class="hljs-string">'error'</span>, <span class="hljs-string">'warn'</span>, <span class="hljs-string">'info'</span>, <span class="hljs-string">'debug'</span>],
+
+  <span class="hljs-comment">// The default console Transport.</span>
+  transports: [
+    <span class="hljs-keyword">new</span> ConsoleTransport({ asJSON: <span class="hljs-literal">false</span> })
+  ]
+});</code></pre>
+				<a href="#limiting-output-by-level" id="limiting-output-by-level" style="color: inherit; text-decoration: none;">
+					<h3>Limiting Output by Level</h3>
+				</a>
+				<p>Considering the above let&#39;s say we want to limit any message above the &quot;warn&quot; level.</p>
+				<p>First we need to set or initalize our Logger with that level. So for the defaultLogger we&#39;d do:</p>
+				<pre><code class="language-ts"><span class="hljs-keyword">import</span> { defaultLogger, LEVEL } <span class="hljs-keyword">from</span> <span class="hljs-string">'kricket'</span>;
+defaultLogger.setLevel(<span class="hljs-string">'warn'</span>);
+
+<span class="hljs-comment">// Note some properties in the payload object are symbols LEVEL is one.</span>
+<span class="hljs-comment">// Filters will "filter" a message and prevent output when</span>
+<span class="hljs-comment">// a filter return true. So here we listen if it's NOT true.</span>
+<span class="hljs-comment">// when this occurs we reject the message.</span>
+defaultLogger.filter(<span class="hljs-function">(<span class="hljs-params">payload</span>) =&gt;</span> {
+  <span class="hljs-keyword">return</span> !defaultLogger.isLevelActive(payload[LEVEL]);
+});</code></pre>
+				<a href="#transforming-messages" id="transforming-messages" style="color: inherit; text-decoration: none;">
+					<h3>Transforming Messages</h3>
+				</a>
+				<p>Although the log payload message stores any formatting args it leaves that up to you as to how you want to handle them. For example if we wanted to do the typical node formating from the util lib this would be how.</p>
+				<pre><code class="language-ts"><span class="hljs-keyword">import</span> { defaultLogger, SPLAT } <span class="hljs-keyword">from</span> <span class="hljs-string">'kricket'</span>;
+<span class="hljs-keyword">import</span> { format } <span class="hljs-keyword">from</span> <span class="hljs-string">'util'</span>;
+
+defaultLogger.transform(<span class="hljs-function">(<span class="hljs-params">payload</span>) =&gt;</span> {
+  payload.message = format(payload.message, ...payload[SPLAT]);
+  <span class="hljs-keyword">return</span> payload;
+});</code></pre>
+				<p>Now you can use formatting in your messages.</p>
+				<pre><code class="language-ts">defaultLogger.info(<span class="hljs-string">'My name is %s.'</span>, <span class="hljs-string">'Milton'</span>);</code></pre>
+				<a href="#output-format" id="output-format" style="color: inherit; text-decoration: none;">
+					<h2>Output Format</h2>
+				</a>
+				<p>By default Kricket outputs JSON to each transport. This can be disabled as it is in the default <strong>ConsoleTransport</strong>. When doing so Kricket will grab your formatted message resulting from your <strong>transform</strong> stack if any. The message is stored at: <code>payload.message</code></p>
+				<pre><code class="language-ts"><span class="hljs-keyword">import</span> { ConsoleTransport } <span class="hljs-keyword">from</span> <span class="hljs-string">'kricket'</span>;
+<span class="hljs-keyword">const</span> consoleTransport = <span class="hljs-keyword">new</span> ConsoleTransport({ asJSON: <span class="hljs-literal">false</span> });</code></pre>
+				<a href="#transports" id="transports" style="color: inherit; text-decoration: none;">
+					<h2>Transports</h2>
+				</a>
+				<p>Kricket contains three default Transports:</p>
+				<ul>
+					<li><strong>ConsoleTransport</strong> to log to your terminal.</li>
+					<li><strong>FileTransport</strong> to log to file with file rotation capabilities.</li>
+					<li><strong>StreamTransport</strong> simple wrapper you can pass any Writable Stream to.</li>
+				</ul>
+				<a href="#custom-transports" id="custom-transports" style="color: inherit; text-decoration: none;">
+					<h3>Custom Transports</h3>
+				</a>
+				<p>To create a custom Transport simply extend from the base abstract <strong>Transport</strong> class.</p>
+				<pre><code class="language-ts"><span class="hljs-keyword">import</span> { Transport } <span class="hljs-keyword">from</span> <span class="hljs-string">'./transport'</span>;
+<span class="hljs-keyword">import</span> { ITransportOptions } <span class="hljs-keyword">from</span> <span class="hljs-string">'../types'</span>;
+
+<span class="hljs-keyword">interface</span> IMyTransport&lt;Level <span class="hljs-keyword">extends</span> string&gt; <span class="hljs-keyword">extends</span> ITransportOptions&lt;Level&gt; {
+ <span class="hljs-comment">// your options here.</span>
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> MyTransport&lt;Level <span class="hljs-keyword">extends</span> <span class="hljs-built_in">string</span>&gt; <span class="hljs-keyword">extends</span> Transport&lt;IMyTransport&lt;Level&gt;&gt; {
+  <span class="hljs-keyword">static</span> Type = <span class="hljs-keyword">typeof</span> MyTransport; <span class="hljs-comment">// This is important for creating new instances internally.</span>
+  <span class="hljs-keyword">constructor</span>(<span class="hljs-params">options?: IMyTransport&lt;Level&gt;, alias?: <span class="hljs-built_in">string</span></span>) {
+    <span class="hljs-keyword">super</span>(alias || <span class="hljs-string">'myTransport'</span>, options);
+  }
+  log(payload: <span class="hljs-built_in">string</span>) {
+    <span class="hljs-comment">// This method MUST be overloaded or you will get an error.</span>
+  }
+}</code></pre>
+				<a href="#consuming-the-above-transport" id="consuming-the-above-transport" style="color: inherit; text-decoration: none;">
+					<h3>Consuming the Above Transport</h3>
+				</a>
+				<p>To consume our new Transport we simply pass it to our Logger&#39;s transports.</p>
+				<pre><code class="language-ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> myLogger = createLogger(<span class="hljs-string">'myLogger'</span>, {
+  level: <span class="hljs-string">'info'</span>,
+  levels: [<span class="hljs-string">'fatal'</span>, <span class="hljs-string">'error'</span>, <span class="hljs-string">'warn'</span>, <span class="hljs-string">'info'</span>, <span class="hljs-string">'debug'</span>],
+  transports: [
+    <span class="hljs-keyword">new</span> MyTransport()
+  ]
+});</code></pre>
+				<p>You can also add a Transport after Logger creation as follows:</p>
+				<pre><code class="language-ts">myLogger.addTransport(<span class="hljs-keyword">new</span> MyTransport());</code></pre>
+				<a href="#docs" id="docs" style="color: inherit; text-decoration: none;">
+					<h2>Docs</h2>
+				</a>
+				<p>See <a href="https://blujedis.github.io/kricket/">https://blujedis.github.io/kricket/</a></p>
+				<a href="#change" id="change" style="color: inherit; text-decoration: none;">
+					<h2>Change</h2>
+				</a>
+				<p>See <a href="CHANGE.md">CHANGE.md</a></p>
+				<a href="#license" id="license" style="color: inherit; text-decoration: none;">
+					<h2>License</h2>
+				</a>
+				<p>See <a href="LICENSE">LICENSE.md</a></p>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -77,43 +198,49 @@
 						<a href="globals.html"><em>Globals</em></a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_blurpi_.html">&quot;blurpi&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_core_.html">&quot;core&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
 						<a href="modules/_index_.html">&quot;index&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_logger_.html">&quot;logger&quot;</a>
+						<a href="modules/_src_core_.html">&quot;src/core&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_transports_console_.html">&quot;transports/console&quot;</a>
+						<a href="modules/_src_index_.html">&quot;src/index&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_transports_dummy_.html">&quot;transports/dummy&quot;</a>
+						<a href="modules/_src_kricket_.html">&quot;src/kricket&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_transports_index_.html">&quot;transports/index&quot;</a>
+						<a href="modules/_src_logger_.html">&quot;src/logger&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_transports_stream_.html">&quot;transports/stream&quot;</a>
+						<a href="modules/_src_transports_console_.html">&quot;src/transports/console&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_transports_transport_.html">&quot;transports/transport&quot;</a>
+						<a href="modules/_src_transports_dummy_.html">&quot;src/transports/dummy&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_types_.html">&quot;types&quot;</a>
+						<a href="modules/_src_transports_file_.html">&quot;src/transports/file&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_utils_asynceach_.html">&quot;utils/asynceach&quot;</a>
+						<a href="modules/_src_transports_index_.html">&quot;src/transports/index&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_utils_helpers_.html">&quot;utils/helpers&quot;</a>
+						<a href="modules/_src_transports_stream_.html">&quot;src/transports/stream&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_utils_index_.html">&quot;utils/index&quot;</a>
+						<a href="modules/_src_transports_transport_.html">&quot;src/transports/transport&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_types_.html">&quot;src/types&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_utils_asynceach_.html">&quot;src/utils/asynceach&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_utils_helpers_.html">&quot;src/utils/helpers&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_utils_index_.html">&quot;src/utils/index&quot;</a>
 					</li>
 				</ul>
 			</nav>
@@ -129,6 +256,7 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
 				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
 				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
@@ -136,11 +264,12 @@
 				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
-				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
 			</ul>
 		</div>
 	</div>
