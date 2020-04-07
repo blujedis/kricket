@@ -13,11 +13,11 @@ export type Callback = (data?: any) => void;
 
 export type ErrorCallback = (err?: Error | null | undefined) => void;
 
-export type Payload<Level extends string> = IPayload<Level>;
+export type Payload<Level extends string> = IPayload<Level | '*'>;
 
-export type Filter<Level extends string> = (payload: Payload<Level>) => boolean;
+export type Filter<Level extends string> = (payload: Payload<Level | '*'>) => boolean;
 
-export type Transform<Level extends string> = (payload: Payload<Level>) => Payload<Level>;
+export type Transform<Level extends string> = (payload: Payload<Level | '*'>) => Payload<Level | '*'>;
 
 export type LogMethod<T> = (message: string, ...args: any[]) => T;
 
@@ -47,8 +47,8 @@ export interface IPayload<Level extends string> {
 
 export interface ITransportOptions<Level extends string> {
   asJSON?: boolean;
-  filters?: Filter<Level>[];
-  transforms?: Transform<Level>[];
+  filters?: Filter<Level | '*'>[];
+  transforms?: Transform<Level | '*'>[];
   highWaterMark?: number;
   muted?: boolean;
   level?: Level;
@@ -57,8 +57,8 @@ export interface ITransportOptions<Level extends string> {
 export interface ILoggerOptions<Level extends string> {
   readonly levels: Level[];
   transports?: Transport[];
-  filters?: Filter<Level>[];
-  transforms?: Transform<Level>[];
+  filters?: Filter<Level | '*'>[];
+  transforms?: Transform<Level | '*'>[];
   muted?: boolean;
   level?: Level;
 }

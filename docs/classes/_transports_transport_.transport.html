@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>FileTransport | Octo</title>
+	<title>Transport | Octo</title>
 	<meta name="description" content="Documentation for Octo">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,13 +56,13 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_src_transports_file_.html">&quot;src/transports/file&quot;</a>
+					<a href="../modules/_transports_transport_.html">&quot;transports/transport&quot;</a>
 				</li>
 				<li>
-					<a href="_src_transports_file_.filetransport.html">FileTransport</a>
+					<a href="_transports_transport_.transport.html">Transport</a>
 				</li>
 			</ul>
-			<h1>Class FileTransport&lt;Level&gt;</h1>
+			<h1>Class Transport&lt;Options&gt;</h1>
 		</div>
 	</div>
 </header>
@@ -73,7 +73,7 @@
 				<h3>Type parameters</h3>
 				<ul class="tsd-type-parameters">
 					<li>
-						<h4>Level<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h4>
+						<h4>Options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.itransportoptions.html" class="tsd-signature-type">ITransportOptions</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
 					</li>
 				</ul>
 			</section>
@@ -81,10 +81,24 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="_src_transports_transport_.transport.html" class="tsd-signature-type">Transport</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_src_transports_file_.ifiletransportoptions.html" class="tsd-signature-type">IFileTransportOptions</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Level</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span>
+						<a href="_transports_transport_.stream.html" class="tsd-signature-type">Stream</a>
 						<ul class="tsd-hierarchy">
 							<li>
-								<span class="target">FileTransport</span>
+								<span class="target">Transport</span>
+								<ul class="tsd-hierarchy">
+									<li>
+										<a href="_transports_console_.consoletransport.html" class="tsd-signature-type">ConsoleTransport</a>
+									</li>
+									<li>
+										<a href="_transports_stream_.streamtransport.html" class="tsd-signature-type">StreamTransport</a>
+									</li>
+									<li>
+										<a href="_transports_dummy_.dummytransport.html" class="tsd-signature-type">DummyTransport</a>
+									</li>
+									<li>
+										<a href="_transports_file_.filetransport.html" class="tsd-signature-type">FileTransport</a>
+									</li>
+								</ul>
 							</li>
 						</ul>
 					</li>
@@ -103,76 +117,73 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="_src_transports_file_.filetransport.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="_transports_transport_.transport.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#_writablestate" class="tsd-kind-icon">_writable<wbr>State</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#buffer" class="tsd-kind-icon">buffer</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#destroyed" class="tsd-kind-icon">destroyed</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#label" class="tsd-kind-icon">label</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#options" class="tsd-kind-icon">options</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_transports_file_.filetransport.html#rotator" class="tsd-kind-icon">rotator</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#writable" class="tsd-kind-icon">writable</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#writablecorked" class="tsd-kind-icon">writable<wbr>Corked</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#writableended" class="tsd-kind-icon">writable<wbr>Ended</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#writablefinished" class="tsd-kind-icon">writable<wbr>Finished</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#writablehighwatermark" class="tsd-kind-icon">writable<wbr>High<wbr>Water<wbr>Mark</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#writablelength" class="tsd-kind-icon">writable<wbr>Length</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#writableobjectmode" class="tsd-kind-icon">writable<wbr>Object<wbr>Mode</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-static"><a href="_src_transports_file_.filetransport.html#type" class="tsd-kind-icon">Type</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_transports_transport_.transport.html#_writablestate" class="tsd-kind-icon">_writable<wbr>State</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_transports_transport_.transport.html#buffer" class="tsd-kind-icon">buffer</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_transports_transport_.transport.html#destroyed" class="tsd-kind-icon">destroyed</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_transports_transport_.transport.html#label" class="tsd-kind-icon">label</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_transports_transport_.transport.html#options" class="tsd-kind-icon">options</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_transports_transport_.transport.html#writable" class="tsd-kind-icon">writable</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_transports_transport_.transport.html#writablecorked" class="tsd-kind-icon">writable<wbr>Corked</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_transports_transport_.transport.html#writableended" class="tsd-kind-icon">writable<wbr>Ended</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_transports_transport_.transport.html#writablefinished" class="tsd-kind-icon">writable<wbr>Finished</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_transports_transport_.transport.html#writablehighwatermark" class="tsd-kind-icon">writable<wbr>High<wbr>Water<wbr>Mark</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_transports_transport_.transport.html#writablelength" class="tsd-kind-icon">writable<wbr>Length</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_transports_transport_.transport.html#writableobjectmode" class="tsd-kind-icon">writable<wbr>Object<wbr>Mode</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="_transports_transport_.transport.html#type" class="tsd-kind-icon">Type</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section tsd-is-inherited">
+						<section class="tsd-index-section ">
 							<h3>Accessors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#filters" class="tsd-kind-icon">filters</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#isjson" class="tsd-kind-icon">isJSON</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#level" class="tsd-kind-icon">level</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#muted" class="tsd-kind-icon">muted</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#transforms" class="tsd-kind-icon">transforms</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_transports_transport_.transport.html#filters" class="tsd-kind-icon">filters</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_transports_transport_.transport.html#isjson" class="tsd-kind-icon">isJSON</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_transports_transport_.transport.html#level" class="tsd-kind-icon">level</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_transports_transport_.transport.html#muted" class="tsd-kind-icon">muted</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_transports_transport_.transport.html#transforms" class="tsd-kind-icon">transforms</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#_destroy" class="tsd-kind-icon">_destroy</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#_final" class="tsd-kind-icon">_final</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#_undestroy" class="tsd-kind-icon">_undestroy</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#_write" class="tsd-kind-icon">_write</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#_writev" class="tsd-kind-icon">_writev</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#addlistener" class="tsd-kind-icon">add<wbr>Listener</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#cork" class="tsd-kind-icon">cork</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#destroy" class="tsd-kind-icon">destroy</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#emit" class="tsd-kind-icon">emit</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#end" class="tsd-kind-icon">end</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#eventnames" class="tsd-kind-icon">event<wbr>Names</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#format" class="tsd-kind-icon">format</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#getmaxlisteners" class="tsd-kind-icon">get<wbr>Max<wbr>Listeners</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#gettype" class="tsd-kind-icon">get<wbr>Type</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#listenercount" class="tsd-kind-icon">listener<wbr>Count</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#listeners" class="tsd-kind-icon">listeners</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="_src_transports_file_.filetransport.html#log" class="tsd-kind-icon">log</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#mute" class="tsd-kind-icon">mute</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_transports_file_.filetransport.html#newfile" class="tsd-kind-icon">newfile</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#off" class="tsd-kind-icon">off</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#on" class="tsd-kind-icon">on</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#once" class="tsd-kind-icon">once</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#pipe" class="tsd-kind-icon">pipe</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#prependlistener" class="tsd-kind-icon">prepend<wbr>Listener</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#prependoncelistener" class="tsd-kind-icon">prepend<wbr>Once<wbr>Listener</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#rawlisteners" class="tsd-kind-icon">raw<wbr>Listeners</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#removealllisteners" class="tsd-kind-icon">remove<wbr>All<wbr>Listeners</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#removelistener" class="tsd-kind-icon">remove<wbr>Listener</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_transports_file_.filetransport.html#rotate" class="tsd-kind-icon">rotate</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#setdefaultencoding" class="tsd-kind-icon">set<wbr>Default<wbr>Encoding</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#setlevel" class="tsd-kind-icon">set<wbr>Level</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#setmaxlisteners" class="tsd-kind-icon">set<wbr>Max<wbr>Listeners</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#uncork" class="tsd-kind-icon">uncork</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#unmute" class="tsd-kind-icon">unmute</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_src_transports_file_.filetransport.html#write" class="tsd-kind-icon">write</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_transports_transport_.transport.html#_destroy" class="tsd-kind-icon">_destroy</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_transports_transport_.transport.html#_final" class="tsd-kind-icon">_final</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_transports_transport_.transport.html#_undestroy" class="tsd-kind-icon">_undestroy</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_transports_transport_.transport.html#_write" class="tsd-kind-icon">_write</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_transports_transport_.transport.html#_writev" class="tsd-kind-icon">_writev</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_transports_transport_.transport.html#addlistener" class="tsd-kind-icon">add<wbr>Listener</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_transports_transport_.transport.html#cork" class="tsd-kind-icon">cork</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="_transports_transport_.transport.html#destroy" class="tsd-kind-icon">destroy</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_transports_transport_.transport.html#emit" class="tsd-kind-icon">emit</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="_transports_transport_.transport.html#end" class="tsd-kind-icon">end</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_transports_transport_.transport.html#eventnames" class="tsd-kind-icon">event<wbr>Names</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_transports_transport_.transport.html#format" class="tsd-kind-icon">format</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_transports_transport_.transport.html#getmaxlisteners" class="tsd-kind-icon">get<wbr>Max<wbr>Listeners</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_transports_transport_.transport.html#gettype" class="tsd-kind-icon">get<wbr>Type</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_transports_transport_.transport.html#listenercount" class="tsd-kind-icon">listener<wbr>Count</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_transports_transport_.transport.html#listeners" class="tsd-kind-icon">listeners</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_transports_transport_.transport.html#log" class="tsd-kind-icon">log</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_transports_transport_.transport.html#mute" class="tsd-kind-icon">mute</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_transports_transport_.transport.html#off" class="tsd-kind-icon">off</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_transports_transport_.transport.html#on" class="tsd-kind-icon">on</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_transports_transport_.transport.html#once" class="tsd-kind-icon">once</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="_transports_transport_.transport.html#pipe" class="tsd-kind-icon">pipe</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_transports_transport_.transport.html#prependlistener" class="tsd-kind-icon">prepend<wbr>Listener</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_transports_transport_.transport.html#prependoncelistener" class="tsd-kind-icon">prepend<wbr>Once<wbr>Listener</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_transports_transport_.transport.html#rawlisteners" class="tsd-kind-icon">raw<wbr>Listeners</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_transports_transport_.transport.html#removealllisteners" class="tsd-kind-icon">remove<wbr>All<wbr>Listeners</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_transports_transport_.transport.html#removelistener" class="tsd-kind-icon">remove<wbr>Listener</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_transports_transport_.transport.html#setdefaultencoding" class="tsd-kind-icon">set<wbr>Default<wbr>Encoding</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_transports_transport_.transport.html#setlevel" class="tsd-kind-icon">set<wbr>Level</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_transports_transport_.transport.html#setmaxlisteners" class="tsd-kind-icon">set<wbr>Max<wbr>Listeners</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_transports_transport_.transport.html#uncork" class="tsd-kind-icon">uncork</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_transports_transport_.transport.html#unmute" class="tsd-kind-icon">unmute</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="_transports_transport_.transport.html#write" class="tsd-kind-icon">write</a></li>
 							</ul>
 						</section>
 					</div>
@@ -184,26 +195,26 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>File<wbr>Transport<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="../interfaces/_src_transports_file_.ifiletransportoptions.html" class="tsd-signature-type">IFileTransportOptions</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Level</span><span class="tsd-signature-symbol">&gt;</span>, alias<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_src_transports_file_.filetransport.html" class="tsd-signature-type">FileTransport</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Transport<span class="tsd-signature-symbol">(</span>label<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Options</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_transports_transport_.transport.html" class="tsd-signature-type">Transport</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Overrides <a href="_src_transports_transport_.transport.html">Transport</a>.<a href="_src_transports_transport_.transport.html#constructor">constructor</a></p>
+								<p>Overrides <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/6b618b0/src/transports/file.ts#L49">src/transports/file.ts:49</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/8b58ad5/src/transports/transport.ts#L14">src/transports/transport.ts:14</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <a href="../interfaces/_src_transports_file_.ifiletransportoptions.html" class="tsd-signature-type">IFileTransportOptions</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Level</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>label: <span class="tsd-signature-type">string</span></h5>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> alias: <span class="tsd-signature-type">string</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">Options</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="_src_transports_file_.filetransport.html" class="tsd-signature-type">FileTransport</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_transports_transport_.transport.html" class="tsd-signature-type">Transport</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -215,20 +226,19 @@
 					<h3>_writable<wbr>State</h3>
 					<div class="tsd-signature tsd-kind-icon">_writable<wbr>State<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">WritableState</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#_writablestate">_writableState</a></p>
+						<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#_writablestate">_writableState</a></p>
 						<ul>
 							<li>Defined in node_modules/@types/readable-stream/index.d.ts:248</li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="buffer" class="tsd-anchor"></a>
 					<h3>buffer</h3>
 					<div class="tsd-signature tsd-kind-icon">buffer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;&quot;</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_src_transports_transport_.transport.html">Transport</a>.<a href="_src_transports_transport_.transport.html#buffer">buffer</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/kricket/blob/6b618b0/src/transports/transport.ts#L14">src/transports/transport.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/kricket/blob/8b58ad5/src/transports/transport.ts#L14">src/transports/transport.ts:14</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -237,42 +247,30 @@
 					<h3>destroyed</h3>
 					<div class="tsd-signature tsd-kind-icon">destroyed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#destroyed">destroyed</a></p>
+						<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#destroyed">destroyed</a></p>
 						<p>Overrides Writable.destroyed</p>
 						<ul>
 							<li>Defined in node_modules/@types/readable-stream/index.d.ts:247</li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="label" class="tsd-anchor"></a>
 					<h3>label</h3>
 					<div class="tsd-signature tsd-kind-icon">label<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_src_transports_transport_.transport.html">Transport</a>.<a href="_src_transports_transport_.transport.html#label">label</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/kricket/blob/6b618b0/src/transports/transport.ts#L16">src/transports/transport.ts:16</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-					<a name="options" class="tsd-anchor"></a>
-					<h3>options</h3>
-					<div class="tsd-signature tsd-kind-icon">options<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_src_transports_file_.ifiletransportoptions.html" class="tsd-signature-type">IFileTransportOptions</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Level</span><span class="tsd-signature-symbol">&gt;</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="_src_transports_transport_.transport.html">Transport</a>.<a href="_src_transports_transport_.transport.html#options">options</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/kricket/blob/6b618b0/src/transports/transport.ts#L13">src/transports/transport.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/kricket/blob/8b58ad5/src/transports/transport.ts#L16">src/transports/transport.ts:16</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="rotator" class="tsd-anchor"></a>
-					<h3>rotator</h3>
-					<div class="tsd-signature tsd-kind-icon">rotator<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">WriteStream</span></div>
+					<a name="options" class="tsd-anchor"></a>
+					<h3>options</h3>
+					<div class="tsd-signature tsd-kind-icon">options<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Options</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/kricket/blob/6b618b0/src/transports/file.ts#L49">src/transports/file.ts:49</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/kricket/blob/8b58ad5/src/transports/transport.ts#L13">src/transports/transport.ts:13</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -281,10 +279,10 @@
 					<h3>writable</h3>
 					<div class="tsd-signature tsd-kind-icon">writable<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#writable">writable</a></p>
+						<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#writable">writable</a></p>
 						<p>Overrides Writable.writable</p>
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/kricket/blob/6b618b0/src/transports/transport.ts#L6">src/transports/transport.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/kricket/blob/8b58ad5/src/transports/transport.ts#L6">src/transports/transport.ts:6</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -293,7 +291,7 @@
 					<h3>writable<wbr>Corked</h3>
 					<div class="tsd-signature tsd-kind-icon">writable<wbr>Corked<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#writablecorked">writableCorked</a></p>
+						<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#writablecorked">writableCorked</a></p>
 						<ul>
 							<li>Defined in node_modules/@types/node/stream.d.ts:144</li>
 						</ul>
@@ -304,7 +302,7 @@
 					<h3>writable<wbr>Ended</h3>
 					<div class="tsd-signature tsd-kind-icon">writable<wbr>Ended<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#writableended">writableEnded</a></p>
+						<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#writableended">writableEnded</a></p>
 						<ul>
 							<li>Defined in node_modules/@types/node/stream.d.ts:139</li>
 						</ul>
@@ -315,7 +313,7 @@
 					<h3>writable<wbr>Finished</h3>
 					<div class="tsd-signature tsd-kind-icon">writable<wbr>Finished<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#writablefinished">writableFinished</a></p>
+						<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#writablefinished">writableFinished</a></p>
 						<ul>
 							<li>Defined in node_modules/@types/node/stream.d.ts:140</li>
 						</ul>
@@ -326,7 +324,7 @@
 					<h3>writable<wbr>High<wbr>Water<wbr>Mark</h3>
 					<div class="tsd-signature tsd-kind-icon">writable<wbr>High<wbr>Water<wbr>Mark<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#writablehighwatermark">writableHighWaterMark</a></p>
+						<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#writablehighwatermark">writableHighWaterMark</a></p>
 						<ul>
 							<li>Defined in node_modules/@types/node/stream.d.ts:141</li>
 						</ul>
@@ -337,7 +335,7 @@
 					<h3>writable<wbr>Length</h3>
 					<div class="tsd-signature tsd-kind-icon">writable<wbr>Length<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#writablelength">writableLength</a></p>
+						<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#writablelength">writableLength</a></p>
 						<ul>
 							<li>Defined in node_modules/@types/node/stream.d.ts:142</li>
 						</ul>
@@ -348,38 +346,36 @@
 					<h3>writable<wbr>Object<wbr>Mode</h3>
 					<div class="tsd-signature tsd-kind-icon">writable<wbr>Object<wbr>Mode<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#writableobjectmode">writableObjectMode</a></p>
+						<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#writableobjectmode">writableObjectMode</a></p>
 						<ul>
 							<li>Defined in node_modules/@types/node/stream.d.ts:143</li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-static">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
 					<a name="type" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> Type</h3>
-					<div class="tsd-signature tsd-kind-icon">Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"string"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"bigint"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"boolean"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"symbol"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"undefined"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"object"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"function"</span><span class="tsd-signature-symbol"> = typeof FileTransport</span></div>
+					<div class="tsd-signature tsd-kind-icon">Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 					<aside class="tsd-sources">
-						<p>Overrides <a href="_src_transports_transport_.transport.html">Transport</a>.<a href="_src_transports_transport_.transport.html#type">Type</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/kricket/blob/6b618b0/src/transports/file.ts#L47">src/transports/file.ts:47</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/kricket/blob/8b58ad5/src/transports/transport.ts#L11">src/transports/transport.ts:11</a></li>
 						</ul>
 					</aside>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Accessors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
 					<a name="filters" class="tsd-anchor"></a>
 					<h3>filters</h3>
-					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> filters<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>payload<span class="tsd-signature-symbol">: </span><a href="../modules/_src_types_.html#payload" class="tsd-signature-type">Payload</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Level</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></li>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> filters<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>payload<span class="tsd-signature-symbol">: </span><a href="../modules/_types_.html#payload" class="tsd-signature-type">Payload</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Level</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"*"</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.transport.html">Transport</a>.<a href="_src_transports_transport_.transport.html#filters">filters</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/6b618b0/src/transports/transport.ts#L65">src/transports/transport.ts:65</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/8b58ad5/src/transports/transport.ts#L65">src/transports/transport.ts:65</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -387,22 +383,21 @@
 									<p>Gets Transport&#39;s Filters.</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>payload<span class="tsd-signature-symbol">: </span><a href="../modules/_src_types_.html#payload" class="tsd-signature-type">Payload</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Level</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>payload<span class="tsd-signature-symbol">: </span><a href="../modules/_types_.html#payload" class="tsd-signature-type">Payload</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Level</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"*"</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
 					<a name="isjson" class="tsd-anchor"></a>
 					<h3>isJSON</h3>
-					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
 						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> isJSON<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.transport.html">Transport</a>.<a href="_src_transports_transport_.transport.html#isjson">isJSON</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/6b618b0/src/transports/transport.ts#L58">src/transports/transport.ts:58</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/8b58ad5/src/transports/transport.ts#L58">src/transports/transport.ts:58</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -414,18 +409,17 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
 					<a name="level" class="tsd-anchor"></a>
 					<h3>level</h3>
-					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
 						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> level<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.transport.html">Transport</a>.<a href="_src_transports_transport_.transport.html#level">level</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/6b618b0/src/transports/transport.ts#L44">src/transports/transport.ts:44</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/8b58ad5/src/transports/transport.ts#L44">src/transports/transport.ts:44</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -437,18 +431,17 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
 					<a name="muted" class="tsd-anchor"></a>
 					<h3>muted</h3>
-					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
 						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> muted<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.transport.html">Transport</a>.<a href="_src_transports_transport_.transport.html#muted">muted</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/6b618b0/src/transports/transport.ts#L51">src/transports/transport.ts:51</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/8b58ad5/src/transports/transport.ts#L51">src/transports/transport.ts:51</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -460,18 +453,17 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
 					<a name="transforms" class="tsd-anchor"></a>
 					<h3>transforms</h3>
-					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> transforms<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>payload<span class="tsd-signature-symbol">: </span><a href="../modules/_src_types_.html#payload" class="tsd-signature-type">Payload</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Level</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="../modules/_src_types_.html#payload" class="tsd-signature-type">Payload</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Level</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></li>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> transforms<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>payload<span class="tsd-signature-symbol">: </span><a href="../modules/_types_.html#payload" class="tsd-signature-type">Payload</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Level</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"*"</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="../modules/_types_.html#payload" class="tsd-signature-type">Payload</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Level</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"*"</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.transport.html">Transport</a>.<a href="_src_transports_transport_.transport.html#transforms">transforms</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/6b618b0/src/transports/transport.ts#L72">src/transports/transport.ts:72</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/8b58ad5/src/transports/transport.ts#L72">src/transports/transport.ts:72</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -479,7 +471,7 @@
 									<p>Gets Transport&#39;s Transforms.</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>payload<span class="tsd-signature-symbol">: </span><a href="../modules/_src_types_.html#payload" class="tsd-signature-type">Payload</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Level</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="../modules/_src_types_.html#payload" class="tsd-signature-type">Payload</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Level</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>payload<span class="tsd-signature-symbol">: </span><a href="../modules/_types_.html#payload" class="tsd-signature-type">Payload</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Level</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"*"</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="../modules/_types_.html#payload" class="tsd-signature-type">Payload</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Level</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"*"</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -495,7 +487,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#_destroy">_destroy</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#_destroy">_destroy</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:149</li>
 								</ul>
@@ -540,7 +532,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#_final">_final</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#_final">_final</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:150</li>
 								</ul>
@@ -582,7 +574,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#_undestroy">_undestroy</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#_undestroy">_undestroy</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/readable-stream/index.d.ts:253</li>
 								</ul>
@@ -600,7 +592,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#_write">_write</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#_write">_write</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:147</li>
 								</ul>
@@ -648,7 +640,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#_writev">_writev</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#_writev">_writev</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:148</li>
 								</ul>
@@ -699,8 +691,8 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#addlistener">addListener</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#addlistener">addListener</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#addlistener">addListener</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#addlistener">addListener</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:171</li>
 								</ul>
@@ -744,8 +736,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#addlistener">addListener</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#addlistener">addListener</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#addlistener">addListener</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#addlistener">addListener</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:172</li>
 								</ul>
@@ -775,8 +767,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#addlistener">addListener</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#addlistener">addListener</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#addlistener">addListener</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#addlistener">addListener</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:173</li>
 								</ul>
@@ -812,8 +804,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#addlistener">addListener</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#addlistener">addListener</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#addlistener">addListener</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#addlistener">addListener</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:174</li>
 								</ul>
@@ -843,8 +835,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#addlistener">addListener</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#addlistener">addListener</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#addlistener">addListener</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#addlistener">addListener</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:175</li>
 								</ul>
@@ -880,8 +872,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#addlistener">addListener</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#addlistener">addListener</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#addlistener">addListener</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#addlistener">addListener</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:176</li>
 								</ul>
@@ -917,8 +909,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#addlistener">addListener</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#addlistener">addListener</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#addlistener">addListener</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#addlistener">addListener</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:177</li>
 								</ul>
@@ -963,7 +955,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#cork">cork</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#cork">cork</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:157</li>
 								</ul>
@@ -972,19 +964,18 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 					<a name="destroy" class="tsd-anchor"></a>
 					<h3>destroy</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">destroy<span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span>, cb<span class="tsd-signature-symbol">?: </span><a href="../modules/_src_types_.html#errorcallback" class="tsd-signature-type">ErrorCallback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">destroy<span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span>, cb<span class="tsd-signature-symbol">?: </span><a href="../modules/_types_.html#errorcallback" class="tsd-signature-type">ErrorCallback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.transport.html">Transport</a>.<a href="_src_transports_transport_.transport.html#destroy">destroy</a></p>
-								<p>Overrides <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#destroy">destroy</a></p>
+								<p>Overrides <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#destroy">destroy</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/6b618b0/src/transports/transport.ts#L151">src/transports/transport.ts:151</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/8b58ad5/src/transports/transport.ts#L151">src/transports/transport.ts:151</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1001,7 +992,7 @@
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> cb: <a href="../modules/_src_types_.html#errorcallback" class="tsd-signature-type">ErrorCallback</a></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> cb: <a href="../modules/_types_.html#errorcallback" class="tsd-signature-type">ErrorCallback</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>optional callback.</p>
 									</div>
@@ -1026,8 +1017,8 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#emit">emit</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#emit">emit</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#emit">emit</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#emit">emit</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:179</li>
 								</ul>
@@ -1042,8 +1033,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#emit">emit</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#emit">emit</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#emit">emit</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#emit">emit</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:180</li>
 								</ul>
@@ -1058,8 +1049,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#emit">emit</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#emit">emit</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#emit">emit</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#emit">emit</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:181</li>
 								</ul>
@@ -1077,8 +1068,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#emit">emit</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#emit">emit</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#emit">emit</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#emit">emit</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:182</li>
 								</ul>
@@ -1093,8 +1084,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#emit">emit</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#emit">emit</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#emit">emit</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#emit">emit</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:183</li>
 								</ul>
@@ -1112,8 +1103,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#emit">emit</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#emit">emit</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#emit">emit</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#emit">emit</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:184</li>
 								</ul>
@@ -1131,8 +1122,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#emit">emit</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#emit">emit</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#emit">emit</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#emit">emit</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:185</li>
 								</ul>
@@ -1150,21 +1141,20 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 					<a name="end" class="tsd-anchor"></a>
 					<h3>end</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">end<span class="tsd-signature-symbol">(</span>chunk<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, enc<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, cb<span class="tsd-signature-symbol">?: </span><a href="../modules/_src_types_.html#nodecallback" class="tsd-signature-type">NodeCallback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-						<li class="tsd-signature tsd-kind-icon">end<span class="tsd-signature-symbol">(</span>chunk<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, cb<span class="tsd-signature-symbol">?: </span><a href="../modules/_src_types_.html#nodecallback" class="tsd-signature-type">NodeCallback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-						<li class="tsd-signature tsd-kind-icon">end<span class="tsd-signature-symbol">(</span>cb<span class="tsd-signature-symbol">?: </span><a href="../modules/_src_types_.html#nodecallback" class="tsd-signature-type">NodeCallback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">end<span class="tsd-signature-symbol">(</span>chunk<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, enc<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, cb<span class="tsd-signature-symbol">?: </span><a href="../modules/_types_.html#nodecallback" class="tsd-signature-type">NodeCallback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">end<span class="tsd-signature-symbol">(</span>chunk<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, cb<span class="tsd-signature-symbol">?: </span><a href="../modules/_types_.html#nodecallback" class="tsd-signature-type">NodeCallback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">end<span class="tsd-signature-symbol">(</span>cb<span class="tsd-signature-symbol">?: </span><a href="../modules/_types_.html#nodecallback" class="tsd-signature-type">NodeCallback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.transport.html">Transport</a>.<a href="_src_transports_transport_.transport.html#end">end</a></p>
-								<p>Overrides <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#end">end</a></p>
+								<p>Overrides <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#end">end</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/6b618b0/src/transports/transport.ts#L167">src/transports/transport.ts:167</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/8b58ad5/src/transports/transport.ts#L167">src/transports/transport.ts:167</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1187,7 +1177,7 @@
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> cb: <a href="../modules/_src_types_.html#nodecallback" class="tsd-signature-type">NodeCallback</a></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> cb: <a href="../modules/_types_.html#nodecallback" class="tsd-signature-type">NodeCallback</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>optional callback.</p>
 									</div>
@@ -1197,10 +1187,9 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.transport.html">Transport</a>.<a href="_src_transports_transport_.transport.html#end">end</a></p>
-								<p>Overrides <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#end">end</a></p>
+								<p>Overrides <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#end">end</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/6b618b0/src/transports/transport.ts#L175">src/transports/transport.ts:175</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/8b58ad5/src/transports/transport.ts#L175">src/transports/transport.ts:175</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1217,7 +1206,7 @@
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> cb: <a href="../modules/_src_types_.html#nodecallback" class="tsd-signature-type">NodeCallback</a></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> cb: <a href="../modules/_types_.html#nodecallback" class="tsd-signature-type">NodeCallback</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>optional callback.</p>
 									</div>
@@ -1227,10 +1216,9 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.transport.html">Transport</a>.<a href="_src_transports_transport_.transport.html#end">end</a></p>
-								<p>Overrides <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#end">end</a></p>
+								<p>Overrides <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#end">end</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/6b618b0/src/transports/transport.ts#L182">src/transports/transport.ts:182</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/8b58ad5/src/transports/transport.ts#L182">src/transports/transport.ts:182</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1241,7 +1229,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> cb: <a href="../modules/_src_types_.html#nodecallback" class="tsd-signature-type">NodeCallback</a></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> cb: <a href="../modules/_types_.html#nodecallback" class="tsd-signature-type">NodeCallback</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>optional callback.</p>
 									</div>
@@ -1260,7 +1248,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#eventnames">eventNames</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#eventnames">eventNames</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/globals.d.ts:562</li>
 								</ul>
@@ -1269,18 +1257,17 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="format" class="tsd-anchor"></a>
 					<h3>format</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 						<li class="tsd-signature tsd-kind-icon">format<span class="tsd-signature-symbol">(</span>chunk<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.transport.html">Transport</a>.<a href="_src_transports_transport_.transport.html#format">format</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/6b618b0/src/transports/transport.ts#L33">src/transports/transport.ts:33</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/8b58ad5/src/transports/transport.ts#L33">src/transports/transport.ts:33</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1310,7 +1297,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#getmaxlisteners">getMaxListeners</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#getmaxlisteners">getMaxListeners</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/globals.d.ts:554</li>
 								</ul>
@@ -1319,18 +1306,17 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="gettype" class="tsd-anchor"></a>
 					<h3>get<wbr>Type</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 						<li class="tsd-signature tsd-kind-icon">get<wbr>Type<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.transport.html">Transport</a>.<a href="_src_transports_transport_.transport.html#gettype">getType</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/6b618b0/src/transports/transport.ts#L24">src/transports/transport.ts:24</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/8b58ad5/src/transports/transport.ts#L24">src/transports/transport.ts:24</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1351,7 +1337,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#listenercount">listenerCount</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#listenercount">listenerCount</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/globals.d.ts:558</li>
 								</ul>
@@ -1375,7 +1361,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#listeners">listeners</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#listeners">listeners</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/globals.d.ts:555</li>
 								</ul>
@@ -1390,50 +1376,40 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="log" class="tsd-anchor"></a>
 					<h3>log</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 						<li class="tsd-signature tsd-kind-icon">log<span class="tsd-signature-symbol">(</span>payload<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Overrides <a href="_src_transports_transport_.transport.html">Transport</a>.<a href="_src_transports_transport_.transport.html#log">log</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/6b618b0/src/transports/file.ts#L105">src/transports/file.ts:105</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/8b58ad5/src/transports/transport.ts#L108">src/transports/transport.ts:108</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Method called by super.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>payload: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>the payload object to ouptut.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="mute" class="tsd-anchor"></a>
 					<h3>mute</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 						<li class="tsd-signature tsd-kind-icon">mute<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.transport.html">Transport</a>.<a href="_src_transports_transport_.transport.html#mute">mute</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/6b618b0/src/transports/transport.ts#L79">src/transports/transport.ts:79</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/8b58ad5/src/transports/transport.ts#L79">src/transports/transport.ts:79</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1442,34 +1418,6 @@
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="newfile" class="tsd-anchor"></a>
-					<h3>newfile</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">newfile<span class="tsd-signature-symbol">(</span>newFile<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">this</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/6b618b0/src/transports/file.ts#L79">src/transports/file.ts:79</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Callback handler on new file created.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>newFile: <span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">this</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -1482,7 +1430,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#off">off</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#off">off</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/globals.d.ts:551</li>
 								</ul>
@@ -1533,8 +1481,8 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#on">on</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#on">on</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#on">on</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#on">on</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:187</li>
 								</ul>
@@ -1564,8 +1512,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#on">on</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#on">on</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#on">on</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#on">on</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:188</li>
 								</ul>
@@ -1595,8 +1543,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#on">on</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#on">on</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#on">on</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#on">on</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:189</li>
 								</ul>
@@ -1632,8 +1580,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#on">on</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#on">on</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#on">on</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#on">on</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:190</li>
 								</ul>
@@ -1663,8 +1611,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#on">on</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#on">on</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#on">on</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#on">on</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:191</li>
 								</ul>
@@ -1700,8 +1648,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#on">on</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#on">on</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#on">on</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#on">on</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:192</li>
 								</ul>
@@ -1737,8 +1685,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#on">on</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#on">on</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#on">on</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#on">on</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:193</li>
 								</ul>
@@ -1789,8 +1737,8 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#once">once</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#once">once</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#once">once</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#once">once</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:195</li>
 								</ul>
@@ -1820,8 +1768,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#once">once</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#once">once</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#once">once</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#once">once</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:196</li>
 								</ul>
@@ -1851,8 +1799,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#once">once</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#once">once</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#once">once</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#once">once</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:197</li>
 								</ul>
@@ -1888,8 +1836,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#once">once</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#once">once</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#once">once</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#once">once</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:198</li>
 								</ul>
@@ -1919,8 +1867,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#once">once</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#once">once</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#once">once</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#once">once</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:199</li>
 								</ul>
@@ -1956,8 +1904,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#once">once</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#once">once</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#once">once</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#once">once</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:200</li>
 								</ul>
@@ -1993,8 +1941,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#once">once</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#once">once</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#once">once</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#once">once</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:201</li>
 								</ul>
@@ -2039,7 +1987,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#pipe">pipe</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#pipe">pipe</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:5</li>
 								</ul>
@@ -2083,8 +2031,8 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#prependlistener">prependListener</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#prependlistener">prependListener</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#prependlistener">prependListener</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#prependlistener">prependListener</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:203</li>
 								</ul>
@@ -2114,8 +2062,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#prependlistener">prependListener</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#prependlistener">prependListener</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#prependlistener">prependListener</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#prependlistener">prependListener</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:204</li>
 								</ul>
@@ -2145,8 +2093,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#prependlistener">prependListener</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#prependlistener">prependListener</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#prependlistener">prependListener</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#prependlistener">prependListener</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:205</li>
 								</ul>
@@ -2182,8 +2130,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#prependlistener">prependListener</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#prependlistener">prependListener</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#prependlistener">prependListener</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#prependlistener">prependListener</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:206</li>
 								</ul>
@@ -2213,8 +2161,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#prependlistener">prependListener</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#prependlistener">prependListener</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#prependlistener">prependListener</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#prependlistener">prependListener</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:207</li>
 								</ul>
@@ -2250,8 +2198,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#prependlistener">prependListener</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#prependlistener">prependListener</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#prependlistener">prependListener</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#prependlistener">prependListener</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:208</li>
 								</ul>
@@ -2287,8 +2235,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#prependlistener">prependListener</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#prependlistener">prependListener</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#prependlistener">prependListener</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#prependlistener">prependListener</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:209</li>
 								</ul>
@@ -2339,8 +2287,8 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#prependoncelistener">prependOnceListener</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#prependoncelistener">prependOnceListener</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#prependoncelistener">prependOnceListener</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#prependoncelistener">prependOnceListener</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:211</li>
 								</ul>
@@ -2370,8 +2318,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#prependoncelistener">prependOnceListener</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#prependoncelistener">prependOnceListener</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#prependoncelistener">prependOnceListener</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#prependoncelistener">prependOnceListener</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:212</li>
 								</ul>
@@ -2401,8 +2349,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#prependoncelistener">prependOnceListener</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#prependoncelistener">prependOnceListener</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#prependoncelistener">prependOnceListener</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#prependoncelistener">prependOnceListener</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:213</li>
 								</ul>
@@ -2438,8 +2386,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#prependoncelistener">prependOnceListener</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#prependoncelistener">prependOnceListener</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#prependoncelistener">prependOnceListener</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#prependoncelistener">prependOnceListener</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:214</li>
 								</ul>
@@ -2469,8 +2417,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#prependoncelistener">prependOnceListener</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#prependoncelistener">prependOnceListener</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#prependoncelistener">prependOnceListener</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#prependoncelistener">prependOnceListener</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:215</li>
 								</ul>
@@ -2506,8 +2454,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#prependoncelistener">prependOnceListener</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#prependoncelistener">prependOnceListener</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#prependoncelistener">prependOnceListener</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#prependoncelistener">prependOnceListener</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:216</li>
 								</ul>
@@ -2543,8 +2491,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#prependoncelistener">prependOnceListener</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#prependoncelistener">prependOnceListener</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#prependoncelistener">prependOnceListener</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#prependoncelistener">prependOnceListener</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:217</li>
 								</ul>
@@ -2589,7 +2537,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#rawlisteners">rawListeners</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#rawlisteners">rawListeners</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/globals.d.ts:556</li>
 								</ul>
@@ -2613,7 +2561,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#removealllisteners">removeAllListeners</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#removealllisteners">removeAllListeners</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/globals.d.ts:552</li>
 								</ul>
@@ -2643,8 +2591,8 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#removelistener">removeListener</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#removelistener">removeListener</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#removelistener">removeListener</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#removelistener">removeListener</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:219</li>
 								</ul>
@@ -2674,8 +2622,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#removelistener">removeListener</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#removelistener">removeListener</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#removelistener">removeListener</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#removelistener">removeListener</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:220</li>
 								</ul>
@@ -2705,8 +2653,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#removelistener">removeListener</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#removelistener">removeListener</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#removelistener">removeListener</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#removelistener">removeListener</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:221</li>
 								</ul>
@@ -2742,8 +2690,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#removelistener">removeListener</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#removelistener">removeListener</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#removelistener">removeListener</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#removelistener">removeListener</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:222</li>
 								</ul>
@@ -2773,8 +2721,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#removelistener">removeListener</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#removelistener">removeListener</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#removelistener">removeListener</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#removelistener">removeListener</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:223</li>
 								</ul>
@@ -2810,8 +2758,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#removelistener">removeListener</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#removelistener">removeListener</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#removelistener">removeListener</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#removelistener">removeListener</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:224</li>
 								</ul>
@@ -2847,8 +2795,8 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#removelistener">removeListener</a></p>
-								<p>Overrides <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#removelistener">removeListener</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#removelistener">removeListener</a></p>
+								<p>Overrides <a href="_logger_.logger.html">Logger</a>.<a href="_logger_.logger.html#removelistener">removeListener</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:225</li>
 								</ul>
@@ -2884,43 +2832,6 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="rotate" class="tsd-anchor"></a>
-					<h3>rotate</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">rotate<span class="tsd-signature-symbol">(</span>oldFile<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, newFile<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">this</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/6b618b0/src/transports/file.ts#L93">src/transports/file.ts:93</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Callback handler on file rotated.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>oldFile: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>the previous file path.</p>
-									</div>
-								</li>
-								<li>
-									<h5>newFile: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>the new or current file path.</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">this</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="setdefaultencoding" class="tsd-anchor"></a>
 					<h3>set<wbr>Default<wbr>Encoding</h3>
@@ -2930,7 +2841,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#setdefaultencoding">setDefaultEncoding</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#setdefaultencoding">setDefaultEncoding</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:153</li>
 								</ul>
@@ -2945,18 +2856,17 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="setlevel" class="tsd-anchor"></a>
 					<h3>set<wbr>Level</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Level<span class="tsd-signature-symbol">(</span>level<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, logger<span class="tsd-signature-symbol">: </span><a href="_src_logger_.logger.html" class="tsd-signature-type">Logger</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Level<span class="tsd-signature-symbol">(</span>level<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, logger<span class="tsd-signature-symbol">: </span><a href="_logger_.logger.html" class="tsd-signature-type">Logger</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.transport.html">Transport</a>.<a href="_src_transports_transport_.transport.html#setlevel">setLevel</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/6b618b0/src/transports/transport.ts#L98">src/transports/transport.ts:98</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/8b58ad5/src/transports/transport.ts#L98">src/transports/transport.ts:98</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2973,7 +2883,7 @@
 									</div>
 								</li>
 								<li>
-									<h5>logger: <a href="_src_logger_.logger.html" class="tsd-signature-type">Logger</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>logger: <a href="_logger_.logger.html" class="tsd-signature-type">Logger</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>the parent Logger containing log levels.</p>
 									</div>
@@ -2992,7 +2902,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_logger_.logger.html">Logger</a>.<a href="_src_logger_.logger.html#setmaxlisteners">setMaxListeners</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#setmaxlisteners">setMaxListeners</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/globals.d.ts:553</li>
 								</ul>
@@ -3016,7 +2926,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#uncork">uncork</a></p>
+								<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#uncork">uncork</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:158</li>
 								</ul>
@@ -3025,18 +2935,17 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="unmute" class="tsd-anchor"></a>
 					<h3>unmute</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 						<li class="tsd-signature tsd-kind-icon">unmute<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.transport.html">Transport</a>.<a href="_src_transports_transport_.transport.html#unmute">unmute</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/6b618b0/src/transports/transport.ts#L87">src/transports/transport.ts:87</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/8b58ad5/src/transports/transport.ts#L87">src/transports/transport.ts:87</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3048,20 +2957,19 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 					<a name="write" class="tsd-anchor"></a>
 					<h3>write</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">write<span class="tsd-signature-symbol">(</span>chunk<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, encoding<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, cb<span class="tsd-signature-symbol">: </span><a href="../modules/_src_types_.html#errorcallback" class="tsd-signature-type">ErrorCallback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-						<li class="tsd-signature tsd-kind-icon">write<span class="tsd-signature-symbol">(</span>chunk<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, cb<span class="tsd-signature-symbol">?: </span><a href="../modules/_src_types_.html#errorcallback" class="tsd-signature-type">ErrorCallback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">write<span class="tsd-signature-symbol">(</span>chunk<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, encoding<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, cb<span class="tsd-signature-symbol">: </span><a href="../modules/_types_.html#errorcallback" class="tsd-signature-type">ErrorCallback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">write<span class="tsd-signature-symbol">(</span>chunk<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, cb<span class="tsd-signature-symbol">?: </span><a href="../modules/_types_.html#errorcallback" class="tsd-signature-type">ErrorCallback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.transport.html">Transport</a>.<a href="_src_transports_transport_.transport.html#write">write</a></p>
-								<p>Overrides <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#write">write</a></p>
+								<p>Overrides <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#write">write</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/6b618b0/src/transports/transport.ts#L119">src/transports/transport.ts:119</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/8b58ad5/src/transports/transport.ts#L119">src/transports/transport.ts:119</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3084,7 +2992,7 @@
 									</div>
 								</li>
 								<li>
-									<h5>cb: <a href="../modules/_src_types_.html#errorcallback" class="tsd-signature-type">ErrorCallback</a></h5>
+									<h5>cb: <a href="../modules/_types_.html#errorcallback" class="tsd-signature-type">ErrorCallback</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>optional callback.</p>
 									</div>
@@ -3094,10 +3002,9 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_transports_transport_.transport.html">Transport</a>.<a href="_src_transports_transport_.transport.html#write">write</a></p>
-								<p>Overrides <a href="_src_transports_transport_.stream.html">Stream</a>.<a href="_src_transports_transport_.stream.html#write">write</a></p>
+								<p>Overrides <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#write">write</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/6b618b0/src/transports/transport.ts#L127">src/transports/transport.ts:127</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/8b58ad5/src/transports/transport.ts#L127">src/transports/transport.ts:127</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3114,7 +3021,7 @@
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> cb: <a href="../modules/_src_types_.html#errorcallback" class="tsd-signature-type">ErrorCallback</a></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> cb: <a href="../modules/_types_.html#errorcallback" class="tsd-signature-type">ErrorCallback</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>optional callback.</p>
 									</div>
@@ -3133,240 +3040,219 @@
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 					<li class=" tsd-kind-module">
+						<a href="../modules/_core_.html">&quot;core&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
 						<a href="../modules/_index_.html">&quot;index&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="../modules/_src_core_.html">&quot;src/core&quot;</a>
+						<a href="../modules/_kricket_.html">&quot;kricket&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="../modules/_src_index_.html">&quot;src/index&quot;</a>
+						<a href="../modules/_logger_.html">&quot;logger&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="../modules/_src_kricket_.html">&quot;src/kricket&quot;</a>
+						<a href="../modules/_transports_console_.html">&quot;transports/console&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="../modules/_src_logger_.html">&quot;src/logger&quot;</a>
+						<a href="../modules/_transports_dummy_.html">&quot;transports/dummy&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="../modules/_src_transports_console_.html">&quot;src/transports/console&quot;</a>
+						<a href="../modules/_transports_file_.html">&quot;transports/file&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="../modules/_src_transports_dummy_.html">&quot;src/transports/dummy&quot;</a>
+						<a href="../modules/_transports_index_.html">&quot;transports/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_transports_stream_.html">&quot;transports/stream&quot;</a>
 					</li>
 					<li class="current tsd-kind-module">
-						<a href="../modules/_src_transports_file_.html">&quot;src/transports/file&quot;</a>
+						<a href="../modules/_transports_transport_.html">&quot;transports/transport&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="../modules/_src_transports_index_.html">&quot;src/transports/index&quot;</a>
+						<a href="../modules/_types_.html">&quot;types&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="../modules/_src_transports_stream_.html">&quot;src/transports/stream&quot;</a>
+						<a href="../modules/_utils_asynceach_.html">&quot;utils/asynceach&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="../modules/_src_transports_transport_.html">&quot;src/transports/transport&quot;</a>
+						<a href="../modules/_utils_helpers_.html">&quot;utils/helpers&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="../modules/_src_types_.html">&quot;src/types&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="../modules/_src_utils_asynceach_.html">&quot;src/utils/asynceach&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="../modules/_src_utils_helpers_.html">&quot;src/utils/helpers&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="../modules/_src_utils_index_.html">&quot;src/utils/index&quot;</a>
+						<a href="../modules/_utils_index_.html">&quot;utils/index&quot;</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-class tsd-parent-kind-module">
+						<a href="_transports_transport_.stream.html" class="tsd-kind-icon">Stream</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="_src_transports_file_.filetransport.html" class="tsd-kind-icon">File<wbr>Transport</a>
+						<a href="_transports_transport_.transport.html" class="tsd-kind-icon">Transport</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-								<a href="_src_transports_file_.filetransport.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="_transports_transport_.transport.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#_writablestate" class="tsd-kind-icon">_writable<wbr>State</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#buffer" class="tsd-kind-icon">buffer</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#destroyed" class="tsd-kind-icon">destroyed</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#label" class="tsd-kind-icon">label</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#options" class="tsd-kind-icon">options</a>
+								<a href="_transports_transport_.transport.html#_writablestate" class="tsd-kind-icon">_writable<wbr>State</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_src_transports_file_.filetransport.html#rotator" class="tsd-kind-icon">rotator</a>
+								<a href="_transports_transport_.transport.html#buffer" class="tsd-kind-icon">buffer</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#writable" class="tsd-kind-icon">writable</a>
+								<a href="_transports_transport_.transport.html#destroyed" class="tsd-kind-icon">destroyed</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_transports_transport_.transport.html#label" class="tsd-kind-icon">label</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_transports_transport_.transport.html#options" class="tsd-kind-icon">options</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
+								<a href="_transports_transport_.transport.html#writable" class="tsd-kind-icon">writable</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#writablecorked" class="tsd-kind-icon">writable<wbr>Corked</a>
+								<a href="_transports_transport_.transport.html#writablecorked" class="tsd-kind-icon">writable<wbr>Corked</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#writableended" class="tsd-kind-icon">writable<wbr>Ended</a>
+								<a href="_transports_transport_.transport.html#writableended" class="tsd-kind-icon">writable<wbr>Ended</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#writablefinished" class="tsd-kind-icon">writable<wbr>Finished</a>
+								<a href="_transports_transport_.transport.html#writablefinished" class="tsd-kind-icon">writable<wbr>Finished</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#writablehighwatermark" class="tsd-kind-icon">writable<wbr>High<wbr>Water<wbr>Mark</a>
+								<a href="_transports_transport_.transport.html#writablehighwatermark" class="tsd-kind-icon">writable<wbr>High<wbr>Water<wbr>Mark</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#writablelength" class="tsd-kind-icon">writable<wbr>Length</a>
+								<a href="_transports_transport_.transport.html#writablelength" class="tsd-kind-icon">writable<wbr>Length</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#writableobjectmode" class="tsd-kind-icon">writable<wbr>Object<wbr>Mode</a>
+								<a href="_transports_transport_.transport.html#writableobjectmode" class="tsd-kind-icon">writable<wbr>Object<wbr>Mode</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-static">
-								<a href="_src_transports_file_.filetransport.html#type" class="tsd-kind-icon">Type</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+								<a href="_transports_transport_.transport.html#type" class="tsd-kind-icon">Type</a>
 							</li>
-							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#filters" class="tsd-kind-icon">filters</a>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="_transports_transport_.transport.html#filters" class="tsd-kind-icon">filters</a>
 							</li>
-							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#isjson" class="tsd-kind-icon">isJSON</a>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="_transports_transport_.transport.html#isjson" class="tsd-kind-icon">isJSON</a>
 							</li>
-							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#level" class="tsd-kind-icon">level</a>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="_transports_transport_.transport.html#level" class="tsd-kind-icon">level</a>
 							</li>
-							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#muted" class="tsd-kind-icon">muted</a>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="_transports_transport_.transport.html#muted" class="tsd-kind-icon">muted</a>
 							</li>
-							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#transforms" class="tsd-kind-icon">transforms</a>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="_transports_transport_.transport.html#transforms" class="tsd-kind-icon">transforms</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#_destroy" class="tsd-kind-icon">_destroy</a>
+								<a href="_transports_transport_.transport.html#_destroy" class="tsd-kind-icon">_destroy</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#_final" class="tsd-kind-icon">_final</a>
+								<a href="_transports_transport_.transport.html#_final" class="tsd-kind-icon">_final</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#_undestroy" class="tsd-kind-icon">_undestroy</a>
+								<a href="_transports_transport_.transport.html#_undestroy" class="tsd-kind-icon">_undestroy</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#_write" class="tsd-kind-icon">_write</a>
+								<a href="_transports_transport_.transport.html#_write" class="tsd-kind-icon">_write</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#_writev" class="tsd-kind-icon">_writev</a>
+								<a href="_transports_transport_.transport.html#_writev" class="tsd-kind-icon">_writev</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#addlistener" class="tsd-kind-icon">add<wbr>Listener</a>
+								<a href="_transports_transport_.transport.html#addlistener" class="tsd-kind-icon">add<wbr>Listener</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#cork" class="tsd-kind-icon">cork</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#destroy" class="tsd-kind-icon">destroy</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#emit" class="tsd-kind-icon">emit</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#end" class="tsd-kind-icon">end</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#eventnames" class="tsd-kind-icon">event<wbr>Names</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#format" class="tsd-kind-icon">format</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#getmaxlisteners" class="tsd-kind-icon">get<wbr>Max<wbr>Listeners</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#gettype" class="tsd-kind-icon">get<wbr>Type</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#listenercount" class="tsd-kind-icon">listener<wbr>Count</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#listeners" class="tsd-kind-icon">listeners</a>
+								<a href="_transports_transport_.transport.html#cork" class="tsd-kind-icon">cork</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-								<a href="_src_transports_file_.filetransport.html#log" class="tsd-kind-icon">log</a>
+								<a href="_transports_transport_.transport.html#destroy" class="tsd-kind-icon">destroy</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
+								<a href="_transports_transport_.transport.html#emit" class="tsd-kind-icon">emit</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+								<a href="_transports_transport_.transport.html#end" class="tsd-kind-icon">end</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#mute" class="tsd-kind-icon">mute</a>
+								<a href="_transports_transport_.transport.html#eventnames" class="tsd-kind-icon">event<wbr>Names</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_src_transports_file_.filetransport.html#newfile" class="tsd-kind-icon">newfile</a>
+								<a href="_transports_transport_.transport.html#format" class="tsd-kind-icon">format</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#off" class="tsd-kind-icon">off</a>
+								<a href="_transports_transport_.transport.html#getmaxlisteners" class="tsd-kind-icon">get<wbr>Max<wbr>Listeners</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_transports_transport_.transport.html#gettype" class="tsd-kind-icon">get<wbr>Type</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="_transports_transport_.transport.html#listenercount" class="tsd-kind-icon">listener<wbr>Count</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="_transports_transport_.transport.html#listeners" class="tsd-kind-icon">listeners</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_transports_transport_.transport.html#log" class="tsd-kind-icon">log</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_transports_transport_.transport.html#mute" class="tsd-kind-icon">mute</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="_transports_transport_.transport.html#off" class="tsd-kind-icon">off</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#on" class="tsd-kind-icon">on</a>
+								<a href="_transports_transport_.transport.html#on" class="tsd-kind-icon">on</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#once" class="tsd-kind-icon">once</a>
+								<a href="_transports_transport_.transport.html#once" class="tsd-kind-icon">once</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#pipe" class="tsd-kind-icon">pipe</a>
+								<a href="_transports_transport_.transport.html#pipe" class="tsd-kind-icon">pipe</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#prependlistener" class="tsd-kind-icon">prepend<wbr>Listener</a>
+								<a href="_transports_transport_.transport.html#prependlistener" class="tsd-kind-icon">prepend<wbr>Listener</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#prependoncelistener" class="tsd-kind-icon">prepend<wbr>Once<wbr>Listener</a>
+								<a href="_transports_transport_.transport.html#prependoncelistener" class="tsd-kind-icon">prepend<wbr>Once<wbr>Listener</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#rawlisteners" class="tsd-kind-icon">raw<wbr>Listeners</a>
+								<a href="_transports_transport_.transport.html#rawlisteners" class="tsd-kind-icon">raw<wbr>Listeners</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#removealllisteners" class="tsd-kind-icon">remove<wbr>All<wbr>Listeners</a>
+								<a href="_transports_transport_.transport.html#removealllisteners" class="tsd-kind-icon">remove<wbr>All<wbr>Listeners</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#removelistener" class="tsd-kind-icon">remove<wbr>Listener</a>
+								<a href="_transports_transport_.transport.html#removelistener" class="tsd-kind-icon">remove<wbr>Listener</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="_transports_transport_.transport.html#setdefaultencoding" class="tsd-kind-icon">set<wbr>Default<wbr>Encoding</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_src_transports_file_.filetransport.html#rotate" class="tsd-kind-icon">rotate</a>
+								<a href="_transports_transport_.transport.html#setlevel" class="tsd-kind-icon">set<wbr>Level</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#setdefaultencoding" class="tsd-kind-icon">set<wbr>Default<wbr>Encoding</a>
+								<a href="_transports_transport_.transport.html#setmaxlisteners" class="tsd-kind-icon">set<wbr>Max<wbr>Listeners</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#setlevel" class="tsd-kind-icon">set<wbr>Level</a>
+								<a href="_transports_transport_.transport.html#uncork" class="tsd-kind-icon">uncork</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#setmaxlisteners" class="tsd-kind-icon">set<wbr>Max<wbr>Listeners</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_transports_transport_.transport.html#unmute" class="tsd-kind-icon">unmute</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#uncork" class="tsd-kind-icon">uncork</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#unmute" class="tsd-kind-icon">unmute</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="_src_transports_file_.filetransport.html#write" class="tsd-kind-icon">write</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+								<a href="_transports_transport_.transport.html#write" class="tsd-kind-icon">write</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="../interfaces/_src_transports_file_.ifileoptions.html" class="tsd-kind-icon">IFile<wbr>Options</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../interfaces/_src_transports_file_.ifiletransportoptions.html" class="tsd-kind-icon">IFile<wbr>Transport<wbr>Options</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/_src_transports_file_.html#frequency" class="tsd-kind-icon">Frequency</a>
-					</li>
-					<li class=" tsd-kind-object-literal tsd-parent-kind-module tsd-is-not-exported">
-						<a href="../modules/_src_transports_file_.html#defaults" class="tsd-kind-icon">DEFAULTS</a>
-					</li>
 				</ul>
 			</nav>
 		</div>

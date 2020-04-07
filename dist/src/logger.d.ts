@@ -28,11 +28,11 @@ export declare class Logger<Level extends string> extends EventEmitter {
     /**
      * Gets Logger's filters.
      */
-    get filters(): Filter<Level>[];
+    get filters(): Filter<Level | "*">[];
     /**
      * Gets all Logger Transforms.
      */
-    get transforms(): Transform<Level>[];
+    get transforms(): Transform<Level | "*">[];
     /**
      * Gets whether the Logger is muted.
      */
@@ -88,7 +88,7 @@ export declare class Logger<Level extends string> extends EventEmitter {
      * @param level the level to compare.
      * @param levels the optional levels to compare against.
      */
-    isLevelActive(level: Level, levels?: Level[]): boolean;
+    isLevelActive(level: Level | '*' | '__write__' | '__writeLn__', levels?: Level[]): boolean;
     /**
      * Gets a new child Logger.
      *
@@ -103,13 +103,13 @@ export declare class Logger<Level extends string> extends EventEmitter {
      *
      * @param fn the Filter function to be added.
      */
-    filter(fn: Filter<Level>): this;
+    filter(fn: Filter<Level | '*'>): this;
     /**
      * Adds a Transform function.
      *
      * @param fn the Transform function to be added.
      */
-    transform(fn: Transform<Level>): this;
+    transform(fn: Transform<Level | '*'>): this;
     /**
      * Merges Filter functions into single group.
      *

@@ -46,10 +46,12 @@ export class Logger<Level extends string> extends EventEmitter {
 
     const cb = typeof args[args.length - 1] === 'function' ? args.pop() : null;
 
+    type LoggedLevel = Level | '*';
+
     // Emit raw payload.
     this.emit('log', {
       [LOGGER]: this,
-      [LEVEL]: label as Level,
+      [LEVEL]: label as LoggedLevel,
       [MESSAGE]: message,
       [SPLAT]: args,
       message
@@ -63,7 +65,7 @@ export class Logger<Level extends string> extends EventEmitter {
       if (!this.transports.hasOwnProperty(k)) continue;
 
       let payload = {
-        [LOGGER]: logger as unknown as Logger<Level>,
+        [LOGGER]: logger as unknown as Logger<LoggedLevel>,
         [LEVEL]: label as any,
         [MESSAGE]: message,
         [SPLAT]: args,
@@ -221,13 +223,13 @@ export class Logger<Level extends string> extends EventEmitter {
    * @param level the level to compare.
    * @param levels the optional levels to compare against.
    */
-  isLevelActive(level: Level, levels: Level[] = this.levels) {
+  isLevelActive(level: Level | '*' | '__write__' | '__writeLn__', levels: Level[] = this.levels) {
     if (['*', '__write__', '__writeLn__'].includes(level))
       return true;
-    if (!levels.includes(level))
+    if (!levels.includes(level as Level))
       return false;
     const active = levels.indexOf(this.level);
-    const compare = levels.indexOf(level);
+    const compare = levels.indexOf(level as Level);
     return compare <= active;
   }
 
@@ -264,7 +266,7 @@ export class Logger<Level extends string> extends EventEmitter {
    * 
    * @param fn the Filter function to be added.
    */
-  filter(fn: Filter<Level>) {
+  filter(fn: Filter<Level | '*'>) {
     this.options.filters.push(fn);
     return this;
   }
@@ -274,7 +276,7 @@ export class Logger<Level extends string> extends EventEmitter {
    * 
    * @param fn the Transform function to be added.
    */
-  transform(fn: Transform<Level>) {
+  transform(fn: Transform<Level | '*'>) {
     this.options.transforms.push(fn);
     return this;
   }
