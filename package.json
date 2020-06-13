@@ -11,6 +11,7 @@
     "watch": "tsc -b -w",
     "docs": "typedoc ./src --options ./typedoc.json --out ./docs && touch ./docs/.nojekyll",
     "test": "mocha test/**/*.spec.ts* --require ./register.js --bail",
+    "commit": "git commit -a -m",
     "prepublishOnly": "npm run clean && npm run build && npm run test && npm run lint && npm run docs"
   },
   "repository": {
