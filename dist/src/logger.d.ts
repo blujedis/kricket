@@ -30,11 +30,11 @@ export declare class Logger<Level extends string> extends EventEmitter {
     /**
      * Gets Logger's filters.
      */
-    get filters(): Filter<"write" | "writeLn" | Level>[];
+    get filters(): Filter<Level | "write" | "writeLn">[];
     /**
      * Gets all Logger Transforms.
      */
-    get transforms(): Transform<"write" | "writeLn" | Level>[];
+    get transforms(): Transform<Level | "write" | "writeLn">[];
     /**
      * Gets whether the Logger is muted.
      */
@@ -153,7 +153,7 @@ export declare class Logger<Level extends string> extends EventEmitter {
      * @param transport the Transport to include Transfroms from.
      * @param payload the payload object to be transformed.
      */
-    transformed(transport: Transport, payload: Payload<Level | BaseLevel>): Payload<"write" | "writeLn" | Level>;
+    transformed(transport: Transport, payload: Payload<Level | BaseLevel>): Payload<Level | "write" | "writeLn">;
     /**
      * Writes a line to Transports.
      *
