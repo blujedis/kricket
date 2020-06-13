@@ -4,6 +4,7 @@
 
 - Expose write and writeLn to transform/filters instead of "*".
 - Fix child logger issues.
+- Add emitter for log:level.
 
 ## (04-07-2020)
 
