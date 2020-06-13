@@ -1,17 +1,19 @@
 /// <reference types="node" />
 import { EventEmitter } from 'events';
-import { ILoggerOptions, Filter, Transform, Callback, Payload, LogMethods } from './types';
+import { ILoggerOptions, Filter, Transform, Callback, Payload, BaseLevel, ChildLogger } from './types';
 import { Transport } from './transports';
 import { Core } from './core';
 export declare class Logger<Level extends string> extends EventEmitter {
     label: string;
     options: ILoggerOptions<Level>;
+    isChild: boolean;
     core: Core;
     children: Map<string, Logger<Level>>;
-    constructor(label: string, options: ILoggerOptions<Level>);
+    constructor(label: string, options: ILoggerOptions<Level>, isChild?: boolean);
     /**
      * Internal method to write to Transport streams.
      *
+     * @param group optional log group.
      * @param level the level to be logged.
      * @param message the message to be logged.
      * @param args the optional format args to be applied.
@@ -28,11 +30,11 @@ export declare class Logger<Level extends string> extends EventEmitter {
     /**
      * Gets Logger's filters.
      */
-    get filters(): Filter<Level | "*">[];
+    get filters(): Filter<"write" | "writeLn" | Level>[];
     /**
      * Gets all Logger Transforms.
      */
-    get transforms(): Transform<Level | "*">[];
+    get transforms(): Transform<"write" | "writeLn" | Level>[];
     /**
      * Gets whether the Logger is muted.
      */
@@ -43,24 +45,26 @@ export declare class Logger<Level extends string> extends EventEmitter {
     get level(): Level;
     /**
      * Mute the Logger.
+     * @param cascade when true all child Loggers are muted.
      */
-    mute(): this;
+    mute(cascade?: boolean): this;
     /**
      * Unmute the Logger.
+     * @param cascade when true all child Loggers are unmuted.
      */
-    unmute(): this;
+    unmute(cascade?: boolean): this;
     /**
      * Mutes a Logger's Transport.
      *
-     * @param label the label name of the Transport to unmute.
+     * @param labels the label(s) name of the Transport to unmute.
      */
-    muteTransport(label: string): this;
+    muteTransport(...labels: string[]): this;
     /**
      * Unmutes a Logger's Transport.
      *
-     * @param label the label name of the Transport to unmute.
+     * @param labels the label(s) name of the Transport to unmute.
      */
-    unmuteTransport(label: string): this;
+    unmuteTransport(...labels: string[]): this;
     /**
      * Sets the Logger's log level.
      *
@@ -88,75 +92,68 @@ export declare class Logger<Level extends string> extends EventEmitter {
      * @param level the level to compare.
      * @param levels the optional levels to compare against.
      */
-    isLevelActive(level: Level | '*' | '__write__' | '__writeLn__', levels?: Level[]): boolean;
+    isLevelActive(level: Level | BaseLevel, levels?: Level[]): boolean;
     /**
      * Gets a new child Logger.
      *
      * @param label the Logger label to be used.
      * @param meta child metadata for child.
      */
-    get(label: string, meta?: {
+    child(label: string, meta?: {
         [key: string]: any;
-    }): Logger<Level> & LogMethods<Logger<Level>, Level>;
+    }): ChildLogger<Level>;
     /**
      * Adds a Filter function.
      *
      * @param fn the Filter function to be added.
      */
-    filter(fn: Filter<Level | '*'>): this;
+    filter(fn: Filter<Level | BaseLevel>): this;
     /**
      * Adds a Transform function.
      *
      * @param fn the Transform function to be added.
      */
-    transform(fn: Transform<Level | '*'>): this;
+    transform(fn: Transform<Level | BaseLevel>): this;
     /**
      * Merges Filter functions into single group.
      *
      * @param fn a Filter function to merge.
      * @param fns rest array of Filter functions to merge.
      */
-    mergeFilter(fn: Filter<Level>, ...fns: Filter<Level>[]): Filter<Level>;
+    mergeFilter(fn: Filter<Level | BaseLevel>, ...fns: Filter<Level | BaseLevel>[]): Filter<Level | BaseLevel>;
     /**
      * Merges Filter functions into single group.
      *
      * @param fns rest array of Filter functions to merge.
      */
-    mergeFilter(fn: Filter<Level>[]): Filter<Level>;
+    mergeFilter(fn: Filter<Level | BaseLevel>[]): Filter<Level | BaseLevel>;
     /**
      * Merges Transform functions into single group.
      *
      * @param fn a Transform function to merge.
      * @param fns rest array of Transform functions to merge.
      */
-    mergeTransform(fn: Transform<Level>, ...fns: Transform<Level>[]): Transform<Level>;
+    mergeTransform(fn: Transform<Level | BaseLevel>, ...fns: Transform<Level | BaseLevel>[]): Transform<Level | BaseLevel>;
     /**
      * Merges Transform functions into single group.
      *
      * @param fns array of Transform functions to merge.
      */
-    mergeTransform(fns: Transform<Level>[]): Transform<Level>;
+    mergeTransform(fns: Transform<Level | BaseLevel>[]): Transform<Level | BaseLevel>;
     /**
      * Inpsects filters if should halt output of log message.
      *
      * @param transport the Transport to get filters for.
      * @param payload the payload to pass when filtering.
      */
-    filtered(transport: Transport, payload: Payload<Level>): boolean;
+    filtered(transport: Transport, payload: Payload<Level | BaseLevel>): boolean;
     /**
      * Transforms a payload for output.
      *
      * @param transport the Transport to include Transfroms from.
      * @param payload the payload object to be transformed.
      */
-    transformed(transport: Transport, payload: Payload<Level>): Payload<Level>;
-    /**
-     * Writes to stream of Transport.
-     *
-     * @param message the message to write.
-     * @param args optional format args.
-     */
-    write(message: string, ...args: any[]): this;
+    transformed(transport: Transport, payload: Payload<Level | BaseLevel>): Payload<"write" | "writeLn" | Level>;
     /**
      * Writes a line to Transports.
      *
@@ -165,13 +162,22 @@ export declare class Logger<Level extends string> extends EventEmitter {
      */
     writeLn(message: string, ...args: any[]): this;
     /**
+     * Writes to stream of Transport.
+     *
+     * @param message the message to write.
+     * @param args optional format args.
+     */
+    write(message: string, ...args: any[]): this;
+    /**
      * Ends and outputs buffer when using .write();
      *
      * @param cb optional callback on ending write.
      */
-    writeEnd(cb?: Callback): this;
+    writeEnd(cb?: Callback): Promise<this>;
     /**
      * Gets a Transport by name.
+     * Storing Transports in core just makes it easier to
+     * retrive and clone them from any logger.
      *
      * @param label the label of the Transport to get.
      */

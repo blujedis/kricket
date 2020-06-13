@@ -15,7 +15,7 @@ export class StreamTransport<Level extends string> extends Transport<IStreamTran
   }
 
   /**
-   * Method called by super.
+   * Method  alled by super.
    * 
    * @param payload the payload object to ouptut.
    */

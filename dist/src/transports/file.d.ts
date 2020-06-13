@@ -44,7 +44,7 @@ export declare class FileTransport<Level extends string> extends Transport<IFile
      */
     rotate(oldFile: string, newFile: string): void | this;
     /**
-     * Method called by super.
+     * Method  alled by super.
      *
      * @param payload the payload object to ouptut.
      */

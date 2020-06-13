@@ -8,7 +8,7 @@ export declare class StreamTransport<Level extends string> extends Transport<ISt
     static Type: "string" | "number" | "bigint" | "boolean" | "symbol" | "undefined" | "object" | "function";
     constructor(options?: IStreamTransportOptions<Level>, alias?: string);
     /**
-     * Method called by super.
+     * Method  alled by super.
      *
      * @param payload the payload object to ouptut.
      */

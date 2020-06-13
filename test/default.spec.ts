@@ -21,9 +21,9 @@ describe('Kricket', () => {
       });
   });
 
-  it('Should write line "* simple log message"', (done) => {
+  it('Should write line "simple log message"', (done) => {
     function listener(v) {
-      assert.equal(v[LEVEL] + ' ' + v.message, '* simple log message');
+      assert.equal(v[LEVEL] + ' ' + v.message, 'writeLn simple log message');
       // While we're at it test off listener.
       testLogger.off('log', listener);
       done();
@@ -41,7 +41,7 @@ describe('Kricket', () => {
   it('Should transform message adding level label to messages.', (done) => {
     testLogger.setLevel('info');
     testLogger.transform((payload) => {
-      if (payload[LEVEL] !== '*')
+      if (payload[LEVEL] !== 'write' && payload[LEVEL] !== 'writeLn')
         payload.message = payload[LEVEL] + ': ' + payload.message;
       return payload;
     });

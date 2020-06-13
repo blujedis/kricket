@@ -13,15 +13,21 @@ export type Callback = (data?: any) => void;
 
 export type ErrorCallback = (err?: Error | null | undefined) => void;
 
-export type Payload<Level extends string> = IPayload<Level | '*'>;
+export type BaseLevel = 'write' | 'writeLn';
 
-export type Filter<Level extends string> = (payload: Payload<Level | '*'>) => boolean;
+export type Payload<Level extends string> = IPayload<Level | BaseLevel>;
 
-export type Transform<Level extends string> = (payload: Payload<Level | '*'>) => Payload<Level | '*'>;
+export type Filter<Level extends string> = (payload: Payload<Level | BaseLevel>) => boolean;
+
+export type Transform<Level extends string> = (payload: Payload<Level | BaseLevel>) => Payload<Level | BaseLevel>;
 
 export type LogMethod<T> = (message: string, ...args: any[]) => T;
 
 export type LogMethods<T, Level extends string> = Record<Level, LogMethod<T>>;
+
+export type ChildOmits = 'setTransportLevel' | 'addTransport' | 'muteTransport' | 'unmuteTransport';
+
+export type ChildLogger<Level extends string> = Omit<Logger<Level>, ChildOmits> & LogMethods<Logger<Level>, Level>;
 
 export const LOGGER = Symbol.for('LOGGER');
 
@@ -38,7 +44,7 @@ export const EOL = '\n';
 export interface IPayload<Level extends string> {
   [LOGGER]: Logger<Level>;
   [TRANSPORT]?: Transport<any>;
-  [LEVEL]: Level | '*';
+  [LEVEL]: Level | BaseLevel;
   [MESSAGE]: string;
   [SPLAT]: any[];
   message: string;
@@ -47,8 +53,8 @@ export interface IPayload<Level extends string> {
 
 export interface ITransportOptions<Level extends string> {
   asJSON?: boolean;
-  filters?: Filter<Level | '*'>[];
-  transforms?: Transform<Level | '*'>[];
+  filters?: Filter<Level | BaseLevel>[];
+  transforms?: Transform<Level | BaseLevel>[];
   highWaterMark?: number;
   muted?: boolean;
   level?: Level;
@@ -57,8 +63,9 @@ export interface ITransportOptions<Level extends string> {
 export interface ILoggerOptions<Level extends string> {
   readonly levels: Level[];
   transports?: Transport[];
-  filters?: Filter<Level | '*'>[];
-  transforms?: Transform<Level | '*'>[];
+  filters?: Filter<Level | BaseLevel>[];
+  transforms?: Transform<Level | BaseLevel>[];
   muted?: boolean;
   level?: Level;
+  meta?: { [key: string]: any; }
 }

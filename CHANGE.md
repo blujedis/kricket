@@ -1,6 +1,13 @@
 # Kicket Changes
 
-Change log in descending chronological order.
+## (06-13-2020)
+
+- Expose write and writeLn to transform/filters instead of "*".
+- Fix child logger issues.
+
+## (04-07-2020)
+
+- Change log in descending chronological order.
 
 ## (04-07-2020)
 

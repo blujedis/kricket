@@ -98,7 +98,7 @@ export class FileTransport<Level extends string> extends Transport<IFileTranspor
   }
 
   /**
-   * Method called by super.
+   * Method  alled by super.
    * 
    * @param payload the payload object to ouptut.
    */

@@ -1,7 +1,7 @@
 
 export function isObject(val) {
   return val != null && typeof val === 'object' && Array.isArray(val) === false;
-};
+}
 
 export function isFunction(val) {
   return typeof val === 'function';
@@ -9,10 +9,10 @@ export function isFunction(val) {
 
 export function isPlainObject(obj) {
   return (isObject(obj) === true &&
-      Object.prototype.toString.call(obj) === '[object Object]') &&
+    Object.prototype.toString.call(obj) === '[object Object]') &&
     isFunction(obj.constructor) &&
     obj.constructor.name === 'Object';
-};
+}
 
 export function isTruthy(value: any) {
   return typeof value !== 'undefined' &&
@@ -22,12 +22,15 @@ export function isTruthy(value: any) {
     !(value instanceof Error);
 }
 
-export function getName (obj, lower = true) {
-  return obj && (obj.name || (obj.constructor && obj.constructor.name) || null);
+export function getName(obj, lower = true): string {
+  const value = obj && (obj.name || (obj.constructor && obj.constructor.name) || null);
+  if (typeof value === 'string' && lower)
+    return value.toLowerCase();
+  return value;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-function
-export function noop(...args: any[]) {}
+// eslint-disable-next-line 
+export function noop(...args: any[]) { }
 
 /**
  * Flattens multi dimensional array.
@@ -35,5 +38,5 @@ export function noop(...args: any[]) {}
  * @param arr the array to be flattened. 
  */
 export function flatten<T = any>(arr: T[]): T[] {
-  return arr.reduce((a, c) => [ ...a, ...(Array.isArray(c) ? flatten(c) : [c])], []);
+  return arr.reduce((a, c) => [...a, ...(Array.isArray(c) ? flatten(c) : [c])], []);
 }

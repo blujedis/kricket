@@ -10,10 +10,11 @@ const util_1 = require("util");
 const utils_1 = require("./utils");
 const core_1 = __importDefault(require("./core"));
 class Logger extends events_1.EventEmitter {
-    constructor(label, options) {
+    constructor(label, options, isChild = false) {
         super();
         this.label = label;
         this.options = options;
+        this.isChild = isChild;
         this.core = core_1.default;
         this.children = new Map();
         this.options = { ...{ levels: [], transports: [], filters: [], transforms: [], muted: false, level: null }, ...this.options };
@@ -30,6 +31,7 @@ class Logger extends events_1.EventEmitter {
     /**
      * Internal method to write to Transport streams.
      *
+     * @param group optional log group.
      * @param level the level to be logged.
      * @param message the message to be logged.
      * @param args the optional format args to be applied.
@@ -37,16 +39,23 @@ class Logger extends events_1.EventEmitter {
     writer(level, message = '', ...args) {
         if (this.muted || (this.level && !this.isLevelActive(level)))
             return;
-        const label = ['__write__', '__writeLn__', '*'].includes(level) ? '*' : level;
+        const label = level;
         const cb = typeof args[args.length - 1] === 'function' ? args.pop() : null;
-        // Emit raw payload.
-        this.emit('log', {
+        let meta = utils_1.isPlainObject(args[args.length - 1]) ? args.pop() : null;
+        if (meta || this.options.meta) {
+            meta = { ...meta, ...this.options.meta };
+            args.push(meta);
+        }
+        const rawPayload = {
             [types_1.LOGGER]: this,
             [types_1.LEVEL]: label,
             [types_1.MESSAGE]: message,
             [types_1.SPLAT]: args,
             message
-        }, this);
+        };
+        // Emit raw payload.
+        this.emit('log', rawPayload, this);
+        this.emit(`log:${label}`, rawPayload, this);
         // eslint-disable-next-line @typescript-eslint/no-this-alias
         const logger = this;
         const event = (transport) => {
@@ -65,12 +74,19 @@ class Logger extends events_1.EventEmitter {
                 payload = this.transformed(transport, payload);
                 transport.write(fast_json_stable_stringify_1.default(payload));
                 transport.emit('log', payload, transport, this);
-                if (level !== '__write__')
+                if (level !== 'write')
                     transport.write('\n');
                 done(null, payload);
             };
         };
         utils_1.asynceach(this.transports.map(transport => event(transport)), (err, payloads) => {
+            if (err && console) {
+                // eslint-disable-next-line no-console
+                const _log = console.warn || console.log;
+                if (!Array.isArray(err))
+                    err = [err];
+                err.forEach(e => _log(e.stack));
+            }
             if (cb)
                 cb(payloads);
         });
@@ -114,40 +130,58 @@ class Logger extends events_1.EventEmitter {
     }
     /**
      * Mute the Logger.
+     * @param cascade when true all child Loggers are muted.
      */
-    mute() {
+    mute(cascade = true) {
         this.options.muted = true;
+        if (cascade)
+            [...this.children.values()].forEach(child => child.mute());
         return this;
     }
     /**
      * Unmute the Logger.
+     * @param cascade when true all child Loggers are unmuted.
      */
-    unmute() {
+    unmute(cascade = true) {
         this.options.muted = false;
+        if (cascade)
+            [...this.children.values()].forEach(child => child.unmute());
         return this;
     }
     /**
      * Mutes a Logger's Transport.
      *
-     * @param label the label name of the Transport to unmute.
+     * @param labels the label(s) name of the Transport to unmute.
      */
-    muteTransport(label) {
-        const transport = this.core.getTransport(label, this);
-        if (!transport)
-            throw new Error(`Transport "${label}" undefined or NOT found.`);
-        transport.mute();
+    muteTransport(...labels) {
+        if (!labels.length)
+            labels = this.transports.map(t => t.label);
+        labels.forEach(label => {
+            const transport = this.core.getTransport(label, this);
+            if (!transport)
+                // eslint-disable-next-line no-console
+                console.warn(`Transport "${label}" undefined or NOT found.`);
+            else
+                transport.mute();
+        });
         return this;
     }
     /**
      * Unmutes a Logger's Transport.
      *
-     * @param label the label name of the Transport to unmute.
+     * @param labels the label(s) name of the Transport to unmute.
      */
-    unmuteTransport(label) {
-        const transport = this.core.getTransport(label, this);
-        if (!transport)
-            throw new Error(`Transport "${label}" undefined or NOT found.`);
-        transport.unmute();
+    unmuteTransport(...labels) {
+        if (!labels.length)
+            labels = this.transports.map(t => t.label);
+        labels.forEach(label => {
+            const transport = this.core.getTransport(label, this);
+            if (!transport)
+                // eslint-disable-next-line no-console
+                console.warn(`Transport "${label}" undefined or NOT found.`);
+            else
+                transport.unmute();
+        });
         return this;
     }
     /**
@@ -164,7 +198,7 @@ class Logger extends events_1.EventEmitter {
         }
         this.options.level = level;
         if (cascade)
-            this.transports.forEach(transport => transport.options.level = level);
+            [...this.children.values()].forEach(child => child.setLevel(level));
         return this;
     }
     setTransportLevel(transport, level) {
@@ -179,7 +213,7 @@ class Logger extends events_1.EventEmitter {
      * @param levels the optional levels to compare against.
      */
     isLevelActive(level, levels = this.levels) {
-        if (['*', '__write__', '__writeLn__'].includes(level))
+        if (['write', 'writeLn'].includes(level))
             return true;
         if (!levels.includes(level))
             return false;
@@ -193,23 +227,33 @@ class Logger extends events_1.EventEmitter {
      * @param label the Logger label to be used.
      * @param meta child metadata for child.
      */
-    get(label, meta) {
+    child(label, meta = {}) {
         let child = this.children.get(label);
         if (child)
             return child;
-        meta = meta || { [label]: true };
-        child = Object.create(this, {
-            label: {
-                value: label
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
+        const self = this;
+        const options = {
+            level: this.level,
+            muted: this.muted,
+            get levels() {
+                return self.options.levels;
             },
-            write: {
-                value: (level, message = '', ...args) => {
-                    args.push(meta);
-                    this.writer(level, message, ...args);
-                    return this;
-                }
-            }
-        });
+            // Get Transports from parent.
+            get transports() {
+                return self.options.transports;
+            },
+            transforms: [...this.transforms],
+            filters: [...this.filters],
+            meta: { ...this.options.meta, ...{ ...meta, [label]: true } }
+        };
+        child = new Logger(label, options, true);
+        // eslint-disable-next-line no-console
+        const disabled = type => (...args) => console.warn(`${type} disabled for child Loggers.`);
+        child.setTransportLevel = disabled('setTransportLevel');
+        child.addTransport = disabled('addTransport');
+        child.muteTransport = disabled('muteTransport');
+        child.unmuteTransport = disabled('unmuteTransport');
         this.children.set(label, child);
         return child;
     }
@@ -279,28 +323,17 @@ class Logger extends events_1.EventEmitter {
         }
         if (err) {
             // eslint-disable-next-line no-console
-            console.log(`Transform "${tname}" resulted in error:`);
+            console.warn(`Transform "${tname}" resulted in error:`);
             // eslint-disable-next-line no-console
             console.error(err.stack);
             process.exit(1);
         }
         if (!valid) {
             // eslint-disable-next-line no-console
-            console.log(`Transform "${tname}" resulted in malfored type of "${typeof transformed}".`);
+            console.warn(`Transform "${tname}" resulted in malfored type of "${typeof transformed}".`);
             process.exit(1);
         }
         return transformed;
-    }
-    /**
-     * Writes to stream of Transport.
-     *
-     * @param message the message to write.
-     * @param args optional format args.
-     */
-    write(message, ...args) {
-        message = util_1.format(message, ...args);
-        this.writer('__write__', message);
-        return this;
     }
     /**
      * Writes a line to Transports.
@@ -310,7 +343,18 @@ class Logger extends events_1.EventEmitter {
      */
     writeLn(message, ...args) {
         message = util_1.format(message, ...args);
-        this.writer('__writeLn__', message);
+        this.writer('writeLn', message);
+        return this;
+    }
+    /**
+     * Writes to stream of Transport.
+     *
+     * @param message the message to write.
+     * @param args optional format args.
+     */
+    write(message, ...args) {
+        message = util_1.format(message, ...args);
+        this.writer('write', message);
         return this;
     }
     /**
@@ -318,13 +362,15 @@ class Logger extends events_1.EventEmitter {
      *
      * @param cb optional callback on ending write.
      */
-    writeEnd(cb) {
+    async writeEnd(cb) {
         const transports = this.transports.map(t => t.end.bind(t));
-        utils_1.asynceach(transports, (err, data) => (cb || utils_1.noop)(data));
+        await utils_1.asynceach(transports, (err, data) => (cb || utils_1.noop)(data));
         return this;
     }
     /**
      * Gets a Transport by name.
+     * Storing Transports in core just makes it easier to
+     * retrive and clone them from any logger.
      *
      * @param label the label of the Transport to get.
      */
@@ -337,6 +383,11 @@ class Logger extends events_1.EventEmitter {
      * @param transport the Transport to add to collection.
      */
     addTransport(transport) {
+        // Can't allow custom child levels and therefore
+        // probably shouldn't allow for adding Transports
+        // to children. Favor new Logger at that point.
+        if (this.isChild)
+            throw new Error(`Cannot add Transport to child Logger, create new Logger instead.`);
         this.transports.push(transport);
         return transport;
     }

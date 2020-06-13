@@ -4,7 +4,7 @@ export declare class DummyTransport<Level extends string> extends Transport<ITra
     static Type: "string" | "number" | "bigint" | "boolean" | "symbol" | "undefined" | "object" | "function";
     constructor(options?: ITransportOptions<Level>, alias?: string);
     /**
-     * Method called by super.
+     * Must override log method.
      *
      * @param payload the payload object to ouptut.
      */

@@ -55,6 +55,10 @@ export declare abstract class Transport<Options extends ITransportOptions<any> =
      * @param logger the parent Logger containing log levels.
      */
     setLevel(level: string, logger: Logger<any>): this;
+    /**
+     * Log method called by extended class to handle log messages.
+     * @param payload the payload to be logged.
+     */
     log(payload: string): void;
     /**
      * Writes to stream.

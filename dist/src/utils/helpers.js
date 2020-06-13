@@ -4,7 +4,6 @@ function isObject(val) {
     return val != null && typeof val === 'object' && Array.isArray(val) === false;
 }
 exports.isObject = isObject;
-;
 function isFunction(val) {
     return typeof val === 'function';
 }
@@ -16,7 +15,6 @@ function isPlainObject(obj) {
         obj.constructor.name === 'Object';
 }
 exports.isPlainObject = isPlainObject;
-;
 function isTruthy(value) {
     return typeof value !== 'undefined' &&
         value !== null &&
@@ -26,10 +24,13 @@ function isTruthy(value) {
 }
 exports.isTruthy = isTruthy;
 function getName(obj, lower = true) {
-    return obj && (obj.name || (obj.constructor && obj.constructor.name) || null);
+    const value = obj && (obj.name || (obj.constructor && obj.constructor.name) || null);
+    if (typeof value === 'string' && lower)
+        return value.toLowerCase();
+    return value;
 }
 exports.getName = getName;
-// eslint-disable-next-line @typescript-eslint/no-empty-function
+// eslint-disable-next-line 
 function noop(...args) { }
 exports.noop = noop;
 /**

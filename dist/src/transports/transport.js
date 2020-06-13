@@ -89,6 +89,11 @@ class Transport extends Stream {
         this.options.level = level;
         return this;
     }
+    /**
+     * Log method called by extended class to handle log messages.
+     * @param payload the payload to be logged.
+     */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     log(payload) {
         throw new Error(`Transport "${this.label}" method "log" required but NOT implemented.`);
     }

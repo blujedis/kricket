@@ -57,7 +57,7 @@ class FileTransport extends transport_1.Transport {
         return this;
     }
     /**
-     * Method called by super.
+     * Method  alled by super.
      *
      * @param payload the payload object to ouptut.
      */

@@ -6,7 +6,7 @@ class StreamTransport extends transport_1.Transport {
         super(alias || 'stream', options);
     }
     /**
-     * Method called by super.
+     * Method  alled by super.
      *
      * @param payload the payload object to ouptut.
      */
