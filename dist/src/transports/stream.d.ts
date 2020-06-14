@@ -4,9 +4,9 @@ import { Writable } from 'readable-stream';
 export interface IStreamTransportOptions<Level extends string> extends ITransportOptions<Level> {
     stream: Writable;
 }
-export declare class StreamTransport<Level extends string> extends Transport<IStreamTransportOptions<Level>> {
+export declare class StreamTransport<Level extends string, K extends string = 'stream'> extends Transport<K, IStreamTransportOptions<Level>> {
     static Type: "string" | "number" | "bigint" | "boolean" | "symbol" | "undefined" | "object" | "function";
-    constructor(options?: IStreamTransportOptions<Level>, alias?: string);
+    constructor(options?: IStreamTransportOptions<Level>, alias?: K);
     /**
      * Method  alled by super.
      *

@@ -65,8 +65,8 @@ export class Logger<Level extends string> extends EventEmitter {
     };
 
     // Emit raw payload.
-    this.emit('log', rawPayload, this);
-    this.emit(`log:${label}`, rawPayload, this);
+    this.emit('log', rawPayload);
+    this.emit(`log:${label}`, rawPayload);
 
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const logger = this;
@@ -91,8 +91,9 @@ export class Logger<Level extends string> extends EventEmitter {
 
         payload = this.transformed(transport, payload);
         transport.write(fastJson(payload));
-        transport.emit('log', payload, transport, this);
-        transport.emit(`log:${label}`, payload, transport, this);
+
+        transport.emit('log', payload, transport);
+        transport.emit(`log:${label}`, payload, transport);
 
         if (level !== 'write')
           transport.write('\n');
@@ -103,14 +104,18 @@ export class Logger<Level extends string> extends EventEmitter {
 
     };
 
-    asynceach(this.transports.map(transport => event(transport)), (err, payloads) => {
+    asynceach<Payload<Level>>(this.transports.map(transport => event(transport)), (err, payloads) => {
       if (err && console) {
         // eslint-disable-next-line no-console
-        const _log = console.warn || console.log;
+        const _log = console.error || console.log;
         if (!Array.isArray(err))
           err = [err];
-        err.forEach(e => _log(e.stack));
+        err.forEach(e => _log(colorize(e.stack + '\n', 'red')));
       }
+
+      this.emit('log:end', rawPayload);
+      this.emit(`log:${label}:end`, rawPayload);
+
       if (cb)
         cb(payloads);
 
@@ -555,8 +560,8 @@ export class Logger<Level extends string> extends EventEmitter {
    * 
    * @param label the label of the Transport to get.
    */
-  getTransport<T extends Transport>(label: string) {
-    return this.core.getTransport<T>(label, this);
+  getTransport<T extends Transport, K extends string>(label: K) {
+    return this.core.getTransport<T, K>(label, this);
   }
 
   /**

@@ -6,6 +6,7 @@
 - Fix child logger issues.
 - Add emitter for log:level.
 - Add group writer.
+- Add additional log emitters log, log:end, log:[level], log:[level]:end.
 
 ## (04-07-2020)
 

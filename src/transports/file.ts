@@ -43,15 +43,15 @@ const DEFAULTS: IFileTransportOptions<any> = {
   eol: EOL
 };
 
-export class FileTransport<Level extends string> extends Transport<IFileTransportOptions<Level>> {
+export class FileTransport<Level extends string, K extends string = 'file'> extends Transport<K, IFileTransportOptions<Level>> {
 
   static Type = typeof FileTransport;
 
   rotator: WriteStream;
 
-  constructor(options?: IFileTransportOptions<Level>, alias?: string) {
+  constructor(options?: IFileTransportOptions<Level>, alias?: K) {
 
-    super(alias || 'file', { ...DEFAULTS, ...options });
+    super(alias || 'file' as K, { ...DEFAULTS, ...options });
 
     options = this.options;
 

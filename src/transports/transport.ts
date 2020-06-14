@@ -7,14 +7,14 @@ export abstract class Stream extends Writable {
   writable: boolean;
 }
 
-export abstract class Transport<Options extends ITransportOptions<any> = ITransportOptions<any>> extends Stream {
+export abstract class Transport<K extends string = any, Options extends ITransportOptions<any> = ITransportOptions<any>> extends Stream {
 
   static Type;
 
   options: Options;
   buffer = '';
 
-  constructor(public label: string, options?: Options) {
+  constructor(public label: K, options?: Options) {
     super({ highWaterMark: (options || {} as any).highWaterMark || 16 });
     this.options = { ...{ level: null, highWaterMark: 16, filters: [], transforms: [], asJSON: true }, ...options };
   }

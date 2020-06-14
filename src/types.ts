@@ -43,7 +43,7 @@ export const EOL = '\n';
 
 export interface IPayload<Level extends string> {
   [LOGGER]: Logger<Level>;
-  [TRANSPORT]?: Transport<any>;
+  [TRANSPORT]?: Transport;
   [LEVEL]: Level | BaseLevel;
   [MESSAGE]: string;
   [SPLAT]: any[];

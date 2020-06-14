@@ -6,12 +6,12 @@ export interface IStreamTransportOptions<Level extends string> extends ITranspor
   stream: Writable;
 }
 
-export class StreamTransport<Level extends string> extends Transport<IStreamTransportOptions<Level>> {
+export class StreamTransport<Level extends string, K extends string = 'stream'> extends Transport<K, IStreamTransportOptions<Level>> {
 
   static Type = typeof StreamTransport;
 
-  constructor(options?: IStreamTransportOptions<Level>, alias?: string) {
-    super(alias || 'stream', options);
+  constructor(options?: IStreamTransportOptions<Level>, alias?: K) {
+    super(alias || 'stream' as K, options);
   }
 
   /**

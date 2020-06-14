@@ -26,7 +26,7 @@ export declare class Logger<Level extends string> extends EventEmitter {
     /**
      * Gets Logger Transports.
      */
-    get transports(): Transport<import("./types").ITransportOptions<any>>[];
+    get transports(): Transport<any, import("./types").ITransportOptions<any>>[];
     /**
      * Gets Logger's filters.
      */
@@ -202,7 +202,7 @@ export declare class Logger<Level extends string> extends EventEmitter {
      *
      * @param label the label of the Transport to get.
      */
-    getTransport<T extends Transport>(label: string): T;
+    getTransport<T extends Transport, K extends string>(label: K): T;
     /**
      * Adds a Transport to Logger.
      *

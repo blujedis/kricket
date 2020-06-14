@@ -4,12 +4,12 @@ import { Logger } from '../logger';
 export declare abstract class Stream extends Writable {
     writable: boolean;
 }
-export declare abstract class Transport<Options extends ITransportOptions<any> = ITransportOptions<any>> extends Stream {
-    label: string;
+export declare abstract class Transport<K extends string = any, Options extends ITransportOptions<any> = ITransportOptions<any>> extends Stream {
+    label: K;
     static Type: any;
     options: Options;
     buffer: string;
-    constructor(label: string, options?: Options);
+    constructor(label: K, options?: Options);
     /**
      * Gets the extended Type.
      */

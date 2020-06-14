@@ -26,10 +26,10 @@ export interface IFileTransportOptions<Level extends string> extends ITransportO
     onRotate?(oldFile?: string, newFile?: string): void;
     onNew?(newFile?: string): void;
 }
-export declare class FileTransport<Level extends string> extends Transport<IFileTransportOptions<Level>> {
+export declare class FileTransport<Level extends string, K extends string = 'file'> extends Transport<K, IFileTransportOptions<Level>> {
     static Type: "string" | "number" | "bigint" | "boolean" | "symbol" | "undefined" | "object" | "function";
     rotator: WriteStream;
-    constructor(options?: IFileTransportOptions<Level>, alias?: string);
+    constructor(options?: IFileTransportOptions<Level>, alias?: K);
     /**
      * Callback handler on new file created.
      *

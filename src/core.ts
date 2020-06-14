@@ -25,7 +25,7 @@ export class Core {
    * @param label the Transport label/name to lookup.
    * @param logger the Logger the Transport is contained in.
    */
-  getTransport<T extends Transport>(label: string, logger?: string | Logger<any>) {
+  getTransport<T extends Transport, K extends string>(label: K, logger?: string | Logger<any>) {
     if (typeof logger === 'string')
       logger = this.loggers.get(logger as string);
     const find = (_logger: Logger<any>) => ((_logger && _logger.transports.find(t => t.label === label)) || null);
@@ -43,7 +43,7 @@ export class Core {
    * @param label the Transport label/name to be cloned.
    * @param transport the Transport instance to be cloned.
    */
-  cloneTransport<T extends Transport<any>>(
+  cloneTransport<T extends Transport>(
     label: string, transport: T) {
     const options = transport.options;
     const Klass: new(...args: any[]) => T = transport.getType as any;

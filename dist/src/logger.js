@@ -54,8 +54,8 @@ class Logger extends events_1.EventEmitter {
             message
         };
         // Emit raw payload.
-        this.emit('log', rawPayload, this);
-        this.emit(`log:${label}`, rawPayload, this);
+        this.emit('log', rawPayload);
+        this.emit(`log:${label}`, rawPayload);
         // eslint-disable-next-line @typescript-eslint/no-this-alias
         const logger = this;
         const event = (transport) => {
@@ -73,8 +73,8 @@ class Logger extends events_1.EventEmitter {
                 payload[types_1.TRANSPORT] = transport;
                 payload = this.transformed(transport, payload);
                 transport.write(fast_json_stable_stringify_1.default(payload));
-                transport.emit('log', payload, transport, this);
-                transport.emit(`log:${label}`, payload, transport, this);
+                transport.emit('log', payload, transport);
+                transport.emit(`log:${label}`, payload, transport);
                 if (level !== 'write')
                     transport.write('\n');
                 done(null, payload);
@@ -83,11 +83,13 @@ class Logger extends events_1.EventEmitter {
         utils_1.asynceach(this.transports.map(transport => event(transport)), (err, payloads) => {
             if (err && console) {
                 // eslint-disable-next-line no-console
-                const _log = console.warn || console.log;
+                const _log = console.error || console.log;
                 if (!Array.isArray(err))
                     err = [err];
-                err.forEach(e => _log(e.stack));
+                err.forEach(e => _log(utils_1.colorize(e.stack + '\n', 'red')));
             }
+            this.emit('log:end', rawPayload);
+            this.emit(`log:${label}:end`, rawPayload);
             if (cb)
                 cb(payloads);
         });

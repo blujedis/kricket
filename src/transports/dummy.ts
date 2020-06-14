@@ -1,12 +1,12 @@
 import { Transport } from './transport';
 import { ITransportOptions } from '../types';
 
-export class DummyTransport<Level extends string> extends Transport<ITransportOptions<Level>> {
+export class DummyTransport<Level extends string, K extends string = 'dummy'> extends Transport<K, ITransportOptions<Level>> {
 
   static Type = typeof DummyTransport;
 
-  constructor(options?: ITransportOptions<Level>, alias?: string) {
-    super(alias || 'dummy', options);
+  constructor(options?: ITransportOptions<Level>, alias?: K) {
+    super(alias || 'dummy' as K, options);
   }
 
   /**

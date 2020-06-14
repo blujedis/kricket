@@ -17,14 +17,14 @@ export declare class Core {
      * @param label the Transport label/name to lookup.
      * @param logger the Logger the Transport is contained in.
      */
-    getTransport<T extends Transport>(label: string, logger?: string | Logger<any>): T;
+    getTransport<T extends Transport, K extends string>(label: K, logger?: string | Logger<any>): T;
     /**
      * Clones an existing Transport by options.
      *
      * @param label the Transport label/name to be cloned.
      * @param transport the Transport instance to be cloned.
      */
-    cloneTransport<T extends Transport<any>>(label: string, transport: T): T;
+    cloneTransport<T extends Transport>(label: string, transport: T): T;
 }
 declare const _default: Core;
 export default _default;
