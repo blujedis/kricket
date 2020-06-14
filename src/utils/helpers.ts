@@ -1,28 +1,42 @@
+import { red, yellow, cyan } from 'ansi-colors';
 
-export function isObject(val) {
+/**
+ * Checks if value is an object.
+ * 
+ * @param val the value to inspect as object.
+ */
+export function isObject(val: unknown) {
   return val != null && typeof val === 'object' && Array.isArray(val) === false;
 }
 
-export function isFunction(val) {
+/**
+ * Checks if value is a function
+ * 
+ * @param val the value to inspect as function.
+ */
+export function isFunction(val: unknown) {
   return typeof val === 'function';
 }
 
-export function isPlainObject(obj) {
+/**
+ * Checks if object is plain object literal.
+ * 
+ * @param obj the object to inspect as object literal.
+ */
+export function isPlainObject(obj: unknown) {
   return (isObject(obj) === true &&
     Object.prototype.toString.call(obj) === '[object Object]') &&
     isFunction(obj.constructor) &&
     obj.constructor.name === 'Object';
 }
 
-export function isTruthy(value: any) {
-  return typeof value !== 'undefined' &&
-    value !== null &&
-    value !== 0 &&
-    value !== false &&
-    !(value instanceof Error);
-}
-
-export function getName(obj, lower = true): string {
+/**
+ * Gets name of an object.
+ * 
+ * @param obj the object to inspect.
+ * @param lower whether to convert resutl to lowercase.
+ */
+export function getObjectName<T extends { [key: string]: any; } = {}>(obj: T, lower = true): string {
   const value = obj && (obj.name || (obj.constructor && obj.constructor.name) || null);
   if (typeof value === 'string' && lower)
     return value.toLowerCase();
@@ -39,4 +53,27 @@ export function noop(...args: any[]) { }
  */
 export function flatten<T = any>(arr: T[]): T[] {
   return arr.reduce((a, c) => [...a, ...(Array.isArray(c) ? flatten(c) : [c])], []);
+}
+
+/**
+ * Generate uuid.
+ */
+export function uuidv4(a?) {
+  return a ? (a ^ Math.random() * 16 >> a / 4).toString(16) : ([1e7] as any + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, uuidv4);
+}
+
+const ansiMap = {
+  red: red,
+  yellow: yellow,
+  cyan: cyan
+};
+
+/**
+ * Colorizes a string.
+ * 
+ * @param str the string to be colorized.
+ * @param color the ansi-color to apply.
+ */
+export function colorize(str: string, color: 'red' | 'yellow' | 'cyan') {
+  return ansiMap[color](str);
 }

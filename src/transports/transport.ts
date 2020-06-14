@@ -1,6 +1,7 @@
 import { Writable } from 'readable-stream';
 import { ITransportOptions, EOL, IPayload, ErrorCallback, NodeCallback } from '../types';
 import { Logger } from '../logger';
+import { colorize } from '../utils';
 
 export abstract class Stream extends Writable {
   writable: boolean;
@@ -98,7 +99,7 @@ export abstract class Transport<Options extends ITransportOptions<any> = ITransp
   setLevel(level: string, logger: Logger<any>) {
     if (typeof level === 'undefined' || !logger.levels.includes(level)) {
       // eslint-disable-next-line no-console
-      console.warn(`Level "${level}" is invalid or not found.`);
+      console.warn(colorize(`Level "${level}" is invalid or not found.`, 'yellow'));
       return this;
     }
     this.options.level = level;
@@ -111,7 +112,9 @@ export abstract class Transport<Options extends ITransportOptions<any> = ITransp
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   log(payload: string) {
-    throw new Error(`Transport "${this.label}" method "log" required but NOT implemented.`);
+    const err = new Error(`Transport "${this.label}" method "log" required but NOT implemented.`);
+    console.error(colorize(err.stack, 'red'));
+    process.exit(1);
   }
 
   /**

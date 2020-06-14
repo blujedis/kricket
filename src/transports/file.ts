@@ -2,6 +2,7 @@ import { Transport } from './transport';
 import rotator from 'file-stream-rotator';
 import { ITransportOptions, EOL } from '../types';
 import { WriteStream } from 'fs';
+import { colorize } from '../utils';
 
 export type Frequency = 'minute' | 'hourly' | 'daily' | 'custom' | 'test' | 'h' | 'm';
 
@@ -67,7 +68,7 @@ export class FileTransport<Level extends string> extends Transport<IFileTranspor
 
     if (options.verbose)
       // eslint-disable-next-line no-console
-      console.info(`Transport "${this.label}" logging to file: ${this.options.filename}`);
+      console.info(colorize(`Transport "${this.label}" logging to file: ${this.options.filename}`, 'cyan'));
 
   }
 
@@ -80,7 +81,7 @@ export class FileTransport<Level extends string> extends Transport<IFileTranspor
     if (this.options.onRotate)
       return this.options.onNew(newFile);
     // eslint-disable-next-line no-console
-    console.info(`Transport "${this.label}" logging to NEW file: ${newFile}`);
+    console.info(colorize(`Transport "${this.label}" logging to NEW file: ${newFile}`, 'cyan'));
     return this;
   }
 

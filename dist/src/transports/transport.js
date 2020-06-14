@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const readable_stream_1 = require("readable-stream");
 const types_1 = require("../types");
+const utils_1 = require("../utils");
 class Stream extends readable_stream_1.Writable {
 }
 exports.Stream = Stream;
@@ -83,7 +84,7 @@ class Transport extends Stream {
     setLevel(level, logger) {
         if (typeof level === 'undefined' || !logger.levels.includes(level)) {
             // eslint-disable-next-line no-console
-            console.warn(`Level "${level}" is invalid or not found.`);
+            console.warn(utils_1.colorize(`Level "${level}" is invalid or not found.`, 'yellow'));
             return this;
         }
         this.options.level = level;
@@ -95,7 +96,9 @@ class Transport extends Stream {
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     log(payload) {
-        throw new Error(`Transport "${this.label}" method "log" required but NOT implemented.`);
+        const err = new Error(`Transport "${this.label}" method "log" required but NOT implemented.`);
+        console.error(utils_1.colorize(err.stack, 'red'));
+        process.exit(1);
     }
     write(chunk, encoding, cb) {
         try {

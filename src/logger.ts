@@ -1,15 +1,16 @@
 import { EventEmitter } from 'events';
-import { ILoggerOptions, LEVEL, MESSAGE, SPLAT, Filter, Transform, LOGGER, TRANSPORT, Callback, Payload, LogMethods, BaseLevel, ChildLogger } from './types';
+import { ILoggerOptions, LEVEL, MESSAGE, SPLAT, Filter, Transform, LOGGER, TRANSPORT, Callback, Payload, BaseLevel, ChildLogger } from './types';
 import { Transport } from './transports';
 import fastJson from 'fast-json-stable-stringify';
 import { format } from 'util';
-import { getName, isPlainObject, asynceach, noop, flatten } from './utils';
+import { getObjectName, isPlainObject, asynceach, noop, flatten, uuidv4, colorize } from './utils';
 import core, { Core } from './core';
 
 export class Logger<Level extends string> extends EventEmitter {
 
   core: Core = core;
   children = new Map<string, Logger<Level>>();
+
 
   constructor(public label: string, public options: ILoggerOptions<Level>, public isChild = false) {
 
@@ -91,6 +92,7 @@ export class Logger<Level extends string> extends EventEmitter {
         payload = this.transformed(transport, payload);
         transport.write(fastJson(payload));
         transport.emit('log', payload, transport, this);
+        transport.emit(`log:${label}`, payload, transport, this);
 
         if (level !== 'write')
           transport.write('\n');
@@ -111,6 +113,7 @@ export class Logger<Level extends string> extends EventEmitter {
       }
       if (cb)
         cb(payloads);
+
     });
 
     return this;
@@ -193,7 +196,7 @@ export class Logger<Level extends string> extends EventEmitter {
       const transport = this.core.getTransport(label, this);
       if (!transport)
         // eslint-disable-next-line no-console
-        console.warn(`Transport "${label}" undefined or NOT found.`);
+        console.warn(colorize(`Transport "${label}" undefined or NOT found.`, 'yellow'));
       else
         transport.mute();
     });
@@ -212,7 +215,7 @@ export class Logger<Level extends string> extends EventEmitter {
       const transport = this.core.getTransport(label, this);
       if (!transport)
         // eslint-disable-next-line no-console
-        console.warn(`Transport "${label}" undefined or NOT found.`);
+        console.warn(colorize(`Transport "${label}" undefined or NOT found.`, 'yellow'));
       else
         transport.unmute();
     });
@@ -228,7 +231,7 @@ export class Logger<Level extends string> extends EventEmitter {
   setLevel(level: Level, cascade = true) {
     if (typeof level === 'undefined' || !this.levels.includes(level)) {
       // eslint-disable-next-line no-console
-      console.warn(`Level "${level}" is invalid or not found.`);
+      console.warn(colorize(`Level "${level}" is invalid or not found.`, 'yellow'));
       return this;
     }
     this.options.level = level;
@@ -308,7 +311,7 @@ export class Logger<Level extends string> extends EventEmitter {
     child = new Logger(label, options, true);
 
     // eslint-disable-next-line no-console
-    const disabled = type => (...args) => console.warn(`${type} disabled for child Loggers.`) as any;
+    const disabled = type => (...args) => console.warn(colorize(`${type} disabled for child Loggers.`, 'yellow')) as any;
 
     child.setTransportLevel = disabled('setTransportLevel');
     child.addTransport = disabled('addTransport');
@@ -412,7 +415,9 @@ export class Logger<Level extends string> extends EventEmitter {
     while (valid && transforms.length) {
       try {
         const transformer = transforms.shift();
-        tname = getName(transformer);
+        tname = getObjectName(transformer);
+        if (tname === 'function')
+          tname = 'anonymous';
         transformed = transformer(transformed);
         valid = isPlainObject(transformed);
       }
@@ -423,16 +428,16 @@ export class Logger<Level extends string> extends EventEmitter {
     }
 
     if (err) {
+      const stack = err.stack ? '\n' + colorize(err.stack, 'red') : '';
       // eslint-disable-next-line no-console
-      console.warn(`Transform "${tname}" resulted in error:`);
+      console.error(colorize(`Transform "${tname}" resulted in error:\n`, 'yellow') + stack);
       // eslint-disable-next-line no-console
-      console.error(err.stack);
       process.exit(1);
     }
 
     if (!valid) {
       // eslint-disable-next-line no-console
-      console.warn(`Transform "${tname}" resulted in malfored type of "${typeof transformed}".`);
+      console.warn(colorize(`Transform "${tname}" resulted in malfored type of "${typeof transformed}".`, 'yellow'));
       process.exit(1);
     }
 
@@ -471,8 +476,76 @@ export class Logger<Level extends string> extends EventEmitter {
    */
   async writeEnd(cb?: Callback) {
     const transports = this.transports.map(t => t.end.bind(t));
-    await asynceach(transports, (err, data) => (cb || noop)(data));
-    return this;
+    try {
+      await asynceach(transports, (err, data) => (cb || noop)(data));
+    }
+    catch (ex) {
+      //
+    }
+  }
+
+  /**
+   * Writes to stream of Transport.
+   * 
+   * @param key optional group key name appended to metadata.
+   */
+  group(key?: string) {
+
+    type LogTuple = [string, any[], object];
+
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    const self = this;
+    let buffer: LogTuple[] = [];
+
+    const api = {
+
+      get key() {
+        return key || null;
+      },
+
+      /**
+       * Writes to stream of Transport.
+       * 
+       * @param message the message to write.
+       * @param args optional format args.
+       */
+      write(msg: string, ...args: any[]) {
+        const meta = !buffer.length ? { [key]: true, groupStart: true } : { [key]: true };
+        buffer.push([msg, args, meta]);
+      },
+
+      /**
+       * Ends the write stream and outputs to Transports.
+       * 
+       * @param cb optional callback on write completed.
+       */
+      async end(cb?: Callback) {
+        if (!buffer) {
+          // eslint-disable-next-line no-console
+          console.warn(colorize(`Attempted to end write stream but buffer is null.`, 'yellow'));
+          return;
+        }
+        while (buffer.length) {
+          const item = buffer.shift();
+          const msg = format(item[0], ...(item[1] || []));
+          const meta = !buffer.length ? { ...item[2], groupEnd: true } : item[2];
+          self.writer('write', msg, meta);
+        }
+        buffer = null;
+        const transports = self.transports.map(t => t.end.bind(t));
+        try {
+          await asynceach(transports, (err, data) => (cb || noop)(data));
+        }
+        catch (ex) {
+          //
+        }
+
+      }
+
+    };
+
+    return api;
+
   }
 
   /**
@@ -499,6 +572,17 @@ export class Logger<Level extends string> extends EventEmitter {
       throw new Error(`Cannot add Transport to child Logger, create new Logger instead.`);
     this.transports.push(transport);
     return transport;
+  }
+
+  /**
+   * Convenience method to generate simple uuid v4. Although this
+   * works for most simple scenarios consider using a first class
+   * UUIDV4 library.
+   * 
+   * @see https://www.npmjs.com/package/uuid
+   */
+  uuidv4() {
+    return uuidv4();
   }
 
 }

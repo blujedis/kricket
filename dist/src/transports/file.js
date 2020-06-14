@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const transport_1 = require("./transport");
 const file_stream_rotator_1 = __importDefault(require("file-stream-rotator"));
 const types_1 = require("../types");
+const utils_1 = require("../utils");
 const DEFAULTS = {
     filename: './logs/%DATE%.log',
     frequency: 'daily',
@@ -30,7 +31,7 @@ class FileTransport extends transport_1.Transport {
             this.rotator.on('new', this.newfile.bind(this));
         if (options.verbose)
             // eslint-disable-next-line no-console
-            console.info(`Transport "${this.label}" logging to file: ${this.options.filename}`);
+            console.info(utils_1.colorize(`Transport "${this.label}" logging to file: ${this.options.filename}`, 'cyan'));
     }
     /**
      * Callback handler on new file created.
@@ -41,7 +42,7 @@ class FileTransport extends transport_1.Transport {
         if (this.options.onRotate)
             return this.options.onNew(newFile);
         // eslint-disable-next-line no-console
-        console.info(`Transport "${this.label}" logging to NEW file: ${newFile}`);
+        console.info(utils_1.colorize(`Transport "${this.label}" logging to NEW file: ${newFile}`, 'cyan'));
         return this;
     }
     /**

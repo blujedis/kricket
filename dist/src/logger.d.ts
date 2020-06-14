@@ -173,7 +173,28 @@ export declare class Logger<Level extends string> extends EventEmitter {
      *
      * @param cb optional callback on ending write.
      */
-    writeEnd(cb?: Callback): Promise<this>;
+    writeEnd(cb?: Callback): Promise<void>;
+    /**
+     * Writes to stream of Transport.
+     *
+     * @param key optional group key name appended to metadata.
+     */
+    group(key?: string): {
+        readonly key: string;
+        /**
+         * Writes to stream of Transport.
+         *
+         * @param message the message to write.
+         * @param args optional format args.
+         */
+        write(msg: string, ...args: any[]): void;
+        /**
+         * Ends the write stream and outputs to Transports.
+         *
+         * @param cb optional callback on write completed.
+         */
+        end(cb?: Callback): Promise<void>;
+    };
     /**
      * Gets a Transport by name.
      * Storing Transports in core just makes it easier to
@@ -188,4 +209,12 @@ export declare class Logger<Level extends string> extends EventEmitter {
      * @param transport the Transport to add to collection.
      */
     addTransport<T extends Transport>(transport: T): T;
+    /**
+     * Convenience method to generate simple uuid v4. Although this
+     * works for most simple scenarios consider using a first class
+     * UUIDV4 library.
+     *
+     * @see https://www.npmjs.com/package/uuid
+     */
+    uuidv4(): any;
 }
