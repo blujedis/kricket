@@ -61,13 +61,12 @@ export class Logger<Level extends string, M extends object = {}> extends EventEm
    * @param message the message to be logged.
    * @param args the optional format args to be applied.
    */
-  private writer(level: Level | BaseLevel, message = '', ...args: any[]) {
+  private writer(level: Level | BaseLevel, message: any = '', ...args: any[]) {
 
     if (this.muted || (this.level && !this.isLevelActive(level)))
       return;
 
     const label = level;
-
     const cb = typeof args[args.length - 1] === 'function' ? args.pop() : null;
     const meta = isPlainObject(args[args.length - 1]) ? args.pop() : null;
     const hasAnyMeta = !!meta || this.options.defaultMeta || !!this.options.meta;

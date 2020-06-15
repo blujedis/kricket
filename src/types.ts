@@ -23,7 +23,7 @@ export type Filter<Level extends string> = (payload: Payload<Level>) => boolean;
 
 export type Transform<Level extends string> = (payload: Payload<Level>) => Payload<Level>;
 
-export type LogMethod<T> = (message: string, ...args: any[]) => T;
+export type LogMethod<T> = (message: any, ...args: any[]) => T;
 
 export type LogMethods<T, Level extends string> = Record<Level, LogMethod<T>>;
 

@@ -10,6 +10,7 @@
 - Include RemoveTransport method.
 - Add helper methods for building filers and transforms.
 - Allow applying transform or filter to specific Transport (can also do in transform or filter itself)
+- Allow type of any as message instead of just string duh.....
 
 ## (06-13-2020)
 

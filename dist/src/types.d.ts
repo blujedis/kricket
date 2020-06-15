@@ -12,7 +12,7 @@ export declare type ErrorCallback = (err?: Error | null | undefined) => void;
 export declare type BaseLevel = 'write' | 'writeLn';
 export declare type Filter<Level extends string> = (payload: Payload<Level>) => boolean;
 export declare type Transform<Level extends string> = (payload: Payload<Level>) => Payload<Level>;
-export declare type LogMethod<T> = (message: string, ...args: any[]) => T;
+export declare type LogMethod<T> = (message: any, ...args: any[]) => T;
 export declare type LogMethods<T, Level extends string> = Record<Level, LogMethod<T>>;
 export declare type ChildOmits = 'setTransportLevel' | 'addTransport' | 'muteTransport' | 'unmuteTransport';
 export declare type ChildLogger<Level extends string> = Omit<Logger<Level>, ChildOmits> & LogMethods<Logger<Level>, Level>;
