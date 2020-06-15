@@ -8,6 +8,7 @@ const file_stream_rotator_1 = __importDefault(require("file-stream-rotator"));
 const types_1 = require("../types");
 const utils_1 = require("../utils");
 const DEFAULTS = {
+    label: 'file',
     filename: './logs/%DATE%.log',
     frequency: 'daily',
     verbose: false,
@@ -19,8 +20,8 @@ const DEFAULTS = {
     eol: types_1.EOL
 };
 class FileTransport extends transport_1.Transport {
-    constructor(options, alias) {
-        super(alias || 'file', { ...DEFAULTS, ...options });
+    constructor(options) {
+        super({ ...DEFAULTS, ...options });
         options = this.options;
         if (['hourly', 'minute'].includes(options.frequency))
             options.frequency = options.frequency.charAt(0);
@@ -30,8 +31,7 @@ class FileTransport extends transport_1.Transport {
         if (options.onNew)
             this.rotator.on('new', this.newfile.bind(this));
         if (options.verbose)
-            // eslint-disable-next-line no-console
-            console.info(utils_1.colorize(`Transport "${this.label}" logging to file: ${this.options.filename}`, 'cyan'));
+            utils_1.log.info(`Transport "${this.label}" logging to file: ${this.options.filename}`);
     }
     /**
      * Callback handler on new file created.
@@ -41,8 +41,7 @@ class FileTransport extends transport_1.Transport {
     newfile(newFile) {
         if (this.options.onRotate)
             return this.options.onNew(newFile);
-        // eslint-disable-next-line no-console
-        console.info(utils_1.colorize(`Transport "${this.label}" logging to NEW file: ${newFile}`, 'cyan'));
+        utils_1.log.info(`Transport "${this.label}" logging to NEW file: ${newFile}`);
         return this;
     }
     /**

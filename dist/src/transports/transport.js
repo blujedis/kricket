@@ -6,12 +6,20 @@ const utils_1 = require("../utils");
 class Stream extends readable_stream_1.Writable {
 }
 exports.Stream = Stream;
+const DEFAULTS = {
+    level: null,
+    highWaterMark: 16,
+    filters: [],
+    transforms: [],
+    asJSON: true
+};
 class Transport extends Stream {
-    constructor(label, options) {
+    constructor(options) {
         super({ highWaterMark: (options || {}).highWaterMark || 16 });
-        this.label = label;
         this.buffer = '';
-        this.options = { ...{ level: null, highWaterMark: 16, filters: [], transforms: [], asJSON: true }, ...options };
+        this.options = { ...DEFAULTS, ...options };
+        if (!this.options.label)
+            utils_1.log.fatal('Failed construct Transport using label/name of undefined');
     }
     /**
      * Gets the extended Type.
@@ -30,6 +38,12 @@ class Transport extends Stream {
             return chunk;
         const payload = JSON.parse(chunk);
         return payload.message;
+    }
+    /**
+     * Gets the label for the Transport.
+     */
+    get label() {
+        return this.options.label;
     }
     /**
      * Get the Transport's level.
@@ -84,7 +98,7 @@ class Transport extends Stream {
     setLevel(level, logger) {
         if (typeof level === 'undefined' || !logger.levels.includes(level)) {
             // eslint-disable-next-line no-console
-            console.warn(utils_1.colorize(`Level "${level}" is invalid or not found.`, 'yellow'));
+            utils_1.log.fatal(`Level "${level}" is invalid or not found.`);
             return this;
         }
         this.options.level = level;
@@ -92,13 +106,13 @@ class Transport extends Stream {
     }
     /**
      * Log method called by extended class to handle log messages.
+     *
      * @param payload the payload to be logged.
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     log(payload) {
-        const err = new Error(`Transport "${this.label}" method "log" required but NOT implemented.`);
-        console.error(utils_1.colorize(err.stack, 'red'));
-        process.exit(1);
+        const err = new Error(`Method "log" is required for Transport ${this.label} but was NOT implemented.`);
+        utils_1.log.fatal(err.stack);
     }
     write(chunk, encoding, cb) {
         try {

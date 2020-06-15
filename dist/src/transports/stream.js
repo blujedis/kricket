@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const transport_1 = require("./transport");
 class StreamTransport extends transport_1.Transport {
-    constructor(options, alias) {
-        super(alias || 'stream', options);
+    constructor(options) {
+        super({ label: 'stream', ...options });
     }
     /**
      * Method  alled by super.

@@ -1,4 +1,3 @@
-import { red, yellow, cyan } from 'ansi-colors';
 
 /**
  * Checks if value is an object.
@@ -62,18 +61,3 @@ export function uuidv4(a?) {
   return a ? (a ^ Math.random() * 16 >> a / 4).toString(16) : ([1e7] as any + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, uuidv4);
 }
 
-const ansiMap = {
-  red: red,
-  yellow: yellow,
-  cyan: cyan
-};
-
-/**
- * Colorizes a string.
- * 
- * @param str the string to be colorized.
- * @param color the ansi-color to apply.
- */
-export function colorize(str: string, color: 'red' | 'yellow' | 'cyan') {
-  return ansiMap[color](str);
-}

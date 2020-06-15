@@ -62,7 +62,7 @@
 					<a href="_transports_transport_.transport.html">Transport</a>
 				</li>
 			</ul>
-			<h1>Class Transport&lt;K, Options&gt;</h1>
+			<h1>Class Transport&lt;Options&gt;</h1>
 		</div>
 	</div>
 </header>
@@ -73,10 +73,7 @@
 				<h3>Type parameters</h3>
 				<ul class="tsd-type-parameters">
 					<li>
-						<h4>K<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h4>
-					</li>
-					<li>
-						<h4>Options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.itransportoptions.html" class="tsd-signature-type">ITransportOptions</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						<h4>Options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.itransportoptions.html" class="tsd-signature-type">ITransportOptions</a></h4>
 					</li>
 				</ul>
 			</section>
@@ -129,7 +126,6 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_transports_transport_.transport.html#_writablestate" class="tsd-kind-icon">_writable<wbr>State</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_transports_transport_.transport.html#buffer" class="tsd-kind-icon">buffer</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_transports_transport_.transport.html#destroyed" class="tsd-kind-icon">destroyed</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_transports_transport_.transport.html#label" class="tsd-kind-icon">label</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_transports_transport_.transport.html#options" class="tsd-kind-icon">options</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_transports_transport_.transport.html#writable" class="tsd-kind-icon">writable</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_transports_transport_.transport.html#writablecorked" class="tsd-kind-icon">writable<wbr>Corked</a></li>
@@ -146,6 +142,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_transports_transport_.transport.html#filters" class="tsd-kind-icon">filters</a></li>
 								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_transports_transport_.transport.html#isjson" class="tsd-kind-icon">isJSON</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_transports_transport_.transport.html#label" class="tsd-kind-icon">label</a></li>
 								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_transports_transport_.transport.html#level" class="tsd-kind-icon">level</a></li>
 								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_transports_transport_.transport.html#muted" class="tsd-kind-icon">muted</a></li>
 								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_transports_transport_.transport.html#transforms" class="tsd-kind-icon">transforms</a></li>
@@ -198,21 +195,18 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Transport<span class="tsd-signature-symbol">(</span>label<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">K</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Options</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_transports_transport_.transport.html" class="tsd-signature-type">Transport</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Transport<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Options</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_transports_transport_.transport.html" class="tsd-signature-type">Transport</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Overrides <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/28fcddd/src/transports/transport.ts#L15">src/transports/transport.ts:15</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/7a95132/src/transports/transport.ts#L23">src/transports/transport.ts:23</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
-								<li>
-									<h5>label: <span class="tsd-signature-type">K</span></h5>
-								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">Options</span></h5>
 								</li>
@@ -241,7 +235,7 @@
 					<div class="tsd-signature tsd-kind-icon">buffer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/kricket/blob/28fcddd/src/transports/transport.ts#L15">src/transports/transport.ts:15</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/kricket/blob/7a95132/src/transports/transport.ts#L23">src/transports/transport.ts:23</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -258,22 +252,12 @@
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="label" class="tsd-anchor"></a>
-					<h3>label</h3>
-					<div class="tsd-signature tsd-kind-icon">label<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">K</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/kricket/blob/28fcddd/src/transports/transport.ts#L17">src/transports/transport.ts:17</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="options" class="tsd-anchor"></a>
 					<h3>options</h3>
 					<div class="tsd-signature tsd-kind-icon">options<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Options</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/kricket/blob/28fcddd/src/transports/transport.ts#L14">src/transports/transport.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/kricket/blob/7a95132/src/transports/transport.ts#L22">src/transports/transport.ts:22</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -285,7 +269,7 @@
 						<p>Inherited from <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#writable">writable</a></p>
 						<p>Overrides Writable.writable</p>
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/kricket/blob/28fcddd/src/transports/transport.ts#L7">src/transports/transport.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/kricket/blob/7a95132/src/transports/transport.ts#L7">src/transports/transport.ts:7</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -361,7 +345,7 @@
 					<div class="tsd-signature tsd-kind-icon">Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/kricket/blob/28fcddd/src/transports/transport.ts#L12">src/transports/transport.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/kricket/blob/7a95132/src/transports/transport.ts#L20">src/transports/transport.ts:20</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -372,13 +356,13 @@
 					<a name="filters" class="tsd-anchor"></a>
 					<h3>filters</h3>
 					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> filters<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>payload<span class="tsd-signature-symbol">: </span><a href="../modules/_types_.html#payload" class="tsd-signature-type">Payload</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Level</span><span class="tsd-signature-symbol"> | </span><a href="../modules/_types_.html#baselevel" class="tsd-signature-type">BaseLevel</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> filters<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>payload<span class="tsd-signature-symbol">: </span><a href="../modules/_types_.html#payload" class="tsd-signature-type">Payload</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Level</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/28fcddd/src/transports/transport.ts#L66">src/transports/transport.ts:66</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/7a95132/src/transports/transport.ts#L85">src/transports/transport.ts:85</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -386,7 +370,7 @@
 									<p>Gets Transport&#39;s Filters.</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>payload<span class="tsd-signature-symbol">: </span><a href="../modules/_types_.html#payload" class="tsd-signature-type">Payload</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Level</span><span class="tsd-signature-symbol"> | </span><a href="../modules/_types_.html#baselevel" class="tsd-signature-type">BaseLevel</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>payload<span class="tsd-signature-symbol">: </span><a href="../modules/_types_.html#payload" class="tsd-signature-type">Payload</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Level</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -400,7 +384,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/28fcddd/src/transports/transport.ts#L59">src/transports/transport.ts:59</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/7a95132/src/transports/transport.ts#L78">src/transports/transport.ts:78</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -409,6 +393,28 @@
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="label" class="tsd-anchor"></a>
+					<h3>label</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> label<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/7a95132/src/transports/transport.ts#L57">src/transports/transport.ts:57</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Gets the label for the Transport.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -422,7 +428,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/28fcddd/src/transports/transport.ts#L45">src/transports/transport.ts:45</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/7a95132/src/transports/transport.ts#L64">src/transports/transport.ts:64</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -444,7 +450,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/28fcddd/src/transports/transport.ts#L52">src/transports/transport.ts:52</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/7a95132/src/transports/transport.ts#L71">src/transports/transport.ts:71</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -460,13 +466,13 @@
 					<a name="transforms" class="tsd-anchor"></a>
 					<h3>transforms</h3>
 					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> transforms<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>payload<span class="tsd-signature-symbol">: </span><a href="../modules/_types_.html#payload" class="tsd-signature-type">Payload</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Level</span><span class="tsd-signature-symbol"> | </span><a href="../modules/_types_.html#baselevel" class="tsd-signature-type">BaseLevel</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="../modules/_types_.html#payload" class="tsd-signature-type">Payload</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Level</span><span class="tsd-signature-symbol"> | </span><a href="../modules/_types_.html#baselevel" class="tsd-signature-type">BaseLevel</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> transforms<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>payload<span class="tsd-signature-symbol">: </span><a href="../modules/_types_.html#payload" class="tsd-signature-type">Payload</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Level</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="../modules/_types_.html#payload" class="tsd-signature-type">Payload</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Level</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/28fcddd/src/transports/transport.ts#L73">src/transports/transport.ts:73</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/7a95132/src/transports/transport.ts#L92">src/transports/transport.ts:92</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -474,7 +480,7 @@
 									<p>Gets Transport&#39;s Transforms.</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>payload<span class="tsd-signature-symbol">: </span><a href="../modules/_types_.html#payload" class="tsd-signature-type">Payload</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Level</span><span class="tsd-signature-symbol"> | </span><a href="../modules/_types_.html#baselevel" class="tsd-signature-type">BaseLevel</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="../modules/_types_.html#payload" class="tsd-signature-type">Payload</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Level</span><span class="tsd-signature-symbol"> | </span><a href="../modules/_types_.html#baselevel" class="tsd-signature-type">BaseLevel</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>payload<span class="tsd-signature-symbol">: </span><a href="../modules/_types_.html#payload" class="tsd-signature-type">Payload</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Level</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="../modules/_types_.html#payload" class="tsd-signature-type">Payload</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Level</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -978,7 +984,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#destroy">destroy</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/28fcddd/src/transports/transport.ts#L159">src/transports/transport.ts:159</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/7a95132/src/transports/transport.ts#L178">src/transports/transport.ts:178</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1157,7 +1163,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#end">end</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/28fcddd/src/transports/transport.ts#L175">src/transports/transport.ts:175</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/7a95132/src/transports/transport.ts#L194">src/transports/transport.ts:194</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1192,7 +1198,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#end">end</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/28fcddd/src/transports/transport.ts#L183">src/transports/transport.ts:183</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/7a95132/src/transports/transport.ts#L202">src/transports/transport.ts:202</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1221,7 +1227,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#end">end</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/28fcddd/src/transports/transport.ts#L190">src/transports/transport.ts:190</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/7a95132/src/transports/transport.ts#L209">src/transports/transport.ts:209</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1270,7 +1276,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/28fcddd/src/transports/transport.ts#L34">src/transports/transport.ts:34</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/7a95132/src/transports/transport.ts#L46">src/transports/transport.ts:46</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1319,7 +1325,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/28fcddd/src/transports/transport.ts#L25">src/transports/transport.ts:25</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/7a95132/src/transports/transport.ts#L37">src/transports/transport.ts:37</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1389,7 +1395,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/28fcddd/src/transports/transport.ts#L114">src/transports/transport.ts:114</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/7a95132/src/transports/transport.ts#L134">src/transports/transport.ts:134</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1420,7 +1426,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/28fcddd/src/transports/transport.ts#L80">src/transports/transport.ts:80</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/7a95132/src/transports/transport.ts#L99">src/transports/transport.ts:99</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2871,13 +2877,13 @@
 					<a name="setlevel" class="tsd-anchor"></a>
 					<h3>set<wbr>Level</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Level<span class="tsd-signature-symbol">(</span>level<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, logger<span class="tsd-signature-symbol">: </span><a href="_logger_.logger.html" class="tsd-signature-type">Logger</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Level<span class="tsd-signature-symbol">(</span>level<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, logger<span class="tsd-signature-symbol">: </span><a href="_logger_.logger.html" class="tsd-signature-type">Logger</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/28fcddd/src/transports/transport.ts#L99">src/transports/transport.ts:99</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/7a95132/src/transports/transport.ts#L118">src/transports/transport.ts:118</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2894,7 +2900,7 @@
 									</div>
 								</li>
 								<li>
-									<h5>logger: <a href="_logger_.logger.html" class="tsd-signature-type">Logger</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>logger: <a href="_logger_.logger.html" class="tsd-signature-type">Logger</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>the parent Logger containing log levels.</p>
 									</div>
@@ -2956,7 +2962,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/28fcddd/src/transports/transport.ts#L88">src/transports/transport.ts:88</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/7a95132/src/transports/transport.ts#L107">src/transports/transport.ts:107</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2980,7 +2986,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#write">write</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/28fcddd/src/transports/transport.ts#L127">src/transports/transport.ts:127</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/7a95132/src/transports/transport.ts#L146">src/transports/transport.ts:146</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3015,7 +3021,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="_transports_transport_.stream.html">Stream</a>.<a href="_transports_transport_.stream.html#write">write</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/28fcddd/src/transports/transport.ts#L135">src/transports/transport.ts:135</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/kricket/blob/7a95132/src/transports/transport.ts#L154">src/transports/transport.ts:154</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3092,6 +3098,9 @@
 					<li class=" tsd-kind-module">
 						<a href="../modules/_utils_index_.html">&quot;utils/index&quot;</a>
 					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_utils_logger_.html">&quot;utils/logger&quot;</a>
+					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
@@ -3115,9 +3124,6 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
 								<a href="_transports_transport_.transport.html#destroyed" class="tsd-kind-icon">destroyed</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_transports_transport_.transport.html#label" class="tsd-kind-icon">label</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="_transports_transport_.transport.html#options" class="tsd-kind-icon">options</a>
@@ -3151,6 +3157,9 @@
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
 								<a href="_transports_transport_.transport.html#isjson" class="tsd-kind-icon">isJSON</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="_transports_transport_.transport.html#label" class="tsd-kind-icon">label</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
 								<a href="_transports_transport_.transport.html#level" class="tsd-kind-icon">level</a>
@@ -3264,6 +3273,9 @@
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-object-literal tsd-parent-kind-module tsd-is-not-exported">
+						<a href="../modules/_transports_transport_.html#defaults" class="tsd-kind-icon">DEFAULTS</a>
+					</li>
 				</ul>
 			</nav>
 		</div>

@@ -22,7 +22,8 @@ module.exports = {
     "plugin:@typescript-eslint/recommended"
   ],
   "rules": {
-    // "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/member-delimiter-style": "off",
     "@typescript-eslint/ban-ts-ignore": "off",
     "@typescript-eslint/camelcase": "off",
@@ -31,7 +32,7 @@ module.exports = {
     "@typescript-eslint/adjacent-overload-signatures": "error",
     "@typescript-eslint/array-type": "error",
     "@typescript-eslint/ban-types": "off",
-    "@typescript-eslint/class-name-casing": "error",
+    "@typescript-eslint/class-name-casing": "off",
     "@typescript-eslint/consistent-type-assertions": "off",
     "@typescript-eslint/explicit-member-accessibility": [
       "off",

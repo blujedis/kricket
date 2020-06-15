@@ -4,12 +4,11 @@ import { Logger } from '../logger';
 export declare abstract class Stream extends Writable {
     writable: boolean;
 }
-export declare abstract class Transport<K extends string = any, Options extends ITransportOptions<any> = ITransportOptions<any>> extends Stream {
-    label: K;
+export declare abstract class Transport<Options extends ITransportOptions = ITransportOptions> extends Stream {
     static Type: any;
     options: Options;
     buffer: string;
-    constructor(label: K, options?: Options);
+    constructor(options?: Options);
     /**
      * Gets the extended Type.
      */
@@ -20,6 +19,10 @@ export declare abstract class Transport<K extends string = any, Options extends 
      * @param chunk the currently logged chunk.
      */
     format(chunk: string): string;
+    /**
+     * Gets the label for the Transport.
+     */
+    get label(): any;
     /**
      * Get the Transport's level.
      */
@@ -54,9 +57,10 @@ export declare abstract class Transport<K extends string = any, Options extends 
      * @param level the level to set the Logger to.
      * @param logger the parent Logger containing log levels.
      */
-    setLevel(level: string, logger: Logger<any>): this;
+    setLevel(level: string, logger: Logger<any, any>): this;
     /**
      * Log method called by extended class to handle log messages.
+     *
      * @param payload the payload to be logged.
      */
     log(payload: string): void;

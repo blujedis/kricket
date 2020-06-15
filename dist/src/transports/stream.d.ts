@@ -1,12 +1,13 @@
 import { Transport } from './transport';
 import { ITransportOptions } from '../types';
 import { Writable } from 'readable-stream';
-export interface IStreamTransportOptions<Level extends string> extends ITransportOptions<Level> {
+export interface IStreamTransportOptions<Level extends string, Label extends string> extends ITransportOptions<Level, Label> {
     stream: Writable;
 }
-export declare class StreamTransport<Level extends string, K extends string = 'stream'> extends Transport<K, IStreamTransportOptions<Level>> {
+export declare class StreamTransport<Level extends string, Label extends string> extends Transport<IStreamTransportOptions<Level, Label>> {
     static Type: "string" | "number" | "bigint" | "boolean" | "symbol" | "undefined" | "object" | "function";
-    constructor(options?: IStreamTransportOptions<Level>, alias?: K);
+    options: IStreamTransportOptions<Level, Label>;
+    constructor(options?: IStreamTransportOptions<Level, Label>);
     /**
      * Method  alled by super.
      *

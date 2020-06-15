@@ -82,7 +82,12 @@ yarn add kricket -s</code></pre>
 				<p>The default logger contains only one Transport that being a console logger. The default levels are <code>fatal, error, warn, info, debug</code>;</p>
 				<pre><code class="language-ts"><span class="hljs-keyword">import</span> { defaultLogger } <span class="hljs-keyword">from</span> <span class="hljs-string">'kricket'</span>;
 defaultLogger.writeLn(<span class="hljs-string">'write some log message.'</span>);
-defaultLogger.info(<span class="hljs-string">'this is an info message.'</span>);</code></pre>
+defaultLogger.info(<span class="hljs-string">'this is an info message.'</span>);
+defaultLogger
+  .group()
+  .write(<span class="hljs-string">'some value'</span>)
+  .write(<span class="hljs-string">'another value'</span>)
+  .end();</code></pre>
 				<a href="#filters" id="filters" style="color: inherit; text-decoration: none;">
 					<h2>Filters</h2>
 				</a>
@@ -129,6 +134,15 @@ defaultLogger.transform(<span class="hljs-function">(<span class="hljs-params">p
 });</code></pre>
 				<p>Now you can use formatting in your messages.</p>
 				<pre><code class="language-ts">defaultLogger.info(<span class="hljs-string">'My name is %s.'</span>, <span class="hljs-string">'Milton'</span>);</code></pre>
+				<a href="#assigning-filters-or-transports" id="assigning-filters-or-transports" style="color: inherit; text-decoration: none;">
+					<h3>Assigning Filters or Transports</h3>
+				</a>
+				<p>To this point we&#39;ve shown how global Filters and Transforms. You can also assign a Filter or Transform to a specific Transport.</p>
+				<pre><code class="language-ts">defaultLogger.transform(<span class="hljs-string">'console'</span>, <span class="hljs-function"><span class="hljs-params">payload</span> =&gt;</span> {
+  <span class="hljs-comment">// do something.</span>
+  <span class="hljs-keyword">return</span> payload.
+})</code></pre>
+				<p><strong>The above works the same for Filters.</strong></p>
 				<a href="#output-format" id="output-format" style="color: inherit; text-decoration: none;">
 					<h2>Output Format</h2>
 				</a>
@@ -151,18 +165,24 @@ defaultLogger.transform(<span class="hljs-function">(<span class="hljs-params">p
 				<pre><code class="language-ts"><span class="hljs-keyword">import</span> { Transport } <span class="hljs-keyword">from</span> <span class="hljs-string">'./transport'</span>;
 <span class="hljs-keyword">import</span> { ITransportOptions } <span class="hljs-keyword">from</span> <span class="hljs-string">'../types'</span>;
 
-<span class="hljs-keyword">interface</span> IMyTransport&lt;Level <span class="hljs-keyword">extends</span> string&gt; <span class="hljs-keyword">extends</span> ITransportOptions&lt;Level&gt; {
+<span class="hljs-keyword">interface</span> IMyTransport&lt;Level <span class="hljs-keyword">extends</span> string, Label <span class="hljs-keyword">extends</span> string&gt; <span class="hljs-keyword">extends</span> ITransportOptions&lt;Level&gt; {
  <span class="hljs-comment">// your options here.</span>
+ label: Label;
 }
 
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> MyTransport&lt;Level <span class="hljs-keyword">extends</span> <span class="hljs-built_in">string</span>&gt; <span class="hljs-keyword">extends</span> Transport&lt;IMyTransport&lt;Level&gt;&gt; {
-  <span class="hljs-keyword">static</span> Type = <span class="hljs-keyword">typeof</span> MyTransport; <span class="hljs-comment">// This is important for creating new instances internally.</span>
-  <span class="hljs-keyword">constructor</span>(<span class="hljs-params">options?: IMyTransport&lt;Level&gt;, alias?: <span class="hljs-built_in">string</span></span>) {
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> MyTransport&lt;Level <span class="hljs-keyword">extends</span> <span class="hljs-built_in">string</span>, Label <span class="hljs-keyword">extends</span> <span class="hljs-built_in">string</span>&gt; <span class="hljs-keyword">extends</span> Transport&lt;IMyTransport&lt;Level&gt;&gt; {
+
+  <span class="hljs-comment">// This is important if you wish to clone and reuse Transports.</span>
+  <span class="hljs-keyword">static</span> Type = <span class="hljs-keyword">typeof</span> MyTransport; 
+
+  <span class="hljs-keyword">constructor</span>(<span class="hljs-params">options?: IMyTransport&lt;Level, Label&gt;</span>) {
     <span class="hljs-keyword">super</span>(alias || <span class="hljs-string">'myTransport'</span>, options);
   }
+
   log(payload: <span class="hljs-built_in">string</span>) {
     <span class="hljs-comment">// This method MUST be overloaded or you will get an error.</span>
   }
+
 }</code></pre>
 				<a href="#consuming-the-above-transport" id="consuming-the-above-transport" style="color: inherit; text-decoration: none;">
 					<h3>Consuming the Above Transport</h3>
@@ -180,6 +200,7 @@ defaultLogger.transform(<span class="hljs-function">(<span class="hljs-params">p
 				<a href="#docs" id="docs" style="color: inherit; text-decoration: none;">
 					<h2>Docs</h2>
 				</a>
+				<p>There is much more that Kricket does as time permits more examples will be added. You can also checkout the docs below as well as look at the tests/ folder.</p>
 				<p>See <a href="https://blujedis.github.io/kricket/">https://blujedis.github.io/kricket/</a></p>
 				<a href="#change" id="change" style="color: inherit; text-decoration: none;">
 					<h2>Change</h2>
@@ -238,6 +259,9 @@ defaultLogger.transform(<span class="hljs-function">(<span class="hljs-params">p
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="modules/_utils_index_.html">&quot;utils/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_utils_logger_.html">&quot;utils/logger&quot;</a>
 					</li>
 				</ul>
 			</nav>

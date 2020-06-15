@@ -1,22 +1,34 @@
 import { Writable } from 'readable-stream';
 import { ITransportOptions, EOL, IPayload, ErrorCallback, NodeCallback } from '../types';
 import { Logger } from '../logger';
-import { colorize } from '../utils';
+import { log } from '../utils';
 
 export abstract class Stream extends Writable {
   writable: boolean;
 }
 
-export abstract class Transport<K extends string = any, Options extends ITransportOptions<any> = ITransportOptions<any>> extends Stream {
+const DEFAULTS = {
+  level: null,
+  highWaterMark: 16,
+  filters: [],
+  transforms: [],
+  asJSON: true
+};
+
+export abstract class Transport<Options extends ITransportOptions = ITransportOptions> extends Stream {
 
   static Type;
 
   options: Options;
   buffer = '';
 
-  constructor(public label: K, options?: Options) {
+  constructor(options?: Options) {
     super({ highWaterMark: (options || {} as any).highWaterMark || 16 });
-    this.options = { ...{ level: null, highWaterMark: 16, filters: [], transforms: [], asJSON: true }, ...options };
+    this.options = { ...DEFAULTS, ...options };
+
+    if (!this.options.label)
+      log.fatal('Failed construct Transport using label/name of undefined');
+
   }
 
   /**
@@ -37,6 +49,13 @@ export abstract class Transport<K extends string = any, Options extends ITranspo
       return chunk;
     const payload = JSON.parse(chunk) as IPayload<any>;
     return payload.message;
+  }
+
+  /**
+   * Gets the label for the Transport.
+   */
+  get label() {
+    return this.options.label;
   }
 
   /**
@@ -96,10 +115,10 @@ export abstract class Transport<K extends string = any, Options extends ITranspo
    * @param level the level to set the Logger to.
    * @param logger the parent Logger containing log levels.
    */
-  setLevel(level: string, logger: Logger<any>) {
+  setLevel(level: string, logger: Logger<any, any>) {
     if (typeof level === 'undefined' || !logger.levels.includes(level)) {
       // eslint-disable-next-line no-console
-      console.warn(colorize(`Level "${level}" is invalid or not found.`, 'yellow'));
+      log.fatal(`Level "${level}" is invalid or not found.`);
       return this;
     }
     this.options.level = level;
@@ -108,13 +127,13 @@ export abstract class Transport<K extends string = any, Options extends ITranspo
 
   /**
    * Log method called by extended class to handle log messages.
+   * 
    * @param payload the payload to be logged.
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   log(payload: string) {
-    const err = new Error(`Transport "${this.label}" method "log" required but NOT implemented.`);
-    console.error(colorize(err.stack, 'red'));
-    process.exit(1);
+    const err = new Error(`Method "log" is required for Transport ${this.label} but was NOT implemented.`);
+    log.fatal(err.stack);
   }
 
   /**

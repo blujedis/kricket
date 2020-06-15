@@ -2,7 +2,7 @@ import { Transport } from './transport';
 import rotator from 'file-stream-rotator';
 import { ITransportOptions, EOL } from '../types';
 import { WriteStream } from 'fs';
-import { colorize } from '../utils';
+import { log } from '../utils';
 
 export type Frequency = 'minute' | 'hourly' | 'daily' | 'custom' | 'test' | 'h' | 'm';
 
@@ -16,7 +16,7 @@ export interface IFileOptions {
   highWaterMark?: number;
 }
 
-export interface IFileTransportOptions<Level extends string> extends ITransportOptions<Level> {
+export interface IFileTransportOptions<Level extends string, Label extends string> extends ITransportOptions<Level, Label> {
   filename?: string;                                    // file path for logs
   frequency?: Frequency;                                // (default: YYYYMMDD)             
   verbose?: boolean;                                    // (default: true)
@@ -31,7 +31,8 @@ export interface IFileTransportOptions<Level extends string> extends ITransportO
   onNew?(newFile?: string): void;                       // callback on file rotation.
 }
 
-const DEFAULTS: IFileTransportOptions<any> = {
+const DEFAULTS: IFileTransportOptions<any, any> = {
+  label: 'file',
   filename: './logs/%DATE%.log',
   frequency: 'daily',
   verbose: false,
@@ -43,15 +44,15 @@ const DEFAULTS: IFileTransportOptions<any> = {
   eol: EOL
 };
 
-export class FileTransport<Level extends string, K extends string = 'file'> extends Transport<K, IFileTransportOptions<Level>> {
+export class FileTransport<Level extends string, Label extends string> extends Transport<IFileTransportOptions<Level, Label>> {
 
   static Type = typeof FileTransport;
 
   rotator: WriteStream;
 
-  constructor(options?: IFileTransportOptions<Level>, alias?: K) {
+  constructor(options?: IFileTransportOptions<Level, Label>) {
 
-    super(alias || 'file' as K, { ...DEFAULTS, ...options });
+    super({ ...DEFAULTS, ...options });
 
     options = this.options;
 
@@ -67,8 +68,7 @@ export class FileTransport<Level extends string, K extends string = 'file'> exte
       this.rotator.on('new', this.newfile.bind(this));
 
     if (options.verbose)
-      // eslint-disable-next-line no-console
-      console.info(colorize(`Transport "${this.label}" logging to file: ${this.options.filename}`, 'cyan'));
+      log.info(`Transport "${this.label}" logging to file: ${this.options.filename}`);
 
   }
 
@@ -80,8 +80,7 @@ export class FileTransport<Level extends string, K extends string = 'file'> exte
   newfile(newFile: string) {
     if (this.options.onRotate)
       return this.options.onNew(newFile);
-    // eslint-disable-next-line no-console
-    console.info(colorize(`Transport "${this.label}" logging to NEW file: ${newFile}`, 'cyan'));
+    log.info(`Transport "${this.label}" logging to NEW file: ${newFile}`);
     return this;
   }
 

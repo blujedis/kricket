@@ -1,6 +1,6 @@
 import 'mocha';
 import { assert } from 'chai';
-import { createLogger, DummyTransport, LEVEL } from '../src';
+import { createLogger, DummyTransport, LEVEL, ConsoleTransport } from '../src';
 
 const dummyTransport = new DummyTransport();
 
@@ -51,4 +51,19 @@ describe('Kricket', () => {
     });
     testLogger.info('info message');
   });
+
+  it('Should add Console Transport', (done) => {
+    testLogger.addTransport(new ConsoleTransport());
+    const Transport = testLogger.options.transports.find(transport => transport.label === 'console');
+    assert.instanceOf(Transport, ConsoleTransport);
+    done();
+  });
+
+  it('Should remove Console Transport', (done) => {
+    testLogger.removeTransport('console');
+    assert.equal(testLogger.transports.length, 1);
+    done();
+  });
+
+
 });

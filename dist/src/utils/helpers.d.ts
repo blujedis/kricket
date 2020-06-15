@@ -36,10 +36,3 @@ export declare function flatten<T = any>(arr: T[]): T[];
  * Generate uuid.
  */
 export declare function uuidv4(a?: any): any;
-/**
- * Colorizes a string.
- *
- * @param str the string to be colorized.
- * @param color the ansi-color to apply.
- */
-export declare function colorize(str: string, color: 'red' | 'yellow' | 'cyan'): string;

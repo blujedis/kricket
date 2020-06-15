@@ -12,7 +12,7 @@ export interface IFileOptions {
     start?: number;
     highWaterMark?: number;
 }
-export interface IFileTransportOptions<Level extends string> extends ITransportOptions<Level> {
+export interface IFileTransportOptions<Level extends string, Label extends string> extends ITransportOptions<Level, Label> {
     filename?: string;
     frequency?: Frequency;
     verbose?: boolean;
@@ -26,10 +26,10 @@ export interface IFileTransportOptions<Level extends string> extends ITransportO
     onRotate?(oldFile?: string, newFile?: string): void;
     onNew?(newFile?: string): void;
 }
-export declare class FileTransport<Level extends string, K extends string = 'file'> extends Transport<K, IFileTransportOptions<Level>> {
+export declare class FileTransport<Level extends string, Label extends string> extends Transport<IFileTransportOptions<Level, Label>> {
     static Type: "string" | "number" | "bigint" | "boolean" | "symbol" | "undefined" | "object" | "function";
     rotator: WriteStream;
-    constructor(options?: IFileTransportOptions<Level>, alias?: K);
+    constructor(options?: IFileTransportOptions<Level, Label>);
     /**
      * Callback handler on new file created.
      *

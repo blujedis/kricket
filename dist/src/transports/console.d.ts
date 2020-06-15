@@ -1,8 +1,10 @@
 import { Transport } from './transport';
 import { ITransportOptions } from '../types';
-export declare class ConsoleTransport<Level extends string, K extends string = 'console'> extends Transport<K, ITransportOptions<Level>> {
+export interface IConsoleOptions<Level extends string, Label extends string> extends ITransportOptions<Level, Label> {
+}
+export declare class ConsoleTransport<Level extends string, Label extends string> extends Transport<IConsoleOptions<Level, Label>> {
     static Type: "string" | "number" | "bigint" | "boolean" | "symbol" | "undefined" | "object" | "function";
-    constructor(options?: ITransportOptions<Level>, alias?: K);
+    constructor(options?: IConsoleOptions<Level, Label>);
     /**
      * Method called by super.
      *

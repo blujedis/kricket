@@ -22,6 +22,11 @@ The default logger contains only one Transport that being a console logger. The 
 import { defaultLogger } from 'kricket';
 defaultLogger.writeLn('write some log message.');
 defaultLogger.info('this is an info message.');
+defaultLogger
+  .group()
+  .write('some value')
+  .write('another value')
+  .end();
 ```
 
 ## Filters
@@ -86,6 +91,19 @@ Now you can use formatting in your messages.
 defaultLogger.info('My name is %s.', 'Milton');
 ```
 
+### Assigning Filters or Transports
+
+To this point we've shown how global Filters and Transforms. You can also assign a Filter or Transform to a specific Transport.
+
+```ts
+defaultLogger.transform('console', payload => {
+  // do something.
+  return payload.
+})
+```
+
+**The above works the same for Filters.**
+
 ## Output Format
 
 By default Kricket outputs JSON to each transport. This can be disabled as it is in the default **ConsoleTransport**. When doing so Kricket will grab your formatted message resulting from your **transform** stack if any. The message is stored at: <code>payload.message</code>
@@ -111,18 +129,24 @@ To create a custom Transport simply extend from the base abstract **Transport** 
 import { Transport } from './transport';
 import { ITransportOptions } from '../types';
 
-interface IMyTransport<Level extends string> extends ITransportOptions<Level> {
+interface IMyTransport<Level extends string, Label extends string> extends ITransportOptions<Level> {
  // your options here.
+ label: Label;
 }
 
-export class MyTransport<Level extends string> extends Transport<IMyTransport<Level>> {
-  static Type = typeof MyTransport; // This is important for creating new instances internally.
-  constructor(options?: IMyTransport<Level>, alias?: string) {
+export class MyTransport<Level extends string, Label extends string> extends Transport<IMyTransport<Level>> {
+
+  // This is important if you wish to clone and reuse Transports.
+  static Type = typeof MyTransport; 
+  
+  constructor(options?: IMyTransport<Level, Label>) {
     super(alias || 'myTransport', options);
   }
+  
   log(payload: string) {
     // This method MUST be overloaded or you will get an error.
   }
+
 }
 ```
 
@@ -147,6 +171,8 @@ myLogger.addTransport(new MyTransport());
 ```
 
 ## Docs
+
+There is much more that Kricket does as time permits more examples will be added. You can also checkout the docs below as well as look at the tests/ folder.
 
 See [https://blujedis.github.io/kricket/](https://blujedis.github.io/kricket/)
 

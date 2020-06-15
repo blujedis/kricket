@@ -1,18 +1,18 @@
 import { EventEmitter } from 'events';
-import { ILoggerOptions, LEVEL, MESSAGE, SPLAT, Filter, Transform, LOGGER, TRANSPORT, Callback, Payload, BaseLevel, ChildLogger } from './types';
+import { ILoggerOptions, LEVEL, MESSAGE, SPLAT, Filter, Transform, LOGGER, TRANSPORT, Callback, BaseLevel, ChildLogger, IPayload, Payload } from './types';
 import { Transport } from './transports';
 import fastJson from 'fast-json-stable-stringify';
 import { format } from 'util';
-import { getObjectName, isPlainObject, asynceach, noop, flatten, uuidv4, colorize } from './utils';
+import { getObjectName, isPlainObject, asynceach, noop, flatten, uuidv4, log } from './utils';
 import core, { Core } from './core';
 
-export class Logger<Level extends string> extends EventEmitter {
+export class Logger<Level extends string, M extends object = {}> extends EventEmitter {
 
   core: Core = core;
-  children = new Map<string, Logger<Level>>();
+  children = new Map<string, Logger<Level, M>>();
 
 
-  constructor(public label: string, public options: ILoggerOptions<Level>, public isChild = false) {
+  constructor(public label: string, public options: ILoggerOptions<Level, M>, public isChild = false) {
 
     super();
 
@@ -23,12 +23,34 @@ export class Logger<Level extends string> extends EventEmitter {
       this[level as string] = (message: string, ...args: any) => this.writer(level, message, ...args);
     });
 
+    const dupes = this.checkUnique().dupes;
+    if (dupes) {
+      log.fatal(`Duplicate Transports "${dupes.join(', ')}" detected, Transport labels must be unique.`);
+    }
+
     // Ensure level for transports
     this.options.transports.forEach(transport => {
       if (typeof transport.options.level === 'undefined')
         transport.options.level = this.options.level;
     });
 
+  }
+
+  /**
+   * Iterates Transports checks for duplicate labels.
+   */
+  private checkUnique() {
+    return this.options.transports.reduce((a, c) => {
+      if (!a.known.includes(c.label)) {
+        a.known.push(c.label);
+      }
+      else {
+        a.dupes = a.dupes || [];
+        if (!a.dupes.includes(c.label))
+          a.dupes.push(c.label);
+      }
+      return a;
+    }, { known: [], dupes: null });
   }
 
   /**
@@ -47,20 +69,29 @@ export class Logger<Level extends string> extends EventEmitter {
     const label = level;
 
     const cb = typeof args[args.length - 1] === 'function' ? args.pop() : null;
-    let meta = isPlainObject(args[args.length - 1]) ? args.pop() : null;
+    const meta = isPlainObject(args[args.length - 1]) ? args.pop() : null;
+    const hasAnyMeta = !!meta || this.options.defaultMeta || !!this.options.meta;
+    const defaultMetaKey = this.options.defaultMetaKey;
 
-    if (meta || this.options.meta) {
-      meta = { ...meta, ...this.options.meta };
-      args.push(meta);
-    }
+    // Build default metadata.
+    let defaultMeta: any = this.options.defaultMeta ? {
+      LOGGER: this.label,
+      LEVEL: label,
+      UUID: uuidv4()
+    } : null;
+
+    // If Default meta is in nested key...
+    if (defaultMetaKey && defaultMeta)
+      defaultMeta = { [defaultMetaKey]: defaultMeta };
 
     type LoggedLevel = Level | BaseLevel;
 
     const rawPayload = {
-      [LOGGER]: this,
+      [LOGGER]: this.label,
       [LEVEL]: label as LoggedLevel,
       [MESSAGE]: message,
-      [SPLAT]: args,
+      // ONlY add meta if exists.
+      [SPLAT]: hasAnyMeta ? [...args, { ...meta, ...this.options.meta, ...defaultMeta }] : args,
       message
     };
 
@@ -71,46 +102,67 @@ export class Logger<Level extends string> extends EventEmitter {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const logger = this;
 
-    const event = (transport) => {
+    const event = (transport: Transport) => {
 
       return (done) => {
 
-        let payload = {
-          [LOGGER]: logger as Logger<LoggedLevel>,
-          [LEVEL]: label as any,
-          [MESSAGE]: message,
-          [SPLAT]: args,
-          message
-        };
+        try {
 
-        // Inspect transport level.
-        if ((transport.level && !this.isLevelActive(transport.level as Level)) || transport.muted || this.filtered(transport, payload))
-          return done();
+          // Update default metadata with the Transport label now that we have it.
+          if (defaultMeta) {
+            if (defaultMetaKey)
+              defaultMeta[defaultMetaKey].TRANSPORT = transport.label;
+            else
+              defaultMeta.TRANSPORT = transport.label;
+          }
 
-        payload[TRANSPORT] = transport;
+          let payload = {
+            [LOGGER]: logger.label,
+            [TRANSPORT]: transport.label,
+            [LEVEL]: label,
+            [MESSAGE]: message,
+            [SPLAT]: hasAnyMeta ? [...args, { ...meta, ...this.options.meta, ...defaultMeta }] : args,
+            message
+          } as Payload<Level>;
 
-        payload = this.transformed(transport, payload);
-        transport.write(fastJson(payload));
+          // Inspect transport level.
+          if ((transport.level && !this.isLevelActive(transport.level as Level)) || transport.muted || this.filtered(transport, payload))
+            return done();
 
-        transport.emit('log', payload, transport);
-        transport.emit(`log:${label}`, payload, transport);
+          payload = this.transformed(transport, payload);
 
-        if (level !== 'write')
-          transport.write('\n');
+          // Payload symbols now stripped.
+          transport.write(fastJson({ ...payload }));
 
-        done(null, payload);
+          transport.emit('log', payload, transport);
+          transport.emit(`log:${label}`, payload, transport);
+
+          if (level !== 'write')
+            transport.write('\n');
+
+          done(null, payload);
+
+        }
+        catch (ex) {
+          ex.transport = transport.label;
+          done(ex, null);
+        }
+
 
       };
 
     };
 
-    asynceach<Payload<Level>>(this.transports.map(transport => event(transport)), (err, payloads) => {
-      if (err && console) {
-        // eslint-disable-next-line no-console
-        const _log = console.error || console.log;
+    asynceach<IPayload<Level>>(this.transports.map(transport => event(transport)), (err, payloads) => {
+
+      if (err) {
         if (!Array.isArray(err))
           err = [err];
-        err.forEach(e => _log(colorize(e.stack + '\n', 'red')));
+        err.forEach(e => {
+          const grp = log.group(`Transport ${(e as any).transport} Error`, 'yellow');
+          grp.error(e.stack);
+          grp.end();
+        });
       }
 
       this.emit('log:end', rawPayload);
@@ -122,6 +174,62 @@ export class Logger<Level extends string> extends EventEmitter {
     });
 
     return this;
+
+  }
+
+  /**
+   * Inpsects filters if should halt output of log message.
+   * 
+   * @param transport the Transport to get filters for.
+   * @param payload the payload to pass when filtering.
+   */
+  private filtered(transport: Transport, payload: Payload<Level>) {
+    return [...this.filters, ...transport.filters]
+      .some(filter => filter(payload));
+  }
+
+  /**
+   * Transforms a payload for output.
+   * 
+   * @param transport the Transport to include Transfroms from.
+   * @param payload the payload object to be transformed.
+   */
+  private transformed(transport: Transport, payload: Payload<Level>) {
+
+    const transforms = [...this.transforms, ...transport.transforms];
+
+    let transformed = payload;
+    let valid = true;
+    let err;
+    let tname;
+
+    while (valid && transforms.length) {
+      try {
+        const transformer = transforms.shift();
+        tname = getObjectName(transformer);
+        if (tname === 'function')
+          tname = 'anonymous';
+        transformed = transformer(transformed);
+        valid = isPlainObject(transformed);
+      }
+      catch (ex) {
+        valid = false;
+        err = ex;
+      }
+    }
+
+    if (err) {
+      const grp = log.group(`Transform ${tname} Invalid`, 'yellow');
+      grp.error(err.stack);
+      grp.end();
+    }
+
+    if (!valid) {
+      // eslint-disable-next-line no-console
+      log.fatal(`Transform "${tname}" resulted in malformed type of "${typeof transformed}".\n`);
+    }
+
+    return transformed;
 
   }
 
@@ -198,10 +306,10 @@ export class Logger<Level extends string> extends EventEmitter {
     if (!labels.length)
       labels = this.transports.map(t => t.label);
     labels.forEach(label => {
-      const transport = this.core.getTransport(label, this);
+      const transport = this.getTransport(label);
       if (!transport)
         // eslint-disable-next-line no-console
-        console.warn(colorize(`Transport "${label}" undefined or NOT found.`, 'yellow'));
+        log.warn(`Transport "${label}" undefined or NOT found.`);
       else
         transport.mute();
     });
@@ -217,10 +325,10 @@ export class Logger<Level extends string> extends EventEmitter {
     if (!labels.length)
       labels = this.transports.map(t => t.label);
     labels.forEach(label => {
-      const transport = this.core.getTransport(label, this);
+      const transport = this.getTransport(label);
       if (!transport)
         // eslint-disable-next-line no-console
-        console.warn(colorize(`Transport "${label}" undefined or NOT found.`, 'yellow'));
+        log.warn(`Transport "${label}" undefined or NOT found.`);
       else
         transport.unmute();
     });
@@ -236,7 +344,7 @@ export class Logger<Level extends string> extends EventEmitter {
   setLevel(level: Level, cascade = true) {
     if (typeof level === 'undefined' || !this.levels.includes(level)) {
       // eslint-disable-next-line no-console
-      console.warn(colorize(`Level "${level}" is invalid or not found.`, 'yellow'));
+      log.warn(`Level "${level}" is invalid or not found.`);
       return this;
     }
     this.options.level = level;
@@ -261,7 +369,7 @@ export class Logger<Level extends string> extends EventEmitter {
    */
   setTransportLevel(transport: string, level: Level): this;
   setTransportLevel(transport: string | Transport, level: Level) {
-    const _transport = (typeof transport === 'string' ? this.core.getTransport(transport as string) : transport) as Transport;
+    const _transport = (typeof transport === 'string' ? this.getTransport(transport as string) : transport) as Transport;
     _transport.setLevel(level, this);
     return this;
   }
@@ -272,7 +380,18 @@ export class Logger<Level extends string> extends EventEmitter {
    * @param level the level to compare.
    * @param levels the optional levels to compare against.
    */
-  isLevelActive(level: Level | BaseLevel, levels: Level[] = this.levels) {
+  isLevelActive(level: Level | BaseLevel, levels?: Level[]): boolean;
+
+  /**
+   * Checks if a level is active by payload.
+   * 
+   * @param payload the payload containing the level to inspect.
+   * @param levels the optional levels to compare against.
+   */
+  isLevelActive(payload: IPayload<Level>, levels?: Level[]): boolean;
+  isLevelActive(level: Level | BaseLevel | IPayload<Level>, levels: Level[] = this.levels): boolean {
+    if (typeof level === 'object')
+      level = level[LEVEL];
     if (['write', 'writeLn'].includes(level))
       return true;
     if (!levels.includes(level as Level))
@@ -316,7 +435,7 @@ export class Logger<Level extends string> extends EventEmitter {
     child = new Logger(label, options, true);
 
     // eslint-disable-next-line no-console
-    const disabled = type => (...args) => console.warn(colorize(`${type} disabled for child Loggers.`, 'yellow')) as any;
+    const disabled = type => (...args) => log.warn(`${type} disabled for child Loggers.`) as any;
 
     child.setTransportLevel = disabled('setTransportLevel');
     child.addTransport = disabled('addTransport');
@@ -330,22 +449,68 @@ export class Logger<Level extends string> extends EventEmitter {
   }
 
   /**
-   * Adds a Filter function.
+   * Adds a Filter function to specified Transport.
+   * 
+   * @param transport the transport to add the filter to.
+   * @param fn the Filter function to be added.
+   */
+  filter(transport: string, fn: Filter<Level>): this;
+
+  /**
+   * Adds a global Filter function.
    * 
    * @param fn the Filter function to be added.
    */
-  filter(fn: Filter<Level | BaseLevel>) {
-    this.options.filters.push(fn);
+  filter(fn: Filter<Level>): this;
+  filter(transport: string | Filter<Level>, fn?: Filter<Level>) {
+    if (typeof transport === 'function') {
+      fn = transport;
+      transport = undefined;
+    }
+    if (!transport) {
+      this.options.filters.push(fn);
+    }
+    else {
+      const _transport = this.getTransport(transport as string);
+      if (!_transport) {
+        log.fatal(`Transport ${transport} could NOT be found.`);
+        return this;
+      }
+      _transport.options.filters.push(fn);
+    }
     return this;
   }
 
   /**
    * Adds a Transform function.
    * 
+   * @param transport the Transport to add the transform to.
    * @param fn the Transform function to be added.
    */
-  transform(fn: Transform<Level | BaseLevel>) {
-    this.options.transforms.push(fn);
+  transform(transport: string, fn: Transform<Level>): this;
+
+  /**
+   * Adds a global Transform function.
+   * 
+   * @param fn the Transform function to be added.
+   */
+  transform(fn: Transform<Level>): this;
+  transform(transport: string | Transform<Level>, fn?: Transform<Level>) {
+    if (typeof transport === 'function') {
+      fn = transport;
+      transport = undefined;
+    }
+    if (!transport) {
+      this.options.transforms.push(fn);
+    }
+    else {
+      const _transport = this.getTransport(transport as string);
+      if (!_transport) {
+        log.fatal(`Transport ${transport} could NOT be found.`);
+        return this;
+      }
+      _transport.options.transforms.push(fn);
+    }
     return this;
   }
 
@@ -355,17 +520,17 @@ export class Logger<Level extends string> extends EventEmitter {
    * @param fn a Filter function to merge.
    * @param fns rest array of Filter functions to merge.
    */
-  mergeFilter(fn: Filter<Level | BaseLevel>, ...fns: Filter<Level | BaseLevel>[]): Filter<Level | BaseLevel>;
+  mergeFilter(fn: Filter<Level>, ...fns: Filter<Level>[]): Filter<Level>;
 
   /**
    * Merges Filter functions into single group.
    * 
    * @param fns rest array of Filter functions to merge.
    */
-  mergeFilter(fn: Filter<Level | BaseLevel>[]): Filter<Level | BaseLevel>;
-  mergeFilter(...fns: (Filter<Level | BaseLevel> | Filter<Level | BaseLevel>[])[]) {
-    const filters = flatten(fns) as Filter<Level | BaseLevel>[];
-    return (payload: Payload<Level | BaseLevel>) => filters.some(filter => filter(payload));
+  mergeFilter(fn: Filter<Level>[]): Filter<Level>;
+  mergeFilter(...fns: (Filter<Level> | Filter<Level>[])[]) {
+    const filters = flatten(fns) as Filter<Level>[];
+    return (payload: IPayload<Level | BaseLevel> & M) => filters.some(filter => filter(payload));
   }
 
   /**
@@ -374,80 +539,21 @@ export class Logger<Level extends string> extends EventEmitter {
    * @param fn a Transform function to merge.
    * @param fns rest array of Transform functions to merge.
    */
-  mergeTransform(fn: Transform<Level | BaseLevel>, ...fns: Transform<Level | BaseLevel>[]): Transform<Level | BaseLevel>;
+  mergeTransform(fn: Transform<Level>, ...fns: Transform<Level>[]): Transform<Level>;
 
   /**
    * Merges Transform functions into single group.
    * 
    * @param fns array of Transform functions to merge.
    */
-  mergeTransform(fns: Transform<Level | BaseLevel>[]): Transform<Level | BaseLevel>;
-  mergeTransform(...fns: (Transform<Level | BaseLevel> | Transform<Level | BaseLevel>[])[]) {
-    const arr = flatten(fns) as Transform<Level | BaseLevel>[];
-    return (payload: Payload<Level | BaseLevel>) => {
+  mergeTransform(fns: Transform<Level>[]): Transform<Level>;
+  mergeTransform(...fns: (Transform<Level> | Transform<Level>[])[]) {
+    const arr = flatten(fns) as Transform<Level>[];
+    return (payload: IPayload<Level | BaseLevel>) => {
       return arr.reduce((result, transform) => {
         return transform(result);
       }, payload);
     };
-  }
-
-  /**
-   * Inpsects filters if should halt output of log message.
-   * 
-   * @param transport the Transport to get filters for.
-   * @param payload the payload to pass when filtering.
-   */
-  filtered(transport: Transport, payload: Payload<Level | BaseLevel>) {
-    return [...this.filters, ...transport.filters]
-      .some(filter => filter(payload));
-  }
-
-  /**
-   * Transforms a payload for output.
-   * 
-   * @param transport the Transport to include Transfroms from.
-   * @param payload the payload object to be transformed.
-   */
-  transformed(transport: Transport, payload: Payload<Level | BaseLevel>) {
-
-    const transforms = [...this.transforms, ...transport.transforms];
-
-    let transformed = payload;
-    let valid = true;
-    let err;
-    let tname;
-
-    while (valid && transforms.length) {
-      try {
-        const transformer = transforms.shift();
-        tname = getObjectName(transformer);
-        if (tname === 'function')
-          tname = 'anonymous';
-        transformed = transformer(transformed);
-        valid = isPlainObject(transformed);
-      }
-      catch (ex) {
-        valid = false;
-        err = ex;
-      }
-    }
-
-    if (err) {
-      const stack = err.stack ? '\n' + colorize(err.stack, 'red') : '';
-      // eslint-disable-next-line no-console
-      console.error(colorize(`Transform "${tname}" resulted in error:\n`, 'yellow') + stack);
-      // eslint-disable-next-line no-console
-      process.exit(1);
-    }
-
-    if (!valid) {
-      // eslint-disable-next-line no-console
-      console.warn(colorize(`Transform "${tname}" resulted in malfored type of "${typeof transformed}".`, 'yellow'));
-      process.exit(1);
-    }
-
-    return transformed;
-
   }
 
   /**
@@ -527,7 +633,7 @@ export class Logger<Level extends string> extends EventEmitter {
       async end(cb?: Callback) {
         if (!buffer) {
           // eslint-disable-next-line no-console
-          console.warn(colorize(`Attempted to end write stream but buffer is null.`, 'yellow'));
+          log.warn(`Attempted to end write stream but buffer is null.`);
           return;
         }
         while (buffer.length) {
@@ -542,7 +648,9 @@ export class Logger<Level extends string> extends EventEmitter {
           await asynceach(transports, (err, data) => (cb || noop)(data));
         }
         catch (ex) {
-          //
+          log.group(`Group ${key} Error`, 'yellow')
+            .error(ex.stack)
+            .end();
         }
 
       }
@@ -560,23 +668,25 @@ export class Logger<Level extends string> extends EventEmitter {
    * 
    * @param label the label of the Transport to get.
    */
-  getTransport<T extends Transport, K extends string>(label: K) {
-    return this.core.getTransport<T, K>(label, this);
+  getTransport<Label extends string, T extends Transport>(label: Label) {
+    return this.transports.find(transport => transport.label === label) as T;
   }
 
   /**
-   * Adds a Transport to Logger.
+   * Clones an existing Transport by options.
    * 
-   * @param transport the Transport to add to collection.
+   * @param label the Transport label/name to be cloned.
+   * @param transport the Transport instance to be cloned.
    */
-  addTransport<T extends Transport>(transport: T) {
-    // Can't allow custom child levels and therefore
-    // probably shouldn't allow for adding Transports
-    // to children. Favor new Logger at that point.
-    if (this.isChild)
-      throw new Error(`Cannot add Transport to child Logger, create new Logger instead.`);
-    this.transports.push(transport);
-    return transport;
+  cloneTransport<Label extends string, T extends Transport>(
+    label: Label, transport: T) {
+    const options = transport.options;
+    if (!transport.getType) {
+      log.fatal((new Error(`Transport missing static property getType, clone failed.`).stack));
+      return;
+    }
+    const Klass: new (...args: any[]) => T = transport.getType as any;
+    return new Klass(label, options);
   }
 
   /**
@@ -588,6 +698,130 @@ export class Logger<Level extends string> extends EventEmitter {
    */
   uuidv4() {
     return uuidv4();
+  }
+
+  /**
+   * Useful helper to determine if payload contains a given Logger.
+   * 
+   * @param payload the current payload to inspect.
+   * @param label the label to match.
+   */
+  hasLogger(payload: IPayload<Level>, label: string) {
+    const logger = payload[LOGGER];
+    return logger === label;
+  }
+
+  /**
+   * Useful helper to determine if payload contains a given Transport.
+   * 
+   * @param payload the current payload to inspect.
+   * @param label the label to match.
+   */
+  hasTransport(payload: IPayload<Level>, label: string) {
+    const transport = payload[TRANSPORT];
+    return transport === label;
+  }
+
+  /**
+   * Useful helper to determine if Transport contains a given Level.
+   * 
+   * @param payload the current payload to inspect.
+   * @param label the label to match.
+   */
+  hasLevel(payload: IPayload<Level>, compare: Level | BaseLevel) {
+    const level = payload[LEVEL];
+    return level === compare;
+  }
+
+  /**
+   * Converts Symbols on payload to a simple mapped object.
+   * This can be used if you wish to output Symbols as metadata to
+   * your final output.
+   * 
+   * Defaults to Symbols [LOGGER, TRANSPORT, LEVEL]
+   * 
+   * @example
+   * defaultLogger.transform(payload => {
+   *    payload.metadata = defaultLogger.symbolsToMap(payload);
+   *    return payload;
+   * });
+   * 
+   * @param payload a log payload containing symbols.
+   */
+  symbolsToMap(payload: IPayload<Level>, ...symbols: symbol[]) {
+
+    if (!symbols.length)
+      symbols = [LOGGER, TRANSPORT, LEVEL];
+
+    return symbols.reduce((a, c) => {
+      const name = (c as any).description;
+      if (!name)
+        throw new Error(`Symbols to Map failed accessing Symbol ${c.toString()} description.`);
+      a[name] = payload[c as any];
+      return a;
+    }, {});
+
+  }
+
+  /**
+   * Simply extends the payload object with additional properties while also
+   * maintaining typings.
+   * 
+   * @param payload the payload object to be extended.
+   * @param obj the object to extend payload with.
+   */
+  extendPayload<T extends object>(payload: IPayload<Level>, obj: T) {
+    for (const k in obj) {
+      if (!Object.prototype.hasOwnProperty.call(obj, k)) continue;
+      payload[k] = obj[k];
+    }
+    return payload as IPayload<Level> & T;
+  }
+
+  /**
+   * Adds a Transport to Logger.
+   * 
+   * @param transport the Transport to add to collection.
+   */
+  addTransport<T extends Transport>(transport: T) {
+    // Can't allow custom child levels and therefore
+    // probably shouldn't allow for adding Transports
+    // to children. Favor new Logger at that point.
+    if (this.isChild) {
+      log.fatal(`Cannot add Transport to child Logger, create new Logger instead.`);
+      return this;
+    }
+    if (this.transports.find(t => t.label === transport.label)) {
+      log.fatal(`Duplicate Transport ${transport.label} detected, label names MUST be unique.`);
+      return this;
+    }
+    this.transports.push(transport);
+    return this;
+  }
+
+  /**
+   * Removes a Transport.
+   * 
+   * @param transport the transport to be removed.
+   */
+  removeTransport<T extends Transport>(transport: string | T): this;
+
+  /**
+   * Removes a Transport.
+   * 
+   * @param transport the Transport name/label to be removed.
+   */
+  removeTransport(transport: string): this;
+  removeTransport<T extends Transport>(transport: string | T) {
+    if (typeof transport === 'string')
+      transport = this.getTransport(transport) as T;
+    if (!transport) {
+      log.fatal(`Failed to remove Transport of unknown.`);
+      return this;
+    }
+    const idx = this.transports.indexOf(transport);
+    this.transports.splice(idx, 1);
+    return this;
   }
 
 }

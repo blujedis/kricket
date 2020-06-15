@@ -2,16 +2,18 @@ import { Transport } from './transport';
 import { ITransportOptions } from '../types';
 import { Writable } from 'readable-stream';
 
-export interface IStreamTransportOptions<Level extends string> extends ITransportOptions<Level> {
+export interface IStreamTransportOptions<Level extends string, Label extends string> extends ITransportOptions<Level, Label> {
   stream: Writable;
 }
 
-export class StreamTransport<Level extends string, K extends string = 'stream'> extends Transport<K, IStreamTransportOptions<Level>> {
+export class StreamTransport<Level extends string, Label extends string> extends Transport<IStreamTransportOptions<Level, Label>> {
 
   static Type = typeof StreamTransport;
 
-  constructor(options?: IStreamTransportOptions<Level>, alias?: K) {
-    super(alias || 'stream' as K, options);
+  options: IStreamTransportOptions<Level, Label>;
+
+  constructor(options?: IStreamTransportOptions<Level, Label>) {
+    super({ label: 'stream', ...options });
   }
 
   /**

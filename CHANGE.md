@@ -1,5 +1,16 @@
 # Kicket Changes
 
+
+## (06-14-2020)
+
+- Deprecated "addTransport", Transports should be added on init, if needed create new Logger.
+- Added simple internal logger for user feedback.
+- Improve default ConsoleTransport.
+- Improve typings.
+- Include RemoveTransport method.
+- Add helper methods for building filers and transforms.
+- Allow applying transform or filter to specific Transport (can also do in transform or filter itself)
+
 ## (06-13-2020)
 
 - Expose write and writeLn to transform/filters instead of "*".

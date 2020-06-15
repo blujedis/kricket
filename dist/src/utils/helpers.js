@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const ansi_colors_1 = require("ansi-colors");
 /**
  * Checks if value is an object.
  *
@@ -63,19 +62,4 @@ function uuidv4(a) {
     return a ? (a ^ Math.random() * 16 >> a / 4).toString(16) : ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, uuidv4);
 }
 exports.uuidv4 = uuidv4;
-const ansiMap = {
-    red: ansi_colors_1.red,
-    yellow: ansi_colors_1.yellow,
-    cyan: ansi_colors_1.cyan
-};
-/**
- * Colorizes a string.
- *
- * @param str the string to be colorized.
- * @param color the ansi-color to apply.
- */
-function colorize(str, color) {
-    return ansiMap[color](str);
-}
-exports.colorize = colorize;
 //# sourceMappingURL=helpers.js.map

@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const transport_1 = require("./transport");
 class DummyTransport extends transport_1.Transport {
-    constructor(options, alias) {
-        super(alias || 'dummy', options);
+    constructor(options) {
+        super({ label: 'dummy', ...options });
     }
     /**
      * Must override log method.

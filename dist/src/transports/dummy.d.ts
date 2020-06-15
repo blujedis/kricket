@@ -1,8 +1,8 @@
 import { Transport } from './transport';
 import { ITransportOptions } from '../types';
-export declare class DummyTransport<Level extends string, K extends string = 'dummy'> extends Transport<K, ITransportOptions<Level>> {
+export declare class DummyTransport<Level extends string, Label extends string> extends Transport<ITransportOptions<Level, Label>> {
     static Type: "string" | "number" | "bigint" | "boolean" | "symbol" | "undefined" | "object" | "function";
-    constructor(options?: ITransportOptions<Level>, alias?: K);
+    constructor(options?: ITransportOptions<Level, Label>);
     /**
      * Must override log method.
      *

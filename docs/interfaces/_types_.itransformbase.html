@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>IStreamTransportOptions | Octo</title>
+	<title>ITransformBase | Octo</title>
 	<meta name="description" content="Documentation for Octo">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,13 +56,13 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_transports_stream_.html">&quot;transports/stream&quot;</a>
+					<a href="../modules/_types_.html">&quot;types&quot;</a>
 				</li>
 				<li>
-					<a href="_transports_stream_.istreamtransportoptions.html">IStreamTransportOptions</a>
+					<a href="_types_.itransformbase.html">ITransformBase</a>
 				</li>
 			</ul>
-			<h1>Interface IStreamTransportOptions&lt;Level, Label&gt;</h1>
+			<h1>Interface ITransformBase&lt;Level&gt;</h1>
 		</div>
 	</div>
 </header>
@@ -75,19 +75,19 @@
 					<li>
 						<h4>Level<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h4>
 					</li>
-					<li>
-						<h4>Label<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h4>
-					</li>
 				</ul>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="_types_.itransportoptions.html" class="tsd-signature-type">ITransportOptions</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Level</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Label</span><span class="tsd-signature-symbol">&gt;</span>
+						<span class="target">ITransformBase</span>
 						<ul class="tsd-hierarchy">
 							<li>
-								<span class="target">IStreamTransportOptions</span>
+								<a href="_types_.itransportoptions.html" class="tsd-signature-type">ITransportOptions</a>
+							</li>
+							<li>
+								<a href="_types_.iloggeroptions.html" class="tsd-signature-type">ILoggerOptions</a>
 							</li>
 						</ul>
 					</li>
@@ -97,52 +97,25 @@
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section ">
+						<section class="tsd-index-section tsd-is-not-exported">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="_transports_stream_.istreamtransportoptions.html#asjson" class="tsd-kind-icon">asJSON</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="_transports_stream_.istreamtransportoptions.html#filters" class="tsd-kind-icon">filters</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="_transports_stream_.istreamtransportoptions.html#highwatermark" class="tsd-kind-icon">high<wbr>Water<wbr>Mark</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="_transports_stream_.istreamtransportoptions.html#label" class="tsd-kind-icon">label</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="_transports_stream_.istreamtransportoptions.html#level" class="tsd-kind-icon">level</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="_transports_stream_.istreamtransportoptions.html#muted" class="tsd-kind-icon">muted</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_transports_stream_.istreamtransportoptions.html#stream" class="tsd-kind-icon">stream</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="_transports_stream_.istreamtransportoptions.html#transforms" class="tsd-kind-icon">transforms</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_types_.itransformbase.html#filters" class="tsd-kind-icon">filters</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_types_.itransformbase.html#level" class="tsd-kind-icon">level</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_types_.itransformbase.html#muted" class="tsd-kind-icon">muted</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_types_.itransformbase.html#transforms" class="tsd-kind-icon">transforms</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group ">
+			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-					<a name="asjson" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> asJSON</h3>
-					<div class="tsd-signature tsd-kind-icon">asJSON<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="_transports_console_.iconsoleoptions.html">IConsoleOptions</a>.<a href="_transports_console_.iconsoleoptions.html#asjson">asJSON</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/kricket/blob/7a95132/src/types.ts#L152">src/types.ts:152</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Kricket on final dispatch can output JSON or the payload message. When &quot;asJSON&quot; is set
-							to false the payload contains only the message.</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>default</dt>
-							<dd><p>true</p>
-							</dd>
-						</dl>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
 					<a name="filters" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> filters</h3>
 					<div class="tsd-signature tsd-kind-icon">filters<span class="tsd-signature-symbol">:</span> <a href="../modules/_types_.html#filter" class="tsd-signature-type">Filter</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Level</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_transports_console_.iconsoleoptions.html">IConsoleOptions</a>.<a href="_transports_console_.iconsoleoptions.html#filters">filters</a></p>
 						<ul>
 							<li>Defined in <a href="https://github.com/blujedis/kricket/blob/7a95132/src/types.ts#L128">src/types.ts:128</a></li>
 						</ul>
@@ -158,49 +131,11 @@
 						</dl>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-					<a name="highwatermark" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> high<wbr>Water<wbr>Mark</h3>
-					<div class="tsd-signature tsd-kind-icon">high<wbr>Water<wbr>Mark<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="_transports_console_.iconsoleoptions.html">IConsoleOptions</a>.<a href="_transports_console_.iconsoleoptions.html#highwatermark">highWaterMark</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/kricket/blob/7a95132/src/types.ts#L159">src/types.ts:159</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The stream limit which when reached we should pause writes until backpressure has been relieved.</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>default</dt>
-							<dd><p>16</p>
-							</dd>
-						</dl>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-					<a name="label" class="tsd-anchor"></a>
-					<h3>label</h3>
-					<div class="tsd-signature tsd-kind-icon">label<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Label</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="_transports_console_.iconsoleoptions.html">IConsoleOptions</a>.<a href="_transports_console_.iconsoleoptions.html#label">label</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/kricket/blob/7a95132/src/types.ts#L144">src/types.ts:144</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The name/label for the Transport.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
 					<a name="level" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> level</h3>
 					<div class="tsd-signature tsd-kind-icon">level<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Level</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_transports_console_.iconsoleoptions.html">IConsoleOptions</a>.<a href="_transports_console_.iconsoleoptions.html#level">level</a></p>
 						<ul>
 							<li>Defined in <a href="https://github.com/blujedis/kricket/blob/7a95132/src/types.ts#L116">src/types.ts:116</a></li>
 						</ul>
@@ -211,12 +146,11 @@
 						</div>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
 					<a name="muted" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> muted</h3>
 					<div class="tsd-signature tsd-kind-icon">muted<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_transports_console_.iconsoleoptions.html">IConsoleOptions</a>.<a href="_transports_console_.iconsoleoptions.html#muted">muted</a></p>
 						<ul>
 							<li>Defined in <a href="https://github.com/blujedis/kricket/blob/7a95132/src/types.ts#L121">src/types.ts:121</a></li>
 						</ul>
@@ -227,22 +161,11 @@
 						</div>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="stream" class="tsd-anchor"></a>
-					<h3>stream</h3>
-					<div class="tsd-signature tsd-kind-icon">stream<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Writable</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/kricket/blob/7a95132/src/transports/stream.ts#L6">src/transports/stream.ts:6</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
 					<a name="transforms" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> transforms</h3>
 					<div class="tsd-signature tsd-kind-icon">transforms<span class="tsd-signature-symbol">:</span> <a href="../modules/_types_.html#transform" class="tsd-signature-type">Transform</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Level</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_transports_console_.iconsoleoptions.html">IConsoleOptions</a>.<a href="_transports_console_.iconsoleoptions.html#transforms">transforms</a></p>
 						<ul>
 							<li>Defined in <a href="https://github.com/blujedis/kricket/blob/7a95132/src/types.ts#L135">src/types.ts:135</a></li>
 						</ul>
@@ -290,13 +213,13 @@
 					<li class=" tsd-kind-module">
 						<a href="../modules/_transports_index_.html">&quot;transports/index&quot;</a>
 					</li>
-					<li class="current tsd-kind-module">
+					<li class=" tsd-kind-module">
 						<a href="../modules/_transports_stream_.html">&quot;transports/stream&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/_transports_transport_.html">&quot;transports/transport&quot;</a>
 					</li>
-					<li class=" tsd-kind-module">
+					<li class="current tsd-kind-module">
 						<a href="../modules/_types_.html">&quot;types&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -315,42 +238,102 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../classes/_transports_stream_.streamtransport.html" class="tsd-kind-icon">Stream<wbr>Transport</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="_types_.ieventdata.html" class="tsd-kind-icon">IEvent<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="_types_.iloggeroptions.html" class="tsd-kind-icon">ILogger<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="_types_.imap.html" class="tsd-kind-icon">IMap</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="_types_.ipayload.html" class="tsd-kind-icon">IPayload</a>
 					</li>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="_transports_stream_.istreamtransportoptions.html" class="tsd-kind-icon">IStream<wbr>Transport<wbr>Options</a>
+					<li class="current tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter tsd-is-not-exported">
+						<a href="_types_.itransformbase.html" class="tsd-kind-icon">ITransform<wbr>Base</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-								<a href="_transports_stream_.istreamtransportoptions.html#asjson" class="tsd-kind-icon">asJSON</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
+								<a href="_types_.itransformbase.html#filters" class="tsd-kind-icon">filters</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-								<a href="_transports_stream_.istreamtransportoptions.html#filters" class="tsd-kind-icon">filters</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
+								<a href="_types_.itransformbase.html#level" class="tsd-kind-icon">level</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-								<a href="_transports_stream_.istreamtransportoptions.html#highwatermark" class="tsd-kind-icon">high<wbr>Water<wbr>Mark</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
+								<a href="_types_.itransformbase.html#muted" class="tsd-kind-icon">muted</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-								<a href="_transports_stream_.istreamtransportoptions.html#label" class="tsd-kind-icon">label</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-								<a href="_transports_stream_.istreamtransportoptions.html#level" class="tsd-kind-icon">level</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-								<a href="_transports_stream_.istreamtransportoptions.html#muted" class="tsd-kind-icon">muted</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_transports_stream_.istreamtransportoptions.html#stream" class="tsd-kind-icon">stream</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-								<a href="_transports_stream_.istreamtransportoptions.html#transforms" class="tsd-kind-icon">transforms</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
+								<a href="_types_.itransformbase.html#transforms" class="tsd-kind-icon">transforms</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="_types_.itransportoptions.html" class="tsd-kind-icon">ITransport<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+						<a href="../modules/_types_.html#baselevel" class="tsd-kind-icon">Base<wbr>Level</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+						<a href="../modules/_types_.html#callback" class="tsd-kind-icon">Callback</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="../modules/_types_.html#childlogger" class="tsd-kind-icon">Child<wbr>Logger</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+						<a href="../modules/_types_.html#childomits" class="tsd-kind-icon">Child<wbr>Omits</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+						<a href="../modules/_types_.html#errorcallback" class="tsd-kind-icon">Error<wbr>Callback</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="../modules/_types_.html#filter" class="tsd-kind-icon">Filter</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="../modules/_types_.html#keyof" class="tsd-kind-icon">Key<wbr>Of</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="../modules/_types_.html#logmethod" class="tsd-kind-icon">Log<wbr>Method</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="../modules/_types_.html#logmethods" class="tsd-kind-icon">Log<wbr>Methods</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="../modules/_types_.html#nodecallback" class="tsd-kind-icon">Node<wbr>Callback</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="../modules/_types_.html#payload" class="tsd-kind-icon">Payload</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="../modules/_types_.html#transform" class="tsd-kind-icon">Transform</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="../modules/_types_.html#valueof" class="tsd-kind-icon">Value<wbr>Of</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="../modules/_types_.html#valuesof" class="tsd-kind-icon">Values<wbr>Of</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="../modules/_types_.html#eol" class="tsd-kind-icon">EOL</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="../modules/_types_.html#level" class="tsd-kind-icon">LEVEL</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="../modules/_types_.html#logger" class="tsd-kind-icon">LOGGER</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="../modules/_types_.html#message" class="tsd-kind-icon">MESSAGE</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="../modules/_types_.html#splat" class="tsd-kind-icon">SPLAT</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="../modules/_types_.html#transport" class="tsd-kind-icon">TRANSPORT</a>
+					</li>
 				</ul>
 			</nav>
 		</div>

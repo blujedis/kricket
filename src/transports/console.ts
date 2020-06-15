@@ -1,12 +1,16 @@
 import { Transport } from './transport';
 import { ITransportOptions } from '../types';
 
-export class ConsoleTransport<Level extends string, K extends string = 'console'> extends Transport<K, ITransportOptions<Level>> {
+export interface IConsoleOptions<Level extends string, Label extends string> extends ITransportOptions<Level, Label> {
+
+}
+
+export class ConsoleTransport<Level extends string, Label extends string> extends Transport<IConsoleOptions<Level, Label>> {
 
   static Type = typeof ConsoleTransport;
 
-  constructor(options?: ITransportOptions<Level>, alias?: K) {
-    super(alias || 'console' as K, { ...{ asJSON: false }, ...options });
+  constructor(options?: IConsoleOptions<Level, Label>) {
+    super({ label: 'console', ...options, asJSON: false });
   }
 
   /**
@@ -15,7 +19,10 @@ export class ConsoleTransport<Level extends string, K extends string = 'console'
    * @param payload the payload object to ouptut.
    */
   log(payload: string) {
-    process.stdout.write(payload);
+    process.stdout.write(payload, (err) => {
+      if (err)
+        throw err;
+    });
   }
 
 }
