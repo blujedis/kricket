@@ -1,5 +1,8 @@
 # Kicket Changes
 
+## (07-12-2020)
+
+- Fix issue where transport transforms were not unique.
 
 ## (06-14-2020)
 
