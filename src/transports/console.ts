@@ -1,11 +1,11 @@
 import { Transport } from './transport';
 import { ITransportOptions } from '../types';
 
-export interface IConsoleOptions<Level extends string, Label extends string> extends ITransportOptions<Level, Label> {
+export interface IConsoleOptions<Level extends string, Label extends string = string> extends ITransportOptions<Level, Label> {
 
 }
 
-export class ConsoleTransport<Level extends string, Label extends string> extends Transport<IConsoleOptions<Level, Label>> {
+export class ConsoleTransport<Level extends string, Label extends string = string> extends Transport<IConsoleOptions<Level, Label>> {
 
   static Type = typeof ConsoleTransport;
 

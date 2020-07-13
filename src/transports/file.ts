@@ -16,7 +16,7 @@ export interface IFileOptions {
   highWaterMark?: number;
 }
 
-export interface IFileTransportOptions<Level extends string, Label extends string> extends ITransportOptions<Level, Label> {
+export interface IFileTransportOptions<Level extends string, Label extends string = string> extends ITransportOptions<Level, Label> {
   filename?: string;                                    // file path for logs
   frequency?: Frequency;                                // (default: YYYYMMDD)             
   verbose?: boolean;                                    // (default: true)
@@ -44,7 +44,7 @@ const DEFAULTS: IFileTransportOptions<any, any> = {
   eol: EOL
 };
 
-export class FileTransport<Level extends string, Label extends string> extends Transport<IFileTransportOptions<Level, Label>> {
+export class FileTransport<Level extends string, Label extends string = string> extends Transport<IFileTransportOptions<Level, Label>> {
 
   static Type = typeof FileTransport;
 

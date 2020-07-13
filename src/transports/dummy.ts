@@ -1,7 +1,7 @@
 import { Transport } from './transport';
 import { ITransportOptions } from '../types';
 
-export class DummyTransport<Level extends string, Label extends string> extends Transport<ITransportOptions<Level, Label>> {
+export class DummyTransport<Level extends string, Label extends string = string> extends Transport<ITransportOptions<Level, Label>> {
 
   static Type = typeof DummyTransport;
 

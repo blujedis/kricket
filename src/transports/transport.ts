@@ -10,8 +10,6 @@ export abstract class Stream extends Writable {
 const DEFAULTS = {
   level: null,
   highWaterMark: 16,
-  filters: [],
-  transforms: [],
   asJSON: true
 };
 
@@ -24,7 +22,8 @@ export abstract class Transport<Options extends ITransportOptions = ITransportOp
 
   constructor(options?: Options) {
     super({ highWaterMark: (options || {} as any).highWaterMark || 16 });
-    this.options = { ...DEFAULTS, ...options };
+    this.options = { level: null, highWaterMark: 16, asJSON: true, filters: [], transforms: [], ...options };
+
 
     if (!this.options.label)
       log.fatal('Failed construct Transport using label/name of undefined');

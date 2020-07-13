@@ -1,6 +1,6 @@
 {
   "name": "kricket",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "license": "ISC",
   "main": "dist/index.js",
   "publishConfig": {

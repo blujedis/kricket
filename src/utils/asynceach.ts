@@ -1,7 +1,7 @@
 
-export type RunnerResult<T> = T[] | { [key: string]: T };
+export type RunnerResult<T> = T[] | { [key: string]: T; };
 export type RunnerCallback<T> = (err: Error | Error[], results: RunnerResult<T>) => void;
-export type RunnerEvents = Function[] | { [key: string]: Function };
+export type RunnerEvents = Function[] | { [key: string]: Function; };
 
 /**
  * Runs events in parallel return results.

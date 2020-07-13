@@ -96,7 +96,7 @@ class Logger extends events_1.EventEmitter {
                         else
                             defaultMeta.TRANSPORT = transport.label;
                     }
-                    let payload = {
+                    const payload = {
                         [types_1.LOGGER]: logger.label,
                         [types_1.TRANSPORT]: transport.label,
                         [types_1.LEVEL]: label,
@@ -107,9 +107,9 @@ class Logger extends events_1.EventEmitter {
                     // Inspect transport level.
                     if ((transport.level && !this.isLevelActive(transport.level)) || transport.muted || this.filtered(transport, payload))
                         return done();
-                    payload = this.transformed(transport, payload);
+                    const transformed = this.transformed(transport, { ...payload });
                     // Payload symbols now stripped.
-                    transport.write(fast_json_stable_stringify_1.default({ ...payload }));
+                    transport.write(fast_json_stable_stringify_1.default(transformed));
                     transport.emit('log', payload, transport);
                     transport.emit(`log:${label}`, payload, transport);
                     if (level !== 'write')

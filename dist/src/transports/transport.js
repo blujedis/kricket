@@ -9,15 +9,13 @@ exports.Stream = Stream;
 const DEFAULTS = {
     level: null,
     highWaterMark: 16,
-    filters: [],
-    transforms: [],
     asJSON: true
 };
 class Transport extends Stream {
     constructor(options) {
         super({ highWaterMark: (options || {}).highWaterMark || 16 });
         this.buffer = '';
-        this.options = { ...DEFAULTS, ...options };
+        this.options = { level: null, highWaterMark: 16, asJSON: true, filters: [], transforms: [], ...options };
         if (!this.options.label)
             utils_1.log.fatal('Failed construct Transport using label/name of undefined');
     }

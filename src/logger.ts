@@ -115,7 +115,7 @@ export class Logger<Level extends string, M extends object = {}> extends EventEm
               defaultMeta.TRANSPORT = transport.label;
           }
 
-          let payload = {
+          const payload = {
             [LOGGER]: logger.label,
             [TRANSPORT]: transport.label,
             [LEVEL]: label,
@@ -128,10 +128,10 @@ export class Logger<Level extends string, M extends object = {}> extends EventEm
           if ((transport.level && !this.isLevelActive(transport.level as Level)) || transport.muted || this.filtered(transport, payload))
             return done();
 
-          payload = this.transformed(transport, payload);
+          const transformed = this.transformed(transport, { ...payload });
 
           // Payload symbols now stripped.
-          transport.write(fastJson({ ...payload }));
+          transport.write(fastJson(transformed));
 
           transport.emit('log', payload, transport);
           transport.emit(`log:${label}`, payload, transport);
