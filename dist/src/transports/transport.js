@@ -6,11 +6,6 @@ const utils_1 = require("../utils");
 class Stream extends readable_stream_1.Writable {
 }
 exports.Stream = Stream;
-const DEFAULTS = {
-    level: null,
-    highWaterMark: 16,
-    asJSON: true
-};
 class Transport extends Stream {
     constructor(options) {
         super({ highWaterMark: (options || {}).highWaterMark || 16 });

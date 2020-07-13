@@ -7,12 +7,6 @@ export abstract class Stream extends Writable {
   writable: boolean;
 }
 
-const DEFAULTS = {
-  level: null,
-  highWaterMark: 16,
-  asJSON: true
-};
-
 export abstract class Transport<Options extends ITransportOptions = ITransportOptions> extends Stream {
 
   static Type;

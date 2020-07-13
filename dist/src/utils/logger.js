@@ -34,7 +34,7 @@ function writer(str, shouldExit, cb) {
         cb = shouldExit;
         shouldExit = undefined;
     }
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    // eslint-disable-next-line
     cb = cb || ((...args) => { });
     const onError = (err) => {
         if (err)

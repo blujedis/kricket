@@ -55,7 +55,7 @@ function writer(str: string, shouldExit: boolean | WriterCallback, cb?: WriterCa
     cb = shouldExit as WriterCallback;
     shouldExit = undefined;
   }
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  // eslint-disable-next-line
   cb = cb || ((...args) => { });
 
   const onError = (err) => {
