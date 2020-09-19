@@ -68,6 +68,8 @@
 					<a href="http://github.com/blujedis/kricket"><img src="https://raw.githubusercontent.com/blujedis/kricket/master/fixtures/logo.jpg" width="200" /></a>
 				</p>
 				<p>A un-opinionated Logger using Transport streams. Kricket makes only one opinion that being to manage log levels for you that you specify. All other filters and transforms are up to you.</p>
+				<p>If you are looking for a Logger that auto-magically wires up things for you, this is <strong>NOT</strong> it!</p>
+				<p>Kricket simply provides the tools for you to make as simple or as complex a Logger as you wish. Initially it may seem a bit much but once you get the hang of it you&#39;ll find it quite useful and extremely flexible. </p>
 				<a href="#install" id="install" style="color: inherit; text-decoration: none;">
 					<h2>Install</h2>
 				</a>
@@ -106,6 +108,11 @@ defaultLogger
     <span class="hljs-keyword">new</span> ConsoleTransport({ asJSON: <span class="hljs-literal">false</span> })
   ]
 });</code></pre>
+				<a href="#logger-labels" id="logger-labels" style="color: inherit; text-decoration: none;">
+					<h4>Logger Labels</h4>
+				</a>
+				<p>As shown above the default Logger is generated with the label <strong>default</strong>. This allows you to lookup other Loggers you might have generated from any other Logger which can be helpful in some instances.</p>
+				<p>However a label is not required you can also create a logger without a label although a random generated string will be created for you behind the scenes.</p>
 				<a href="#limiting-output-by-level" id="limiting-output-by-level" style="color: inherit; text-decoration: none;">
 					<h3>Limiting Output by Level</h3>
 				</a>
@@ -176,7 +183,7 @@ defaultLogger.transform(<span class="hljs-function">(<span class="hljs-params">p
   <span class="hljs-keyword">static</span> Type = <span class="hljs-keyword">typeof</span> MyTransport; 
 
   <span class="hljs-keyword">constructor</span>(<span class="hljs-params">options?: IMyTransport&lt;Level, Label&gt;</span>) {
-    <span class="hljs-keyword">super</span>(alias || <span class="hljs-string">'myTransport'</span>, options);
+    <span class="hljs-keyword">super</span>(<span class="hljs-string">'myTransport'</span>, options);
   }
 
   log(payload: <span class="hljs-built_in">string</span>) {
@@ -197,6 +204,11 @@ defaultLogger.transform(<span class="hljs-function">(<span class="hljs-params">p
 });</code></pre>
 				<p>You can also add a Transport after Logger creation as follows:</p>
 				<pre><code class="language-ts">myLogger.addTransport(<span class="hljs-keyword">new</span> MyTransport());</code></pre>
+				<a href="#real-world-example" id="real-world-example" style="color: inherit; text-decoration: none;">
+					<h2>Real World Example</h2>
+				</a>
+				<p>For a real work example take a look at the basic example found in the <strong>examples</strong> directory.</p>
+				<p>See <a href="examples/basic.ts">examples</a></p>
 				<a href="#docs" id="docs" style="color: inherit; text-decoration: none;">
 					<h2>Docs</h2>
 				</a>

@@ -6,12 +6,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const logger_1 = require("./logger");
 const transports_1 = require("./transports");
 const core_1 = __importDefault(require("./core"));
+const utils_1 = require("./utils");
 function createLogger(label, options) {
     if (typeof label === 'object') {
         options = label;
         label = undefined;
     }
-    label = label || '';
+    label = label || utils_1.randomID();
     const logger = new logger_1.Logger(label, options);
     core_1.default.loggers.set(label, logger);
     return logger;

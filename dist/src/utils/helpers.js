@@ -62,4 +62,13 @@ function uuidv4(a) {
     return a ? (a ^ Math.random() * 16 >> a / 4).toString(16) : ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, uuidv4);
 }
 exports.uuidv4 = uuidv4;
+/**
+ * Generate simple random id.
+ *
+ * @param radix the numberic value used to convert to strings.
+ */
+function randomID(radix = 16) {
+    return '#' + (Math.random() * 0xFFFFFF << 0).toString(radix);
+}
+exports.randomID = randomID;
 //# sourceMappingURL=helpers.js.map

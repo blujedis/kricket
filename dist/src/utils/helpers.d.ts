@@ -36,3 +36,9 @@ export declare function flatten<T = any>(arr: T[]): T[];
  * Generate uuid.
  */
 export declare function uuidv4(a?: any): any;
+/**
+ * Generate simple random id.
+ *
+ * @param radix the numberic value used to convert to strings.
+ */
+export declare function randomID(radix?: number): string;

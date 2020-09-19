@@ -2,6 +2,7 @@
 import { Logger } from './logger';
 import { ConsoleTransport } from './transports';
 import core from './core';
+import { randomID } from './utils';
 import { ILoggerOptions, LogMethods } from './types';
 
 /**
@@ -25,7 +26,7 @@ export function createLogger<Level extends string, M extends object = {}>(label:
     label = undefined;
   }
 
-  label = label || '';
+  label = label || randomID();
   const logger = new Logger<Level, M>(label as string, options);
   core.loggers.set(label as string, logger);
 

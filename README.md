@@ -4,6 +4,10 @@
 
 A un-opinionated Logger using Transport streams. Kricket makes only one opinion that being to manage log levels for you that you specify. All other filters and transforms are up to you.
 
+If you are looking for a Logger that auto-magically wires up things for you, this is **NOT** it!
+
+Kricket simply provides the tools for you to make as simple or as complex a Logger as you wish. Initially it may seem a bit much but once you get the hang of it you'll find it quite useful and extremely flexible. 
+
 ## Install
 
 ```sh
@@ -50,6 +54,12 @@ export const defaultLogger = createLogger('default', {
   ]
 });
 ```
+
+#### Logger Labels
+
+As shown above the default Logger is generated with the label **default**. This allows you to lookup other Loggers you might have generated from any other Logger which can be helpful in some instances.
+
+However a label is not required you can also create a logger without a label although a random generated string will be created for you behind the scenes.
 
 ### Limiting Output by Level
 
@@ -140,7 +150,7 @@ export class MyTransport<Level extends string, Label extends string> extends Tra
   static Type = typeof MyTransport; 
   
   constructor(options?: IMyTransport<Level, Label>) {
-    super(alias || 'myTransport', options);
+    super('myTransport', options);
   }
   
   log(payload: string) {
@@ -169,6 +179,13 @@ You can also add a Transport after Logger creation as follows:
 ```ts
 myLogger.addTransport(new MyTransport());
 ```
+
+## Real World Example
+
+For a real work example take a look at the basic example found in the **examples** directory.
+
+See [examples](examples/basic.ts)
+
 
 ## Docs
 

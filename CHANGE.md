@@ -1,5 +1,9 @@
 # Kicket Changes
 
+## (09-19-2020)
+
+- Make label optional when creating logger, generate random string by default.
+
 ## (07-12-2020)
 
 - Fix issue where transport transforms were not unique.
