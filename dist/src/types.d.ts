@@ -23,24 +23,6 @@ export declare const LEVEL: unique symbol;
 export declare const MESSAGE: unique symbol;
 export declare const SPLAT: unique symbol;
 export declare const EOL = "\n";
-export interface IEventData {
-    /**
-     * The payload's Logger label.
-     */
-    LOGGER?: string;
-    /**
-     * The payload's Transport label
-     */
-    TRANSPORT?: string;
-    /**
-     * The payload's log level.
-     */
-    LEVEL?: string;
-    /**
-     * I unique identifier for the payload.
-     */
-    UUID?: string;
-}
 export interface IPayload<Level extends string> {
     /**
      * The payload's Logger label.
