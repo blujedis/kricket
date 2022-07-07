@@ -6,15 +6,10 @@ module.exports = {
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": [
-      "./tsconfig.json",
-      "./tsconfig.spec.json"
-    ],
     "sourceType": "module"
   },
   "plugins": [
-    "@typescript-eslint",
-    "@typescript-eslint/tslint"
+    "@typescript-eslint"
   ],
   "extends": [
     "eslint:recommended",
@@ -22,12 +17,13 @@ module.exports = {
     "plugin:@typescript-eslint/recommended"
   ],
   "rules": {
+    "no-redeclare": "off",
+    "@typescript-eslint/no-redeclare": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/member-delimiter-style": "off",
     "@typescript-eslint/ban-ts-ignore": "off",
     "@typescript-eslint/camelcase": "off",
-    "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/interface-name-prefix": "off",
     "@typescript-eslint/adjacent-overload-signatures": "error",
     "@typescript-eslint/array-type": "error",
@@ -112,7 +108,6 @@ module.exports = {
     "no-invalid-this": "off",
     "no-new-func": "error",
     "no-new-wrappers": "off",
-    "no-redeclare": "error",
     "no-return-await": "error",
     "no-sequences": "error",
     "no-shadow": [
@@ -146,28 +141,5 @@ module.exports = {
     "spaced-comment": "error",
     "use-isnan": "error",
     "valid-typeof": "off",
-    "@typescript-eslint/tslint/config": [
-      "error",
-      {
-        "rules": {
-          "jsdoc-format": [
-            true,
-            "check-multiline-start"
-          ],
-          "no-reference-import": true,
-          "whitespace": [
-            true,
-            "check-branch",
-            "check-decl",
-            "check-operator",
-            "check-separator",
-            "check-type",
-            "check-typecast",
-            "check-type-operator",
-            "check-rest-spread"
-          ]
-        }
-      }
-    ]
   }
 };

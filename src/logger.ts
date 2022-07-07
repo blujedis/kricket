@@ -142,7 +142,7 @@ export class Logger<Level extends string, M extends Record<string, unknown> = Re
 
         }
         catch (ex) {
-          ex.transport = transport.label;
+          (ex as Error & { transport: Transport }).transport = transport.label;
           done(ex, null);
         }
 
@@ -647,7 +647,7 @@ export class Logger<Level extends string, M extends Record<string, unknown> = Re
         }
         catch (ex) {
           log.group(`Group ${key} Error`, 'yellow')
-            .error(ex.stack)
+            .error((ex as Error).stack)
             .end();
         }
 

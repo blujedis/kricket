@@ -1,5 +1,9 @@
 # Kicket Changes
 
+## (07-07-2022)
+
+- Bump, cleanup, fix eslint.
+
 ## (10-03-2020)
 
 - Typings fix, type not exported.

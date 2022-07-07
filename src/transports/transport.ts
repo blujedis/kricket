@@ -3,8 +3,8 @@ import { ITransportOptions, EOL, IPayload, ErrorCallback, NodeCallback } from '.
 import { Logger } from '../logger';
 import { log } from '../utils';
 
+
 export abstract class Stream extends Writable {
-  writable: boolean;
 }
 
 export abstract class Transport<Options extends ITransportOptions = ITransportOptions> extends Stream {
@@ -157,7 +157,7 @@ export abstract class Transport<Options extends ITransportOptions = ITransportOp
       if (cb) cb();
     }
     catch (ex) {
-      if (cb) cb(ex);
+      if (cb) cb(ex as Error);
     }
     return true;
   }
@@ -184,7 +184,7 @@ export abstract class Transport<Options extends ITransportOptions = ITransportOp
    * @param enc optional encoding.
    * @param cb optional callback.
    */
-  end(chunk: any, enc: string, cb?: NodeCallback): void;
+  end(chunk: any, enc: string, cb?: NodeCallback): this;
 
   /**
    * Ends the stream, outputs if needed then calls destroy.
@@ -192,15 +192,15 @@ export abstract class Transport<Options extends ITransportOptions = ITransportOp
    * @param chunk optional chunk to output on end.
    * @param cb optional callback.
    */
-  end(chunk: any, cb?: NodeCallback): void;
+  end(chunk: any, cb?: NodeCallback): this;
 
   /**
    * Ends the stream, outputs if needed then calls destroy.
    * 
    * @param cb optional callback.
    */
-  end(cb?: NodeCallback): void;
-  end(chunk: any, enc?: string | NodeCallback, cb?: NodeCallback): void {
+  end(cb?: NodeCallback): this;
+  end(chunk?: any, enc?: string | NodeCallback, cb?: NodeCallback): any {
 
     if (typeof chunk === 'function') {
       cb = chunk;

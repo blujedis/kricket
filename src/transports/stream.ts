@@ -10,8 +10,6 @@ export class StreamTransport<Level extends string, Label extends string = string
 
   static Type = typeof StreamTransport;
 
-  options: IStreamTransportOptions<Level, Label>;
-
   constructor(options?: IStreamTransportOptions<Level, Label>) {
     super({ label: 'stream', ...options });
   }
