@@ -2,12 +2,11 @@ import { Writable } from 'readable-stream';
 import { ITransportOptions, ErrorCallback, NodeCallback } from '../types';
 import { Logger } from '../logger';
 export declare abstract class Stream extends Writable {
-    writable: boolean;
 }
 export declare abstract class Transport<Options extends ITransportOptions = ITransportOptions> extends Stream {
     static Type: any;
-    options: Options;
-    buffer: string;
+    _options: Options;
+    _buffer: string;
     constructor(options?: Options);
     /**
      * Gets the extended Type.
@@ -87,24 +86,24 @@ export declare abstract class Transport<Options extends ITransportOptions = ITra
      */
     destroy(err?: Error | null, cb?: ErrorCallback): this;
     /**
+    * Ends the stream, outputs if needed then calls destroy.
+    *
+    * @param cb optional callback.
+    */
+    end(cb?: NodeCallback): this;
+    /**
+     * Ends the stream, outputs if needed then calls destroy.
+     *
+     * @param chunk optional chunk to output on end.
+     * @param cb optional callback.
+     */
+    end(chunk: any, cb?: NodeCallback): this;
+    /**
      * Ends the stream, outputs if needed then calls destroy.
      *
      * @param chunk optional chunk to output on end.
      * @param enc optional encoding.
      * @param cb optional callback.
      */
-    end(chunk: any, enc: string, cb?: NodeCallback): void;
-    /**
-     * Ends the stream, outputs if needed then calls destroy.
-     *
-     * @param chunk optional chunk to output on end.
-     * @param cb optional callback.
-     */
-    end(chunk: any, cb?: NodeCallback): void;
-    /**
-     * Ends the stream, outputs if needed then calls destroy.
-     *
-     * @param cb optional callback.
-     */
-    end(cb?: NodeCallback): void;
+    end(chunk: any, enc: string, cb?: NodeCallback): this;
 }

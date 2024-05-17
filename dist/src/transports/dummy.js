@@ -1,7 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.DummyTransport = void 0;
 const transport_1 = require("./transport");
 class DummyTransport extends transport_1.Transport {
+    static Type = typeof DummyTransport;
     constructor(options) {
         super({ label: 'dummy', ...options });
     }
@@ -16,5 +18,4 @@ class DummyTransport extends transport_1.Transport {
     }
 }
 exports.DummyTransport = DummyTransport;
-DummyTransport.Type = typeof DummyTransport;
 //# sourceMappingURL=dummy.js.map

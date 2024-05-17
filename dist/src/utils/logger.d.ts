@@ -1,9 +1,9 @@
-export declare type LogGroup<T> = ILogGroup & T;
-export declare type LogType = keyof typeof TYPES;
-export declare type LogTypeExt = LogType | 'write';
-export declare type Color = keyof typeof ANSI_COLORS;
-export declare type ReverseType = keyof typeof REVERSE_TYPES;
-export declare type WriterCallback<T = any, E extends object = {}> = (err?: Error & E, data?: T) => void;
+export type LogGroup<T> = ILogGroup & T;
+export type LogType = keyof typeof TYPES;
+export type LogTypeExt = LogType | 'write';
+export type Color = keyof typeof ANSI_COLORS;
+export type ReverseType = keyof typeof REVERSE_TYPES;
+export type WriterCallback<T = any, E extends object = {}> = (err?: Error & E, data?: T) => void;
 export interface ILogGroup {
     end(indent: string, exit?: boolean): void;
     end(indent: number, exit?: boolean): void;
@@ -45,7 +45,7 @@ export interface LogOptions {
 declare function log(message: string, { type, exit, prefix }?: LogOptions): typeof log;
 declare namespace log {
     var write: {
-        (color: "red" | "yellow" | "cyan" | "white" | "bgBlue", message: string, ...args: any[]): typeof log;
+        (color: "cyan" | "red" | "white" | "yellow" | "bgBlue", message: string, ...args: any[]): typeof log;
         (message: string, ...args: any[]): typeof log;
     };
     var fatal: (message: string, ...args: any[]) => typeof log;
@@ -66,7 +66,7 @@ declare function group(title?: string, color?: ReverseType | boolean, compact?: 
      * @param value a string or number rep the number of line returns.
      */
     after: (value: string | number) => any;
-    end: (indent?: string | number | boolean, exit?: boolean) => void;
+    end: (indent?: number | string | boolean, exit?: boolean) => void;
 }>;
 interface IGroup {
     (title?: string, color?: ReverseType | boolean, compact?: boolean): ReturnType<typeof group>;

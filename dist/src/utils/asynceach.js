@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.asynceach = void 0;
 function asynceach(events, onErrorHalt, done) {
     if (arguments.length === 2) {
         done = onErrorHalt;

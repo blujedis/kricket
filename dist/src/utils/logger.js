@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.log = exports.colorize = exports.ANSI_COLORS = void 0;
 const ansi_colors_1 = require("ansi-colors");
 const util_1 = require("util");
 exports.ANSI_COLORS = {
@@ -71,13 +72,13 @@ function write(color, message, ...args) {
         message = color;
         color = undefined;
     }
-    return log(util_1.format(message, ...args));
+    return log((0, util_1.format)(message, ...args));
 }
 log.write = write;
-log.fatal = (message, ...args) => log(util_1.format(message, ...args), { type: 'error', exit: true });
-log.error = (message, ...args) => log(util_1.format(message, ...args), { type: 'error' });
-log.warn = (message, ...args) => log(util_1.format(message, ...args), { type: 'warn' });
-log.info = (message, ...args) => log(util_1.format(message, ...args), { type: 'info' });
+log.fatal = (message, ...args) => log((0, util_1.format)(message, ...args), { type: 'error', exit: true });
+log.error = (message, ...args) => log((0, util_1.format)(message, ...args), { type: 'error' });
+log.warn = (message, ...args) => log((0, util_1.format)(message, ...args), { type: 'warn' });
+log.info = (message, ...args) => log((0, util_1.format)(message, ...args), { type: 'info' });
 function group(title, color, compact) {
     let lines = [];
     let before = '';
@@ -90,19 +91,19 @@ function group(title, color, compact) {
         lines.push([title + '\n', (color && REVERSE_TYPES[color]) || 'write']);
     const api = {
         write: (message, ...args) => {
-            lines.push([util_1.format(message, ...args), 'write']);
+            lines.push([(0, util_1.format)(message, ...args), 'write']);
             return api;
         },
         error: (message, ...args) => {
-            lines.push([util_1.format(message, ...args), 'error']);
+            lines.push([(0, util_1.format)(message, ...args), 'error']);
             return api;
         },
         warn: (message, ...args) => {
-            lines.push([util_1.format(message, ...args), 'warn']);
+            lines.push([(0, util_1.format)(message, ...args), 'warn']);
             return api;
         },
         info: (message, ...args) => {
-            lines.push([util_1.format(message, ...args), 'info']);
+            lines.push([(0, util_1.format)(message, ...args), 'info']);
             return api;
         },
         before: (value) => {

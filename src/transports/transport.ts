@@ -4,22 +4,22 @@ import { Logger } from '../logger';
 import { log } from '../utils';
 
 export abstract class Stream extends Writable {
-  writable: boolean;
+ // writable: boolean;
 }
 
 export abstract class Transport<Options extends ITransportOptions = ITransportOptions> extends Stream {
 
   static Type;
 
-  options: Options;
-  buffer = '';
+
+  _options: Options;
+  _buffer = '';
 
   constructor(options?: Options) {
     super({ highWaterMark: (options || {} as any).highWaterMark || 16 });
-    this.options = { level: null, highWaterMark: 16, asJSON: true, filters: [], transforms: [], ...options };
+    this._options = { level: null, highWaterMark: 16, asJSON: true, filters: [], transforms: [], ...options };
 
-
-    if (!this.options.label)
+    if (!this._options.label)
       log.fatal('Failed construct Transport using label/name of undefined');
 
   }
@@ -48,49 +48,49 @@ export abstract class Transport<Options extends ITransportOptions = ITransportOp
    * Gets the label for the Transport.
    */
   get label() {
-    return this.options.label;
+    return this._options.label;
   }
 
   /**
    * Get the Transport's level.
    */
   get level() {
-    return this.options.level;
+    return this._options.level;
   }
 
   /**
    * Gets if Transport is muted.
    */
   get muted() {
-    return this.options.muted;
+    return this._options.muted;
   }
 
   /**
    * Gets if Transport outputs JSON string.
    */
   get isJSON() {
-    return this.options.asJSON;
+    return this._options.asJSON;
   }
 
   /**
    * Gets Transport's Filters.
    */
   get filters() {
-    return this.options.filters;
+    return this._options.filters;
   }
 
   /**
    * Gets Transport's Transforms.
    */
   get transforms() {
-    return this.options.transforms;
+    return this._options.transforms;
   }
 
   /**
    * Mutes the Transport.
    */
   mute() {
-    this.options.muted = true;
+    this._options.muted = true;
     return this;
   }
 
@@ -98,7 +98,7 @@ export abstract class Transport<Options extends ITransportOptions = ITransportOp
    * Unmutes the Transport.
    */
   unmute() {
-    this.options.muted = false;
+    this._options.muted = false;
     return this;
   }
 
@@ -114,7 +114,7 @@ export abstract class Transport<Options extends ITransportOptions = ITransportOp
       log.fatal(`Level "${level}" is invalid or not found.`);
       return this;
     }
-    this.options.level = level;
+    this._options.level = level;
     return this;
   }
 
@@ -147,17 +147,17 @@ export abstract class Transport<Options extends ITransportOptions = ITransportOp
   write(chunk: any, cb?: ErrorCallback): boolean;
   write(chunk: any, encoding: string | ErrorCallback, cb?: ErrorCallback): boolean {
     try {
-      const s = this.buffer + String(this.format(chunk));
+      const s = this._buffer + String(this.format(chunk));
       const lines = s.split(EOL);
       let i = 0;
       for (i; i < lines.length - 1; i++) {
         this.log(lines[i] + EOL);
       }
-      this.buffer = lines[i];
+      this._buffer = lines[i];
       if (cb) cb();
     }
     catch (ex) {
-      if (cb) cb(ex);
+      if (cb) cb(ex as Error);
     }
     return true;
   }
@@ -170,12 +170,28 @@ export abstract class Transport<Options extends ITransportOptions = ITransportOp
    */
   destroy(err?: Error | null, cb?: ErrorCallback) {
     this.writable = false;
-    this.buffer = '';
+    this._buffer = '';
     if (cb)
       cb(err);
     this.emit('close');
     return this;
   }
+
+   /**
+   * Ends the stream, outputs if needed then calls destroy.
+   * 
+   * @param cb optional callback.
+   */
+   end(cb?: NodeCallback): this;
+
+
+  /**
+   * Ends the stream, outputs if needed then calls destroy.
+   * 
+   * @param chunk optional chunk to output on end.
+   * @param cb optional callback.
+   */
+  end(chunk: any, cb?: NodeCallback): this;
 
   /**
    * Ends the stream, outputs if needed then calls destroy.
@@ -184,24 +200,8 @@ export abstract class Transport<Options extends ITransportOptions = ITransportOp
    * @param enc optional encoding.
    * @param cb optional callback.
    */
-  end(chunk: any, enc: string, cb?: NodeCallback): void;
-
-  /**
-   * Ends the stream, outputs if needed then calls destroy.
-   * 
-   * @param chunk optional chunk to output on end.
-   * @param cb optional callback.
-   */
-  end(chunk: any, cb?: NodeCallback): void;
-
-  /**
-   * Ends the stream, outputs if needed then calls destroy.
-   * 
-   * @param cb optional callback.
-   */
-  end(cb?: NodeCallback): void;
-  end(chunk: any, enc?: string | NodeCallback, cb?: NodeCallback): void {
-
+  end(chunk: any, enc: string, cb?: NodeCallback): this;
+  end(chunk: any, enc?: string | NodeCallback, cb?: NodeCallback) {
     if (typeof chunk === 'function') {
       cb = chunk;
       chunk = undefined;
@@ -217,8 +217,8 @@ export abstract class Transport<Options extends ITransportOptions = ITransportOp
 
     let out;
 
-    if (this.buffer && this.buffer.length) {
-      out = this.buffer + EOL;
+    if (this._buffer && this._buffer.length) {
+      out = this._buffer + EOL;
       this.log(out);
     }
 
@@ -228,7 +228,10 @@ export abstract class Transport<Options extends ITransportOptions = ITransportOp
 
     this.destroy();
 
+    return this;
+
   }
+
 
 
 }

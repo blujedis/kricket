@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Transport = exports.Stream = void 0;
 const readable_stream_1 = require("readable-stream");
 const types_1 = require("../types");
 const utils_1 = require("../utils");
@@ -7,11 +8,13 @@ class Stream extends readable_stream_1.Writable {
 }
 exports.Stream = Stream;
 class Transport extends Stream {
+    static Type;
+    _options;
+    _buffer = '';
     constructor(options) {
         super({ highWaterMark: (options || {}).highWaterMark || 16 });
-        this.buffer = '';
-        this.options = { level: null, highWaterMark: 16, asJSON: true, filters: [], transforms: [], ...options };
-        if (!this.options.label)
+        this._options = { level: null, highWaterMark: 16, asJSON: true, filters: [], transforms: [], ...options };
+        if (!this._options.label)
             utils_1.log.fatal('Failed construct Transport using label/name of undefined');
     }
     /**
@@ -36,50 +39,50 @@ class Transport extends Stream {
      * Gets the label for the Transport.
      */
     get label() {
-        return this.options.label;
+        return this._options.label;
     }
     /**
      * Get the Transport's level.
      */
     get level() {
-        return this.options.level;
+        return this._options.level;
     }
     /**
      * Gets if Transport is muted.
      */
     get muted() {
-        return this.options.muted;
+        return this._options.muted;
     }
     /**
      * Gets if Transport outputs JSON string.
      */
     get isJSON() {
-        return this.options.asJSON;
+        return this._options.asJSON;
     }
     /**
      * Gets Transport's Filters.
      */
     get filters() {
-        return this.options.filters;
+        return this._options.filters;
     }
     /**
      * Gets Transport's Transforms.
      */
     get transforms() {
-        return this.options.transforms;
+        return this._options.transforms;
     }
     /**
      * Mutes the Transport.
      */
     mute() {
-        this.options.muted = true;
+        this._options.muted = true;
         return this;
     }
     /**
      * Unmutes the Transport.
      */
     unmute() {
-        this.options.muted = false;
+        this._options.muted = false;
         return this;
     }
     /**
@@ -94,7 +97,7 @@ class Transport extends Stream {
             utils_1.log.fatal(`Level "${level}" is invalid or not found.`);
             return this;
         }
-        this.options.level = level;
+        this._options.level = level;
         return this;
     }
     /**
@@ -109,13 +112,13 @@ class Transport extends Stream {
     }
     write(chunk, encoding, cb) {
         try {
-            const s = this.buffer + String(this.format(chunk));
+            const s = this._buffer + String(this.format(chunk));
             const lines = s.split(types_1.EOL);
             let i = 0;
             for (i; i < lines.length - 1; i++) {
                 this.log(lines[i] + types_1.EOL);
             }
-            this.buffer = lines[i];
+            this._buffer = lines[i];
             if (cb)
                 cb();
         }
@@ -133,7 +136,7 @@ class Transport extends Stream {
      */
     destroy(err, cb) {
         this.writable = false;
-        this.buffer = '';
+        this._buffer = '';
         if (cb)
             cb(err);
         this.emit('close');
@@ -151,13 +154,14 @@ class Transport extends Stream {
         if (chunk)
             this.write(chunk, cb);
         let out;
-        if (this.buffer && this.buffer.length) {
-            out = this.buffer + types_1.EOL;
+        if (this._buffer && this._buffer.length) {
+            out = this._buffer + types_1.EOL;
             this.log(out);
         }
         if (cb)
             cb(null, out);
         this.destroy();
+        return this;
     }
 }
 exports.Transport = Transport;

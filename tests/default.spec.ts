@@ -54,14 +54,14 @@ describe('Kricket', () => {
 
   it('Should add Console Transport', (done) => {
     testLogger.addTransport(new ConsoleTransport());
-    const Transport = testLogger.options.transports.find(transport => transport.label === 'console');
+    const Transport = testLogger.options.transports?.find(transport => transport.label === 'console');
     assert.instanceOf(Transport, ConsoleTransport);
     done();
   });
 
   it('Should remove Console Transport', (done) => {
     testLogger.removeTransport('console');
-    assert.equal(testLogger.transports.length, 1);
+    assert.equal(testLogger.transports?.length, 1);
     done();
   });
 

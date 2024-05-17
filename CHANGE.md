@@ -1,5 +1,9 @@
 # Kicket Changes
 
+## (05-17-2024)
+
+- Update packages fixes types.
+
 ## (09-19-2020)
 
 - Make label optional when creating logger, generate random string by default.

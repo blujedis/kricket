@@ -1,8 +1,7 @@
-/// <reference types="node" />
 import { Transport } from './transport';
 import { ITransportOptions } from '../types';
-import { WriteStream } from 'fs';
-export declare type Frequency = 'minute' | 'hourly' | 'daily' | 'custom' | 'test' | 'h' | 'm';
+import FileStreamRotator from 'file-stream-rotator/lib/FileStreamRotator';
+export type Frequency = 'minute' | 'hourly' | 'daily' | 'custom' | 'test' | 'h' | 'm';
 export interface IFileOptions {
     flags?: string;
     encoding?: string;
@@ -18,7 +17,7 @@ export interface IFileTransportOptions<Level extends string, Label extends strin
     verbose?: boolean;
     date_format?: string;
     size?: string;
-    max_logs?: string | number;
+    max_logs?: string;
     audit_file?: string;
     end_stream?: boolean;
     file_options?: IFileOptions;
@@ -28,7 +27,7 @@ export interface IFileTransportOptions<Level extends string, Label extends strin
 }
 export declare class FileTransport<Level extends string, Label extends string = string> extends Transport<IFileTransportOptions<Level, Label>> {
     static Type: "string" | "number" | "bigint" | "boolean" | "symbol" | "undefined" | "object" | "function";
-    rotator: WriteStream;
+    rotator: FileStreamRotator;
     constructor(options?: IFileTransportOptions<Level, Label>);
     /**
      * Callback handler on new file created.

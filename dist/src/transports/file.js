@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.FileTransport = void 0;
 const transport_1 = require("./transport");
 const file_stream_rotator_1 = __importDefault(require("file-stream-rotator"));
 const types_1 = require("../types");
@@ -20,9 +21,11 @@ const DEFAULTS = {
     eol: types_1.EOL
 };
 class FileTransport extends transport_1.Transport {
+    static Type = typeof FileTransport;
+    rotator;
     constructor(options) {
         super({ ...DEFAULTS, ...options });
-        options = this.options;
+        options = this._options;
         if (['hourly', 'minute'].includes(options.frequency))
             options.frequency = options.frequency.charAt(0);
         this.rotator = file_stream_rotator_1.default.getStream(options);
@@ -31,7 +34,7 @@ class FileTransport extends transport_1.Transport {
         if (options.onNew)
             this.rotator.on('new', this.newfile.bind(this));
         if (options.verbose)
-            utils_1.log.info(`Transport "${this.label}" logging to file: ${this.options.filename}`);
+            utils_1.log.info(`Transport "${this.label}" logging to file: ${this._options.filename}`);
     }
     /**
      * Callback handler on new file created.
@@ -39,8 +42,8 @@ class FileTransport extends transport_1.Transport {
      * @param filename the new filename that was created.
      */
     newfile(newFile) {
-        if (this.options.onRotate)
-            return this.options.onNew(newFile);
+        if (this._options.onRotate)
+            return this._options.onNew(newFile);
         utils_1.log.info(`Transport "${this.label}" logging to NEW file: ${newFile}`);
         return this;
     }
@@ -51,8 +54,8 @@ class FileTransport extends transport_1.Transport {
      * @param newFile the new or current file path.
      */
     rotate(oldFile, newFile) {
-        if (this.options.onRotate)
-            return this.options.onRotate(oldFile, newFile);
+        if (this._options.onRotate)
+            return this._options.onRotate(oldFile, newFile);
         // PLACEHOLDER: add gzip archiving.
         return this;
     }
@@ -66,5 +69,4 @@ class FileTransport extends transport_1.Transport {
     }
 }
 exports.FileTransport = FileTransport;
-FileTransport.Type = typeof FileTransport;
 //# sourceMappingURL=file.js.map

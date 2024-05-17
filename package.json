@@ -1,6 +1,6 @@
 {
   "name": "kricket",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "license": "ISC",
   "main": "dist/index.js",
   "publishConfig": {
@@ -13,7 +13,7 @@
     "lint-fix": "./node_modules/.bin/eslint ./src/**/*.ts --fix",
     "watch": "tsc -b -w",
     "docs": "typedoc ./src --options ./typedoc.json --out ./docs && touch ./docs/.nojekyll",
-    "test": "mocha test/**/*.spec.ts* --require ./register.js --bail",
+    "test": "mocha tests/**/*.spec.ts* --require ./register.js --bail",
     "commit": "git commit -a -m",
     "commit-pub": "npm run commit -- 'auto commit'",
     "prep": "npm run clean && npm run build && npm run test && npm run lint && npm run docs && npm run commit-pub"
@@ -30,28 +30,26 @@
     "README.md"
   ],
   "dependencies": {
-    "ansi-colors": "^4.1.1",
     "fast-json-stable-stringify": "^2.1.0",
-    "file-stream-rotator": "^0.5.7",
+    "file-stream-rotator": "^1.0.0",
     "readable-stream": "^3.6.0"
   },
   "devDependencies": {
-    "@types/ansi-colors": "^3.2.2",
-    "@types/chai": "^4.2.7",
-    "@types/fast-json-stable-stringify": "^2.0.0",
-    "@types/mocha": "^5.2.7",
-    "@types/node": "^13.1.2",
-    "@types/readable-stream": "^2.3.5",
-    "@typescript-eslint/eslint-plugin": "^3.2.0",
-    "@typescript-eslint/eslint-plugin-tslint": "^2.26.0",
-    "@typescript-eslint/parser": "^3.2.0",
-    "chai": "^4.2.0",
-    "eslint": "^6.8.0",
-    "mocha": "^6.2.2",
-    "rimraf": "^3.0.0",
-    "ts-node": "^8.5.4",
-    "tslint": "^6.0.0",
-    "typedoc": "^0.17.4",
-    "typescript": "^3.7.5"
+    "@types/chai": "^4.3.16",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.12.12",
+    "@types/readable-stream": "^4.0.14",
+    "@typescript-eslint/eslint-plugin": "^7.9.0",
+    "@typescript-eslint/eslint-plugin-tslint": "^7.0.2",
+    "@typescript-eslint/parser": "^7.9.0",
+    "ansi-colors": "^4.1.3",
+    "chai": "^4.3.10",
+    "cross-env": "^7.0.3",
+    "eslint": "^9.2.0",
+    "mocha": "^10.4.0",
+    "rimraf": "^5.0.7",
+    "ts-node": "^10.9.2",
+    "typedoc": "^0.25.13",
+    "typescript": "^5.4.5"
   }
 }

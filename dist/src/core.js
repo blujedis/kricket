@@ -1,12 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Core = void 0;
 class Core {
-    constructor() {
-        /**
-         * Map of Logger instances.
-         */
-        this.loggers = new Map();
-    }
+    /**
+     * Map of Logger instances.
+     */
+    loggers = new Map();
     /**
      * Gets a logger stored in the collection.
      *

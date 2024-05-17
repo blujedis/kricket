@@ -1,7 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.StreamTransport = void 0;
 const transport_1 = require("./transport");
 class StreamTransport extends transport_1.Transport {
+    static Type = typeof StreamTransport;
+    options;
     constructor(options) {
         super({ label: 'stream', ...options });
     }
@@ -15,5 +18,4 @@ class StreamTransport extends transport_1.Transport {
     }
 }
 exports.StreamTransport = StreamTransport;
-StreamTransport.Type = typeof StreamTransport;
 //# sourceMappingURL=stream.js.map

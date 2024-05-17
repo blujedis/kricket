@@ -30,8 +30,8 @@ export class Logger<Level extends string, M extends object = {}> extends EventEm
 
     // Ensure level for transports
     this.options.transports.forEach(transport => {
-      if (typeof transport.options.level === 'undefined')
-        transport.options.level = this.options.level;
+      if (typeof transport._options.level === 'undefined')
+        transport._options.level = this.options.level;
     });
 
   }
@@ -143,7 +143,8 @@ export class Logger<Level extends string, M extends object = {}> extends EventEm
 
         }
         catch (ex) {
-          ex.transport = transport.label;
+          const err = ex as Error & { transport: string };
+          err.transport = transport.label;
           done(ex, null);
         }
 
@@ -475,7 +476,7 @@ export class Logger<Level extends string, M extends object = {}> extends EventEm
         log.fatal(`Transport ${transport} could NOT be found.`);
         return this;
       }
-      _transport.options.filters.push(fn);
+      _transport._options.filters.push(fn);
     }
     return this;
   }
@@ -508,7 +509,7 @@ export class Logger<Level extends string, M extends object = {}> extends EventEm
         log.fatal(`Transport ${transport} could NOT be found.`);
         return this;
       }
-      _transport.options.transforms.push(fn);
+      _transport._options.transforms.push(fn);
     }
     return this;
   }
@@ -647,8 +648,9 @@ export class Logger<Level extends string, M extends object = {}> extends EventEm
           await asynceach(transports, (err, data) => (cb || noop)(data));
         }
         catch (ex) {
+          const err = ex as Error;
           log.group(`Group ${key} Error`, 'yellow')
-            .error(ex.stack)
+            .error(err.stack)
             .end();
         }
 
@@ -679,7 +681,7 @@ export class Logger<Level extends string, M extends object = {}> extends EventEm
    */
   cloneTransport<Label extends string, T extends Transport>(
     label: Label, transport: T) {
-    const options = transport.options;
+    const options = transport._options;
     if (!transport.getType) {
       log.fatal((new Error(`Transport missing static property getType, clone failed.`).stack));
       return;

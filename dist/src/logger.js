@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Logger = void 0;
 const events_1 = require("events");
 const types_1 = require("./types");
 const fast_json_stable_stringify_1 = __importDefault(require("fast-json-stable-stringify"));
@@ -10,13 +11,16 @@ const util_1 = require("util");
 const utils_1 = require("./utils");
 const core_1 = __importDefault(require("./core"));
 class Logger extends events_1.EventEmitter {
+    label;
+    options;
+    isChild;
+    core = core_1.default;
+    children = new Map();
     constructor(label, options, isChild = false) {
         super();
         this.label = label;
         this.options = options;
         this.isChild = isChild;
-        this.core = core_1.default;
-        this.children = new Map();
         this.options = { ...{ levels: [], transports: [], filters: [], transforms: [], muted: false, level: null }, ...this.options };
         // Bind levels
         this.levels.forEach(level => {
@@ -28,8 +32,8 @@ class Logger extends events_1.EventEmitter {
         }
         // Ensure level for transports
         this.options.transports.forEach(transport => {
-            if (typeof transport.options.level === 'undefined')
-                transport.options.level = this.options.level;
+            if (typeof transport._options.level === 'undefined')
+                transport._options.level = this.options.level;
         });
     }
     /**
@@ -61,14 +65,14 @@ class Logger extends events_1.EventEmitter {
             return;
         const label = level;
         const cb = typeof args[args.length - 1] === 'function' ? args.pop() : null;
-        const meta = utils_1.isPlainObject(args[args.length - 1]) ? args.pop() : null;
+        const meta = (0, utils_1.isPlainObject)(args[args.length - 1]) ? args.pop() : null;
         const hasAnyMeta = !!meta || this.options.defaultMeta || !!this.options.meta;
         const defaultMetaKey = this.options.defaultMetaKey;
         // Build default metadata.
         let defaultMeta = this.options.defaultMeta ? {
             LOGGER: this.label,
             LEVEL: label,
-            UUID: utils_1.uuidv4()
+            UUID: (0, utils_1.uuidv4)()
         } : null;
         // If Default meta is in nested key...
         if (defaultMetaKey && defaultMeta)
@@ -109,7 +113,7 @@ class Logger extends events_1.EventEmitter {
                         return done();
                     const transformed = this.transformed(transport, { ...payload });
                     // Payload symbols now stripped.
-                    transport.write(fast_json_stable_stringify_1.default(transformed));
+                    transport.write((0, fast_json_stable_stringify_1.default)(transformed));
                     transport.emit('log', payload, transport);
                     transport.emit(`log:${label}`, payload, transport);
                     if (level !== 'write')
@@ -117,12 +121,13 @@ class Logger extends events_1.EventEmitter {
                     done(null, payload);
                 }
                 catch (ex) {
-                    ex.transport = transport.label;
+                    const err = ex;
+                    err.transport = transport.label;
                     done(ex, null);
                 }
             };
         };
-        utils_1.asynceach(this.transports.map(transport => event(transport)), (err, payloads) => {
+        (0, utils_1.asynceach)(this.transports.map(transport => event(transport)), (err, payloads) => {
             if (err) {
                 if (!Array.isArray(err))
                     err = [err];
@@ -164,11 +169,11 @@ class Logger extends events_1.EventEmitter {
         while (valid && transforms.length) {
             try {
                 const transformer = transforms.shift();
-                tname = utils_1.getObjectName(transformer);
+                tname = (0, utils_1.getObjectName)(transformer);
                 if (tname === 'function')
                     tname = 'anonymous';
                 transformed = transformer(transformed);
-                valid = utils_1.isPlainObject(transformed);
+                valid = (0, utils_1.isPlainObject)(transformed);
             }
             catch (ex) {
                 valid = false;
@@ -361,7 +366,7 @@ class Logger extends events_1.EventEmitter {
                 utils_1.log.fatal(`Transport ${transport} could NOT be found.`);
                 return this;
             }
-            _transport.options.filters.push(fn);
+            _transport._options.filters.push(fn);
         }
         return this;
     }
@@ -379,16 +384,16 @@ class Logger extends events_1.EventEmitter {
                 utils_1.log.fatal(`Transport ${transport} could NOT be found.`);
                 return this;
             }
-            _transport.options.transforms.push(fn);
+            _transport._options.transforms.push(fn);
         }
         return this;
     }
     mergeFilter(...fns) {
-        const filters = utils_1.flatten(fns);
+        const filters = (0, utils_1.flatten)(fns);
         return (payload) => filters.some(filter => filter(payload));
     }
     mergeTransform(...fns) {
-        const arr = utils_1.flatten(fns);
+        const arr = (0, utils_1.flatten)(fns);
         return (payload) => {
             return arr.reduce((result, transform) => {
                 return transform(result);
@@ -402,7 +407,7 @@ class Logger extends events_1.EventEmitter {
      * @param args optional format args.
      */
     writeLn(message, ...args) {
-        message = util_1.format(message, ...args);
+        message = (0, util_1.format)(message, ...args);
         this.writer('writeLn', message);
         return this;
     }
@@ -413,7 +418,7 @@ class Logger extends events_1.EventEmitter {
      * @param args optional format args.
      */
     write(message, ...args) {
-        message = util_1.format(message, ...args);
+        message = (0, util_1.format)(message, ...args);
         this.writer('write', message);
         return this;
     }
@@ -425,7 +430,7 @@ class Logger extends events_1.EventEmitter {
     async writeEnd(cb) {
         const transports = this.transports.map(t => t.end.bind(t));
         try {
-            await utils_1.asynceach(transports, (err, data) => (cb || utils_1.noop)(data));
+            await (0, utils_1.asynceach)(transports, (err, data) => (cb || utils_1.noop)(data));
         }
         catch (ex) {
             //
@@ -467,18 +472,19 @@ class Logger extends events_1.EventEmitter {
                 }
                 while (buffer.length) {
                     const item = buffer.shift();
-                    const msg = util_1.format(item[0], ...(item[1] || []));
+                    const msg = (0, util_1.format)(item[0], ...(item[1] || []));
                     const meta = !buffer.length ? { ...item[2], groupEnd: true } : item[2];
                     self.writer('write', msg, meta);
                 }
                 buffer = null;
                 const transports = self.transports.map(t => t.end.bind(t));
                 try {
-                    await utils_1.asynceach(transports, (err, data) => (cb || utils_1.noop)(data));
+                    await (0, utils_1.asynceach)(transports, (err, data) => (cb || utils_1.noop)(data));
                 }
                 catch (ex) {
+                    const err = ex;
                     utils_1.log.group(`Group ${key} Error`, 'yellow')
-                        .error(ex.stack)
+                        .error(err.stack)
                         .end();
                 }
             }
@@ -502,7 +508,7 @@ class Logger extends events_1.EventEmitter {
      * @param transport the Transport instance to be cloned.
      */
     cloneTransport(label, transport) {
-        const options = transport.options;
+        const options = transport._options;
         if (!transport.getType) {
             utils_1.log.fatal((new Error(`Transport missing static property getType, clone failed.`).stack));
             return;
@@ -518,7 +524,7 @@ class Logger extends events_1.EventEmitter {
      * @see https://www.npmjs.com/package/uuid
      */
     uuidv4() {
-        return utils_1.uuidv4();
+        return (0, utils_1.uuidv4)();
     }
     /**
      * Useful helper to determine if payload contains a given Logger.

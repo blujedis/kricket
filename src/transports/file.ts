@@ -1,8 +1,8 @@
 import { Transport } from './transport';
 import rotator from 'file-stream-rotator';
 import { ITransportOptions, EOL } from '../types';
-import { WriteStream } from 'fs';
 import { log } from '../utils';
+import FileStreamRotator from 'file-stream-rotator/lib/FileStreamRotator';
 
 export type Frequency = 'minute' | 'hourly' | 'daily' | 'custom' | 'test' | 'h' | 'm';
 
@@ -22,7 +22,7 @@ export interface IFileTransportOptions<Level extends string, Label extends strin
   verbose?: boolean;                                    // (default: true)
   date_format?: string;                                 // uses moment.js formatting.
   size?: string;                                        // numeric w/ k, m or g
-  max_logs?: string | number;                           // numeric or num with d for days
+  max_logs?: string;                                    // string with d for days
   audit_file?: string;                                  // optional path to write audit file.
   end_stream?: boolean;                                 // use true if looping (default: false)
   file_options?: IFileOptions;                          // node file option flags.
@@ -48,13 +48,13 @@ export class FileTransport<Level extends string, Label extends string = string> 
 
   static Type = typeof FileTransport;
 
-  rotator: WriteStream;
+  rotator: FileStreamRotator;
 
   constructor(options?: IFileTransportOptions<Level, Label>) {
 
     super({ ...DEFAULTS, ...options });
 
-    options = this.options;
+    options = this._options;
 
     if (['hourly', 'minute'].includes(options.frequency))
       options.frequency = options.frequency.charAt(0) as 'h' | 'm';
@@ -68,7 +68,7 @@ export class FileTransport<Level extends string, Label extends string = string> 
       this.rotator.on('new', this.newfile.bind(this));
 
     if (options.verbose)
-      log.info(`Transport "${this.label}" logging to file: ${this.options.filename}`);
+      log.info(`Transport "${this.label}" logging to file: ${this._options.filename}`);
 
   }
 
@@ -78,8 +78,8 @@ export class FileTransport<Level extends string, Label extends string = string> 
    * @param filename the new filename that was created.
    */
   newfile(newFile: string) {
-    if (this.options.onRotate)
-      return this.options.onNew(newFile);
+    if (this._options.onRotate)
+      return this._options.onNew(newFile);
     log.info(`Transport "${this.label}" logging to NEW file: ${newFile}`);
     return this;
   }
@@ -91,8 +91,8 @@ export class FileTransport<Level extends string, Label extends string = string> 
    * @param newFile the new or current file path.
    */
   rotate(oldFile: string, newFile: string) {
-    if (this.options.onRotate)
-      return this.options.onRotate(oldFile, newFile);
+    if (this._options.onRotate)
+      return this._options.onRotate(oldFile, newFile);
     // PLACEHOLDER: add gzip archiving.
     return this;
   }
