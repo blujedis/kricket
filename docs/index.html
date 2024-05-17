@@ -1,317 +1,57 @@
-<!doctype html>
-<html class="default no-js">
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Octo</title>
-	<meta name="description" content="Documentation for Octo">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="assets/css/main.css">
-</head>
-<body>
-<header>
-	<div class="tsd-page-toolbar">
-		<div class="container">
-			<div class="table-wrap">
-				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
-					<div class="field">
-						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
-						<input id="tsd-search-field" type="text" />
-					</div>
-					<ul class="results">
-						<li class="state loading">Preparing search index...</li>
-						<li class="state failure">The search index is not available</li>
-					</ul>
-					<a href="index.html" class="title">Octo</a>
-				</div>
-				<div class="table-cell" id="tsd-widgets">
-					<div id="tsd-filter">
-						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
-						<div class="tsd-filter-group">
-							<div class="tsd-select" id="tsd-filter-visibility">
-								<span class="tsd-select-label">All</span>
-								<ul class="tsd-select-list">
-									<li data-value="public">Public</li>
-									<li data-value="protected">Public/Protected</li>
-									<li data-value="private" class="selected">All</li>
-								</ul>
-							</div>
-							<input type="checkbox" id="tsd-filter-inherited" checked />
-							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
-							<input type="checkbox" id="tsd-filter-externals" checked />
-							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
-							<input type="checkbox" id="tsd-filter-only-exported" />
-							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
-						</div>
-					</div>
-					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="tsd-page-title">
-		<div class="container">
-			<ul class="tsd-breadcrumb">
-				<li>
-					<a href="globals.html">Globals</a>
-				</li>
-			</ul>
-			<h1>Octo</h1>
-		</div>
-	</div>
-</header>
-<div class="container container-main">
-	<div class="row">
-		<div class="col-8 col-content">
-			<div class="tsd-panel tsd-typography">
-				<p align="left">
-					<a href="http://github.com/blujedis/kricket"><img src="https://raw.githubusercontent.com/blujedis/kricket/master/fixtures/logo.jpg" width="200" /></a>
-				</p>
-				<p>A un-opinionated Logger using Transport streams. Kricket makes only one opinion that being to manage log levels for you that you specify. All other filters and transforms are up to you.</p>
-				<p>If you are looking for a Logger that auto-magically wires up things for you, this is <strong>NOT</strong> it!</p>
-				<p>Kricket simply provides the tools for you to make as simple or as complex a Logger as you wish. Initially it may seem a bit much but once you get the hang of it you&#39;ll find it quite useful and extremely flexible. </p>
-				<a href="#install" id="install" style="color: inherit; text-decoration: none;">
-					<h2>Install</h2>
-				</a>
-				<pre><code class="language-sh">npm install kricket -s
+<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>Kricket</title><meta name="description" content="Documentation for Kricket"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script defer src="assets/main.js"></script><script async src="assets/icons.js" id="tsd-icons-script"></script><script async src="assets/search.js" id="tsd-search-script"></script><script async src="assets/navigation.js" id="tsd-nav-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar"><div class="tsd-toolbar-contents container"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-search"></use></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div><div class="field"><div id="tsd-toolbar-links"></div></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">Kricket</a></div><div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget tsd-toolbar-icon menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-menu"></use></svg></a></div></div></header><div class="container container-main"><div class="col-content"><div class="tsd-page-title"><h2>Kricket</h2></div><div class="tsd-panel tsd-typography"><p align="left">
+  <a href="http://github.com/blujedis/kricket"><img src="https://raw.githubusercontent.com/blujedis/kricket/master/fixtures/logo.jpg" width="200" /></a>
+</p>
 
-OR
-
-yarn add kricket -s</code></pre>
-				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
-					<h2>Usage</h2>
-				</a>
-				<p>The default logger contains only one Transport that being a console logger. The default levels are <code>fatal, error, warn, info, debug</code>;</p>
-				<pre><code class="language-ts"><span class="hljs-keyword">import</span> { defaultLogger } <span class="hljs-keyword">from</span> <span class="hljs-string">'kricket'</span>;
-defaultLogger.writeLn(<span class="hljs-string">'write some log message.'</span>);
-defaultLogger.info(<span class="hljs-string">'this is an info message.'</span>);
-defaultLogger
-  .group()
-  .write(<span class="hljs-string">'some value'</span>)
-  .write(<span class="hljs-string">'another value'</span>)
-  .end();</code></pre>
-				<a href="#filters" id="filters" style="color: inherit; text-decoration: none;">
-					<h2>Filters</h2>
-				</a>
-				<p>Kricket does not filter or prevent any log level from logging. This is entirely up to you. When Kricket is initialized it considers the order of the log levels you have provided.</p>
-				<p>Consider the &quot;defaultLogger&quot; that Kricket ships with.</p>
-				<pre><code class="language-ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> defaultLogger = createLogger(<span class="hljs-string">'default'</span>, {
-
-  <span class="hljs-comment">// This is the current active level</span>
-  level: <span class="hljs-string">'info'</span>,
-
-  <span class="hljs-comment">// Your initialized log levels where fatal = 0 and debug = 4</span>
-  levels: [<span class="hljs-string">'fatal'</span>, <span class="hljs-string">'error'</span>, <span class="hljs-string">'warn'</span>, <span class="hljs-string">'info'</span>, <span class="hljs-string">'debug'</span>],
-
-  <span class="hljs-comment">// The default console Transport.</span>
-  transports: [
-    <span class="hljs-keyword">new</span> ConsoleTransport({ asJSON: <span class="hljs-literal">false</span> })
-  ]
-});</code></pre>
-				<a href="#logger-labels" id="logger-labels" style="color: inherit; text-decoration: none;">
-					<h4>Logger Labels</h4>
-				</a>
-				<p>As shown above the default Logger is generated with the label <strong>default</strong>. This allows you to lookup other Loggers you might have generated from any other Logger which can be helpful in some instances.</p>
-				<p>However a label is not required you can also create a logger without a label although a random generated string will be created for you behind the scenes.</p>
-				<a href="#limiting-output-by-level" id="limiting-output-by-level" style="color: inherit; text-decoration: none;">
-					<h3>Limiting Output by Level</h3>
-				</a>
-				<p>Considering the above let&#39;s say we want to limit any message above the &quot;warn&quot; level.</p>
-				<p>First we need to set or initalize our Logger with that level. So for the defaultLogger we&#39;d do:</p>
-				<pre><code class="language-ts"><span class="hljs-keyword">import</span> { defaultLogger, LEVEL } <span class="hljs-keyword">from</span> <span class="hljs-string">'kricket'</span>;
-defaultLogger.setLevel(<span class="hljs-string">'warn'</span>);
-
-<span class="hljs-comment">// Note some properties in the payload object are symbols LEVEL is one.</span>
-<span class="hljs-comment">// Filters will "filter" a message and prevent output when</span>
-<span class="hljs-comment">// a filter return true. So here we listen if it's NOT true.</span>
-<span class="hljs-comment">// when this occurs we reject the message.</span>
-defaultLogger.filter(<span class="hljs-function">(<span class="hljs-params">payload</span>) =&gt;</span> {
-  <span class="hljs-keyword">return</span> !defaultLogger.isLevelActive(payload[LEVEL]);
-});</code></pre>
-				<a href="#transforming-messages" id="transforming-messages" style="color: inherit; text-decoration: none;">
-					<h3>Transforming Messages</h3>
-				</a>
-				<p>Although the log payload message stores any formatting args it leaves that up to you as to how you want to handle them. For example if we wanted to do the typical node formating from the util lib this would be how.</p>
-				<pre><code class="language-ts"><span class="hljs-keyword">import</span> { defaultLogger, SPLAT } <span class="hljs-keyword">from</span> <span class="hljs-string">'kricket'</span>;
-<span class="hljs-keyword">import</span> { format } <span class="hljs-keyword">from</span> <span class="hljs-string">'util'</span>;
-
-defaultLogger.transform(<span class="hljs-function">(<span class="hljs-params">payload</span>) =&gt;</span> {
-  payload.message = format(payload.message, ...payload[SPLAT]);
-  <span class="hljs-keyword">return</span> payload;
-});</code></pre>
-				<p>Now you can use formatting in your messages.</p>
-				<pre><code class="language-ts">defaultLogger.info(<span class="hljs-string">'My name is %s.'</span>, <span class="hljs-string">'Milton'</span>);</code></pre>
-				<a href="#assigning-filters-or-transports" id="assigning-filters-or-transports" style="color: inherit; text-decoration: none;">
-					<h3>Assigning Filters or Transports</h3>
-				</a>
-				<p>To this point we&#39;ve shown how global Filters and Transforms. You can also assign a Filter or Transform to a specific Transport.</p>
-				<pre><code class="language-ts">defaultLogger.transform(<span class="hljs-string">'console'</span>, <span class="hljs-function"><span class="hljs-params">payload</span> =&gt;</span> {
-  <span class="hljs-comment">// do something.</span>
-  <span class="hljs-keyword">return</span> payload.
-})</code></pre>
-				<p><strong>The above works the same for Filters.</strong></p>
-				<a href="#output-format" id="output-format" style="color: inherit; text-decoration: none;">
-					<h2>Output Format</h2>
-				</a>
-				<p>By default Kricket outputs JSON to each transport. This can be disabled as it is in the default <strong>ConsoleTransport</strong>. When doing so Kricket will grab your formatted message resulting from your <strong>transform</strong> stack if any. The message is stored at: <code>payload.message</code></p>
-				<pre><code class="language-ts"><span class="hljs-keyword">import</span> { ConsoleTransport } <span class="hljs-keyword">from</span> <span class="hljs-string">'kricket'</span>;
-<span class="hljs-keyword">const</span> consoleTransport = <span class="hljs-keyword">new</span> ConsoleTransport({ asJSON: <span class="hljs-literal">false</span> });</code></pre>
-				<a href="#transports" id="transports" style="color: inherit; text-decoration: none;">
-					<h2>Transports</h2>
-				</a>
-				<p>Kricket contains three default Transports:</p>
-				<ul>
-					<li><strong>ConsoleTransport</strong> to log to your terminal.</li>
-					<li><strong>FileTransport</strong> to log to file with file rotation capabilities.</li>
-					<li><strong>StreamTransport</strong> simple wrapper you can pass any Writable Stream to.</li>
-				</ul>
-				<a href="#custom-transports" id="custom-transports" style="color: inherit; text-decoration: none;">
-					<h3>Custom Transports</h3>
-				</a>
-				<p>To create a custom Transport simply extend from the base abstract <strong>Transport</strong> class.</p>
-				<pre><code class="language-ts"><span class="hljs-keyword">import</span> { Transport } <span class="hljs-keyword">from</span> <span class="hljs-string">'./transport'</span>;
-<span class="hljs-keyword">import</span> { ITransportOptions } <span class="hljs-keyword">from</span> <span class="hljs-string">'../types'</span>;
-
-<span class="hljs-keyword">interface</span> IMyTransport&lt;Level <span class="hljs-keyword">extends</span> string, Label <span class="hljs-keyword">extends</span> string&gt; <span class="hljs-keyword">extends</span> ITransportOptions&lt;Level&gt; {
- <span class="hljs-comment">// your options here.</span>
- label: Label;
-}
-
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> MyTransport&lt;Level <span class="hljs-keyword">extends</span> <span class="hljs-built_in">string</span>, Label <span class="hljs-keyword">extends</span> <span class="hljs-built_in">string</span>&gt; <span class="hljs-keyword">extends</span> Transport&lt;IMyTransport&lt;Level&gt;&gt; {
-
-  <span class="hljs-comment">// This is important if you wish to clone and reuse Transports.</span>
-  <span class="hljs-keyword">static</span> Type = <span class="hljs-keyword">typeof</span> MyTransport; 
-
-  <span class="hljs-keyword">constructor</span>(<span class="hljs-params">options?: IMyTransport&lt;Level, Label&gt;</span>) {
-    <span class="hljs-keyword">super</span>(<span class="hljs-string">'myTransport'</span>, options);
-  }
-
-  log(payload: <span class="hljs-built_in">string</span>) {
-    <span class="hljs-comment">// This method MUST be overloaded or you will get an error.</span>
-  }
-
-}</code></pre>
-				<a href="#consuming-the-above-transport" id="consuming-the-above-transport" style="color: inherit; text-decoration: none;">
-					<h3>Consuming the Above Transport</h3>
-				</a>
-				<p>To consume our new Transport we simply pass it to our Logger&#39;s transports.</p>
-				<pre><code class="language-ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> myLogger = createLogger(<span class="hljs-string">'myLogger'</span>, {
-  level: <span class="hljs-string">'info'</span>,
-  levels: [<span class="hljs-string">'fatal'</span>, <span class="hljs-string">'error'</span>, <span class="hljs-string">'warn'</span>, <span class="hljs-string">'info'</span>, <span class="hljs-string">'debug'</span>],
-  transports: [
-    <span class="hljs-keyword">new</span> MyTransport()
-  ]
-});</code></pre>
-				<p>You can also add a Transport after Logger creation as follows:</p>
-				<pre><code class="language-ts">myLogger.addTransport(<span class="hljs-keyword">new</span> MyTransport());</code></pre>
-				<a href="#real-world-example" id="real-world-example" style="color: inherit; text-decoration: none;">
-					<h2>Real World Example</h2>
-				</a>
-				<p>For a real work example take a look at the basic example found in the <strong>examples</strong> directory.</p>
-				<p>See <a href="examples/basic.ts">examples</a></p>
-				<a href="#docs" id="docs" style="color: inherit; text-decoration: none;">
-					<h2>Docs</h2>
-				</a>
-				<p>There is much more that Kricket does as time permits more examples will be added. You can also checkout the docs below as well as look at the tests/ folder.</p>
-				<p>See <a href="https://blujedis.github.io/kricket/">https://blujedis.github.io/kricket/</a></p>
-				<a href="#change" id="change" style="color: inherit; text-decoration: none;">
-					<h2>Change</h2>
-				</a>
-				<p>See <a href="CHANGE.md">CHANGE.md</a></p>
-				<a href="#license" id="license" style="color: inherit; text-decoration: none;">
-					<h2>License</h2>
-				</a>
-				<p>See <a href="LICENSE">LICENSE.md</a></p>
-			</div>
-		</div>
-		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
-			<nav class="tsd-navigation primary">
-				<ul>
-					<li class="globals  ">
-						<a href="globals.html"><em>Globals</em></a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_core_.html">&quot;core&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_index_.html">&quot;index&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_kricket_.html">&quot;kricket&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_logger_.html">&quot;logger&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_transports_console_.html">&quot;transports/console&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_transports_dummy_.html">&quot;transports/dummy&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_transports_file_.html">&quot;transports/file&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_transports_index_.html">&quot;transports/index&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_transports_stream_.html">&quot;transports/stream&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_transports_transport_.html">&quot;transports/transport&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_types_.html">&quot;types&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_utils_asynceach_.html">&quot;utils/asynceach&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_utils_helpers_.html">&quot;utils/helpers&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_utils_index_.html">&quot;utils/index&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_utils_logger_.html">&quot;utils/logger&quot;</a>
-					</li>
-				</ul>
-			</nav>
-			<nav class="tsd-navigation secondary menu-sticky">
-				<ul class="before-current">
-				</ul>
-			</nav>
-		</div>
-	</div>
-</div>
-<footer class="with-border-bottom">
-	<div class="container">
-		<h2>Legend</h2>
-		<div class="tsd-legend-group">
-			<ul class="tsd-legend">
-				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
-				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
-				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
-				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
-				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
-				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
-				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
-				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
-			</ul>
-		</div>
-	</div>
-</footer>
-<div class="container tsd-generator">
-	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
-</div>
-<div class="overlay"></div>
-<script src="assets/js/main.js"></script>
-<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
-</body>
-</html>
+<p>A un-opinionated Logger using Transport streams. Kricket makes only one opinion that being to manage log levels for you that you specify. All other filters and transforms are up to you.</p>
+<p>If you are looking for a Logger that auto-magically wires up things for you, this is <strong>NOT</strong> it!</p>
+<p>Kricket simply provides the tools for you to make as simple or as complex a Logger as you wish. Initially it may seem a bit much but once you get the hang of it you&#39;ll find it quite useful and extremely flexible. </p>
+<a id="md:install" class="tsd-anchor"></a><h2><a href="#md:install">Install</a></h2><pre><code class="language-sh"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">install</span><span class="hl-1"> </span><span class="hl-2">kricket</span><span class="hl-1"> </span><span class="hl-3">-s</span><br/><br/><span class="hl-0">OR</span><br/><br/><span class="hl-0">yarn</span><span class="hl-1"> </span><span class="hl-2">add</span><span class="hl-1"> </span><span class="hl-2">kricket</span><span class="hl-1"> </span><span class="hl-3">-s</span>
+</code><button>Copy</button></pre>
+<a id="md:usage" class="tsd-anchor"></a><h2><a href="#md:usage">Usage</a></h2><p>The default logger contains only one Transport that being a console logger. The default levels are <code>fatal, error, warn, info, debug</code>;</p>
+<pre><code class="language-ts"><span class="hl-4">import</span><span class="hl-1"> { </span><span class="hl-5">defaultLogger</span><span class="hl-1"> } </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&#39;kricket&#39;</span><span class="hl-1">;</span><br/><span class="hl-5">defaultLogger</span><span class="hl-1">.</span><span class="hl-0">writeLn</span><span class="hl-1">(</span><span class="hl-2">&#39;write some log message.&#39;</span><span class="hl-1">);</span><br/><span class="hl-5">defaultLogger</span><span class="hl-1">.</span><span class="hl-0">info</span><span class="hl-1">(</span><span class="hl-2">&#39;this is an info message.&#39;</span><span class="hl-1">);</span><br/><span class="hl-5">defaultLogger</span><br/><span class="hl-1">  .</span><span class="hl-0">group</span><span class="hl-1">()</span><br/><span class="hl-1">  .</span><span class="hl-0">write</span><span class="hl-1">(</span><span class="hl-2">&#39;some value&#39;</span><span class="hl-1">)</span><br/><span class="hl-1">  .</span><span class="hl-0">write</span><span class="hl-1">(</span><span class="hl-2">&#39;another value&#39;</span><span class="hl-1">)</span><br/><span class="hl-1">  .</span><span class="hl-0">end</span><span class="hl-1">();</span>
+</code><button>Copy</button></pre>
+<a id="md:filters" class="tsd-anchor"></a><h2><a href="#md:filters">Filters</a></h2><p>Kricket does not filter or prevent any log level from logging. This is entirely up to you. When Kricket is initialized it considers the order of the log levels you have provided.</p>
+<p>Consider the &quot;defaultLogger&quot; that Kricket ships with.</p>
+<pre><code class="language-ts"><span class="hl-4">export</span><span class="hl-1"> </span><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">defaultLogger</span><span class="hl-1"> = </span><span class="hl-0">createLogger</span><span class="hl-1">(</span><span class="hl-2">&#39;default&#39;</span><span class="hl-1">, {</span><br/><br/><span class="hl-1">  </span><span class="hl-7">// This is the current active level</span><br/><span class="hl-1">  </span><span class="hl-5">level:</span><span class="hl-1"> </span><span class="hl-2">&#39;info&#39;</span><span class="hl-1">,</span><br/><br/><span class="hl-1">  </span><span class="hl-7">// Your initialized log levels where fatal = 0 and debug = 4</span><br/><span class="hl-1">  </span><span class="hl-5">levels:</span><span class="hl-1"> [</span><span class="hl-2">&#39;fatal&#39;</span><span class="hl-1">, </span><span class="hl-2">&#39;error&#39;</span><span class="hl-1">, </span><span class="hl-2">&#39;warn&#39;</span><span class="hl-1">, </span><span class="hl-2">&#39;info&#39;</span><span class="hl-1">, </span><span class="hl-2">&#39;debug&#39;</span><span class="hl-1">],</span><br/><br/><span class="hl-1">  </span><span class="hl-7">// The default console Transport.</span><br/><span class="hl-1">  </span><span class="hl-5">transports:</span><span class="hl-1"> [</span><br/><span class="hl-1">    </span><span class="hl-3">new</span><span class="hl-1"> </span><span class="hl-0">ConsoleTransport</span><span class="hl-1">({ </span><span class="hl-5">asJSON:</span><span class="hl-1"> </span><span class="hl-3">false</span><span class="hl-1"> })</span><br/><span class="hl-1">  ]</span><br/><span class="hl-1">});</span>
+</code><button>Copy</button></pre>
+<a id="md:logger-labels" class="tsd-anchor"></a><h4><a href="#md:logger-labels">Logger Labels</a></h4><p>As shown above the default Logger is generated with the label <strong>default</strong>. This allows you to lookup other Loggers you might have generated from any other Logger which can be helpful in some instances.</p>
+<p>However a label is not required you can also create a logger without a label although a random generated string will be created for you behind the scenes.</p>
+<a id="md:limiting-output-by-level" class="tsd-anchor"></a><h3><a href="#md:limiting-output-by-level">Limiting Output by Level</a></h3><p>Considering the above let&#39;s say we want to limit any message above the &quot;warn&quot; level.</p>
+<p>First we need to set or initalize our Logger with that level. So for the defaultLogger we&#39;d do:</p>
+<pre><code class="language-ts"><span class="hl-4">import</span><span class="hl-1"> { </span><span class="hl-5">defaultLogger</span><span class="hl-1">, </span><span class="hl-5">LEVEL</span><span class="hl-1"> } </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&#39;kricket&#39;</span><span class="hl-1">;</span><br/><span class="hl-5">defaultLogger</span><span class="hl-1">.</span><span class="hl-0">setLevel</span><span class="hl-1">(</span><span class="hl-2">&#39;warn&#39;</span><span class="hl-1">);</span><br/><br/><span class="hl-7">// Note some properties in the payload object are symbols LEVEL is one.</span><br/><span class="hl-7">// Filters will &quot;filter&quot; a message and prevent output when</span><br/><span class="hl-7">// a filter return true. So here we listen if it&#39;s NOT true.</span><br/><span class="hl-7">// when this occurs we reject the message.</span><br/><span class="hl-5">defaultLogger</span><span class="hl-1">.</span><span class="hl-0">filter</span><span class="hl-1">((</span><span class="hl-5">payload</span><span class="hl-1">) </span><span class="hl-3">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-4">return</span><span class="hl-1"> !</span><span class="hl-5">defaultLogger</span><span class="hl-1">.</span><span class="hl-0">isLevelActive</span><span class="hl-1">(</span><span class="hl-5">payload</span><span class="hl-1">[</span><span class="hl-6">LEVEL</span><span class="hl-1">]);</span><br/><span class="hl-1">});</span>
+</code><button>Copy</button></pre>
+<a id="md:transforming-messages" class="tsd-anchor"></a><h3><a href="#md:transforming-messages">Transforming Messages</a></h3><p>Although the log payload message stores any formatting args it leaves that up to you as to how you want to handle them. For example if we wanted to do the typical node formating from the util lib this would be how.</p>
+<pre><code class="language-ts"><span class="hl-4">import</span><span class="hl-1"> { </span><span class="hl-5">defaultLogger</span><span class="hl-1">, </span><span class="hl-5">SPLAT</span><span class="hl-1"> } </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&#39;kricket&#39;</span><span class="hl-1">;</span><br/><span class="hl-4">import</span><span class="hl-1"> { </span><span class="hl-5">format</span><span class="hl-1"> } </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&#39;util&#39;</span><span class="hl-1">;</span><br/><br/><span class="hl-5">defaultLogger</span><span class="hl-1">.</span><span class="hl-0">transform</span><span class="hl-1">((</span><span class="hl-5">payload</span><span class="hl-1">) </span><span class="hl-3">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-5">payload</span><span class="hl-1">.</span><span class="hl-5">message</span><span class="hl-1"> = </span><span class="hl-0">format</span><span class="hl-1">(</span><span class="hl-5">payload</span><span class="hl-1">.</span><span class="hl-5">message</span><span class="hl-1">, ...</span><span class="hl-5">payload</span><span class="hl-1">[</span><span class="hl-6">SPLAT</span><span class="hl-1">]);</span><br/><span class="hl-1">  </span><span class="hl-4">return</span><span class="hl-1"> </span><span class="hl-5">payload</span><span class="hl-1">;</span><br/><span class="hl-1">});</span>
+</code><button>Copy</button></pre>
+<p>Now you can use formatting in your messages.</p>
+<pre><code class="language-ts"><span class="hl-5">defaultLogger</span><span class="hl-1">.</span><span class="hl-0">info</span><span class="hl-1">(</span><span class="hl-2">&#39;My name is %s.&#39;</span><span class="hl-1">, </span><span class="hl-2">&#39;Milton&#39;</span><span class="hl-1">);</span>
+</code><button>Copy</button></pre>
+<a id="md:assigning-filters-or-transports" class="tsd-anchor"></a><h3><a href="#md:assigning-filters-or-transports">Assigning Filters or Transports</a></h3><p>To this point we&#39;ve shown how global Filters and Transforms. You can also assign a Filter or Transform to a specific Transport.</p>
+<pre><code class="language-ts"><span class="hl-5">defaultLogger</span><span class="hl-1">.</span><span class="hl-0">transform</span><span class="hl-1">(</span><span class="hl-2">&#39;console&#39;</span><span class="hl-1">, </span><span class="hl-5">payload</span><span class="hl-1"> </span><span class="hl-3">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-7">// do something.</span><br/><span class="hl-1">  </span><span class="hl-4">return</span><span class="hl-1"> </span><span class="hl-5">payload</span><span class="hl-1">.</span><br/><span class="hl-1">})</span>
+</code><button>Copy</button></pre>
+<p><strong>The above works the same for Filters.</strong></p>
+<a id="md:output-format" class="tsd-anchor"></a><h2><a href="#md:output-format">Output Format</a></h2><p>By default Kricket outputs JSON to each transport. This can be disabled as it is in the default <strong>ConsoleTransport</strong>. When doing so Kricket will grab your formatted message resulting from your <strong>transform</strong> stack if any. The message is stored at: <code>payload.message</code></p>
+<pre><code class="language-ts"><span class="hl-4">import</span><span class="hl-1"> { </span><span class="hl-5">ConsoleTransport</span><span class="hl-1"> } </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&#39;kricket&#39;</span><span class="hl-1">;</span><br/><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">consoleTransport</span><span class="hl-1"> = </span><span class="hl-3">new</span><span class="hl-1"> </span><span class="hl-0">ConsoleTransport</span><span class="hl-1">({ </span><span class="hl-5">asJSON:</span><span class="hl-1"> </span><span class="hl-3">false</span><span class="hl-1"> });</span>
+</code><button>Copy</button></pre>
+<a id="md:transports" class="tsd-anchor"></a><h2><a href="#md:transports">Transports</a></h2><p>Kricket contains three default Transports:</p>
+<ul>
+<li><strong>ConsoleTransport</strong> to log to your terminal.</li>
+<li><strong>FileTransport</strong> to log to file with file rotation capabilities.</li>
+<li><strong>StreamTransport</strong> simple wrapper you can pass any Writable Stream to.</li>
+</ul>
+<a id="md:custom-transports" class="tsd-anchor"></a><h3><a href="#md:custom-transports">Custom Transports</a></h3><p>To create a custom Transport simply extend from the base abstract <strong>Transport</strong> class.</p>
+<pre><code class="language-ts"><span class="hl-4">import</span><span class="hl-1"> { </span><span class="hl-5">Transport</span><span class="hl-1"> } </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&#39;./transport&#39;</span><span class="hl-1">;</span><br/><span class="hl-4">import</span><span class="hl-1"> { </span><span class="hl-5">ITransportOptions</span><span class="hl-1"> } </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&#39;../types&#39;</span><span class="hl-1">;</span><br/><br/><span class="hl-3">interface</span><span class="hl-1"> </span><span class="hl-8">IMyTransport</span><span class="hl-1">&lt;</span><span class="hl-8">Level</span><span class="hl-1"> </span><span class="hl-3">extends</span><span class="hl-1"> </span><span class="hl-8">string</span><span class="hl-1">, </span><span class="hl-8">Label</span><span class="hl-1"> </span><span class="hl-3">extends</span><span class="hl-1"> </span><span class="hl-8">string</span><span class="hl-1">&gt; </span><span class="hl-3">extends</span><span class="hl-1"> </span><span class="hl-8">ITransportOptions</span><span class="hl-1">&lt;</span><span class="hl-8">Level</span><span class="hl-1">&gt; {</span><br/><span class="hl-1"> </span><span class="hl-7">// your options here.</span><br/><span class="hl-1"> </span><span class="hl-5">label</span><span class="hl-1">: </span><span class="hl-8">Label</span><span class="hl-1">;</span><br/><span class="hl-1">}</span><br/><br/><span class="hl-4">export</span><span class="hl-1"> </span><span class="hl-3">class</span><span class="hl-1"> </span><span class="hl-8">MyTransport</span><span class="hl-1">&lt;</span><span class="hl-8">Level</span><span class="hl-1"> </span><span class="hl-3">extends</span><span class="hl-1"> </span><span class="hl-8">string</span><span class="hl-1">, </span><span class="hl-8">Label</span><span class="hl-1"> </span><span class="hl-3">extends</span><span class="hl-1"> </span><span class="hl-8">string</span><span class="hl-1">&gt; </span><span class="hl-3">extends</span><span class="hl-1"> </span><span class="hl-8">Transport</span><span class="hl-1">&lt;</span><span class="hl-8">IMyTransport</span><span class="hl-1">&lt;</span><span class="hl-8">Level</span><span class="hl-1">&gt;&gt; {</span><br/><br/><span class="hl-1">  </span><span class="hl-7">// This is important if you wish to clone and reuse Transports.</span><br/><span class="hl-1">  </span><span class="hl-3">static</span><span class="hl-1"> </span><span class="hl-5">Type</span><span class="hl-1"> = </span><span class="hl-3">typeof</span><span class="hl-1"> </span><span class="hl-5">MyTransport</span><span class="hl-1">; </span><br/><span class="hl-1">  </span><br/><span class="hl-1">  </span><span class="hl-3">constructor</span><span class="hl-1">(</span><span class="hl-5">options</span><span class="hl-1">?: </span><span class="hl-8">IMyTransport</span><span class="hl-1">&lt;</span><span class="hl-8">Level</span><span class="hl-1">, </span><span class="hl-8">Label</span><span class="hl-1">&gt;) {</span><br/><span class="hl-1">    </span><span class="hl-3">super</span><span class="hl-1">(</span><span class="hl-2">&#39;myTransport&#39;</span><span class="hl-1">, </span><span class="hl-5">options</span><span class="hl-1">);</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">  </span><br/><span class="hl-1">  </span><span class="hl-0">log</span><span class="hl-1">(</span><span class="hl-5">payload</span><span class="hl-1">: </span><span class="hl-8">string</span><span class="hl-1">) {</span><br/><span class="hl-1">    </span><span class="hl-7">// This method MUST be overloaded or you will get an error.</span><br/><span class="hl-1">  }</span><br/><br/><span class="hl-1">}</span>
+</code><button>Copy</button></pre>
+<a id="md:consuming-the-above-transport" class="tsd-anchor"></a><h3><a href="#md:consuming-the-above-transport">Consuming the Above Transport</a></h3><p>To consume our new Transport we simply pass it to our Logger&#39;s transports.</p>
+<pre><code class="language-ts"><span class="hl-4">export</span><span class="hl-1"> </span><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">myLogger</span><span class="hl-1"> = </span><span class="hl-0">createLogger</span><span class="hl-1">(</span><span class="hl-2">&#39;myLogger&#39;</span><span class="hl-1">, {</span><br/><span class="hl-1">  </span><span class="hl-5">level:</span><span class="hl-1"> </span><span class="hl-2">&#39;info&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">levels:</span><span class="hl-1"> [</span><span class="hl-2">&#39;fatal&#39;</span><span class="hl-1">, </span><span class="hl-2">&#39;error&#39;</span><span class="hl-1">, </span><span class="hl-2">&#39;warn&#39;</span><span class="hl-1">, </span><span class="hl-2">&#39;info&#39;</span><span class="hl-1">, </span><span class="hl-2">&#39;debug&#39;</span><span class="hl-1">],</span><br/><span class="hl-1">  </span><span class="hl-5">transports:</span><span class="hl-1"> [</span><br/><span class="hl-1">    </span><span class="hl-3">new</span><span class="hl-1"> </span><span class="hl-0">MyTransport</span><span class="hl-1">()</span><br/><span class="hl-1">  ]</span><br/><span class="hl-1">});</span>
+</code><button>Copy</button></pre>
+<p>You can also add a Transport after Logger creation as follows:</p>
+<pre><code class="language-ts"><span class="hl-5">myLogger</span><span class="hl-1">.</span><span class="hl-0">addTransport</span><span class="hl-1">(</span><span class="hl-3">new</span><span class="hl-1"> </span><span class="hl-0">MyTransport</span><span class="hl-1">());</span>
+</code><button>Copy</button></pre>
+<a id="md:real-world-example" class="tsd-anchor"></a><h2><a href="#md:real-world-example">Real World Example</a></h2><p>For a real work example take a look at the basic example found in the <strong>examples</strong> directory.</p>
+<p>See <a href="examples/basic.ts">examples</a></p>
+<a id="md:docs" class="tsd-anchor"></a><h2><a href="#md:docs">Docs</a></h2><p>There is much more that Kricket does as time permits more examples will be added. You can also checkout the docs below as well as look at the tests/ folder.</p>
+<p>See <a href="https://blujedis.github.io/kricket/">https://blujedis.github.io/kricket/</a></p>
+<a id="md:change" class="tsd-anchor"></a><h2><a href="#md:change">Change</a></h2><p>See <a href="CHANGE.md">CHANGE.md</a></p>
+<a id="md:license" class="tsd-anchor"></a><h2><a href="#md:license">License</a></h2><p>See <a href="LICENSE">LICENSE.md</a></p>
+</div></div><div class="col-sidebar"><div class="page-menu"><div class="tsd-navigation settings"><details class="tsd-index-accordion"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>Settings</h3></summary><div class="tsd-accordion-details"><div class="tsd-filter-visibility"><h4 class="uppercase">Member Visibility</h4><form><ul id="tsd-filter-options"><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-private" name="private"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Private</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></form></div><div class="tsd-theme-toggle"><h4 class="uppercase">Theme</h4><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div><details open class="tsd-index-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>On This Page</h3></summary><div class="tsd-accordion-details"><a href="#md:install"><span>Install</span></a><a href="#md:usage"><span>Usage</span></a><a href="#md:filters"><span>Filters</span></a><ul><li><ul><li><a href="#md:logger-labels"><span>Logger <wbr/>Labels</span></a></li></ul></li><li><a href="#md:limiting-output-by-level"><span>Limiting <wbr/>Output by <wbr/>Level</span></a></li><li><a href="#md:transforming-messages"><span>Transforming <wbr/>Messages</span></a></li><li><a href="#md:assigning-filters-or-transports"><span>Assigning <wbr/>Filters or <wbr/>Transports</span></a></li></ul><a href="#md:output-format"><span>Output <wbr/>Format</span></a><a href="#md:transports"><span>Transports</span></a><ul><li><a href="#md:custom-transports"><span>Custom <wbr/>Transports</span></a></li><li><a href="#md:consuming-the-above-transport"><span>Consuming the <wbr/>Above <wbr/>Transport</span></a></li></ul><a href="#md:real-world-example"><span>Real <wbr/>World <wbr/>Example</span></a><a href="#md:docs"><span>Docs</span></a><a href="#md:change"><span>Change</span></a><a href="#md:license"><span>License</span></a></div></details></div><div class="site-menu"><nav class="tsd-navigation"><a href="modules.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="assets/icons.svg#icon-1"></use></svg><span>Kricket</span></a><ul class="tsd-small-nested-navigation" id="tsd-nav-container" data-base="."><li>Loading...</li></ul></nav></div></div></div><footer><p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer><div class="overlay"></div></body></html>
