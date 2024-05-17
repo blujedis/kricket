@@ -75,7 +75,7 @@ export class FileTransport<Level extends string, Label extends string = string> 
   /**
    * Callback handler on new file created.
    * 
-   * @param filename the new filename that was created.
+   * @param newFile the new filename that was created.
    */
   newfile(newFile: string) {
     if (this._options.onRotate)

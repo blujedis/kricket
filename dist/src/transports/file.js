@@ -39,7 +39,7 @@ class FileTransport extends transport_1.Transport {
     /**
      * Callback handler on new file created.
      *
-     * @param filename the new filename that was created.
+     * @param newFile the new filename that was created.
      */
     newfile(newFile) {
         if (this._options.onRotate)
