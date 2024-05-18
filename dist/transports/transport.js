@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Transport = exports.Stream = void 0;
 const readable_stream_1 = require("readable-stream");
 const types_1 = require("../types");
-const utils_1 = require("../utils");
 class Stream extends readable_stream_1.Writable {
 }
 exports.Stream = Stream;
@@ -15,7 +14,7 @@ class Transport extends Stream {
         super({ highWaterMark: ({ ...options }).highWaterMark || 16 });
         this._options = { level: null, highWaterMark: 16, asJSON: true, filters: [], transforms: [], ...options };
         if (!this._options.label)
-            utils_1.log.fatal('Failed construct Transport using label/name of undefined');
+            throw new Error('Failed to construct Transport using label/name of undefined');
     }
     /**
      * Gets the extended Type.
@@ -92,10 +91,8 @@ class Transport extends Stream {
      * @param logger the parent Logger containing log levels.
      */
     setLevel(level, logger) {
-        if (typeof level === 'undefined' || !logger.levels.includes(level)) {
-            utils_1.log.fatal(`Level "${level}" is invalid or not found.`);
-            return this;
-        }
+        if (typeof level === 'undefined' || !logger.levels.includes(level))
+            throw new Error(`Level "${level}" is invalid or not found.`);
         this._options.level = level;
         return this;
     }
@@ -106,8 +103,7 @@ class Transport extends Stream {
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     log(payload) {
-        const err = new Error(`Method "log" is required for Transport ${this.label} but was NOT implemented.`);
-        utils_1.log.fatal(err.stack);
+        throw new Error(`Method "log" is required for Transport ${this.label} but was NOT implemented.`);
     }
     write(chunk, encoding, cb) {
         try {

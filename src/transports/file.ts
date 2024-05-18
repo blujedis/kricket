@@ -1,7 +1,6 @@
 import { Transport } from './transport';
 import rotator from 'file-stream-rotator';
 import { TransportOptions, EOL } from '../types';
-import { log } from '../utils';
 import FileStreamRotator from 'file-stream-rotator/lib/FileStreamRotator';
 
 export type Frequency = 'minute' | 'hourly' | 'daily' | 'custom' | 'test' | 'h' | 'm';
@@ -70,7 +69,7 @@ export class FileTransport<Level extends string, Label extends string = string> 
       this.rotator.on('new', this.newfile.bind(this));
 
     if (options.verbose)
-      log.info(`Transport "${this.label}" logging to file: ${this._options.filename}`);
+        console.info(`Transport "${this.label}" logging to file: ${this._options.filename}`);
 
   }
 
@@ -83,7 +82,7 @@ export class FileTransport<Level extends string, Label extends string = string> 
     if (this._options.onRotate)
       return this._options.onNew(newFile);
     if (this._options.verbose)
-      log.info(`Transport "${this.label}" logging to NEW file: ${newFile}`);
+      console.info(`Transport "${this.label}" logging to NEW file: ${newFile}`);
     return this;
   }
 

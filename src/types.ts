@@ -110,7 +110,9 @@ interface TransformBase<Level extends string> {
 
 }
 
-export interface TransportOptions<Level extends string = any, Label extends string = any> extends TransformBase<Level> {
+export type TransportOptions<Level extends string = any, Label extends string = any> = TransportOptionsBase<Level, Label> & Record<string, any>;
+
+export interface TransportOptionsBase<Level extends string = any, Label extends string = any> extends TransformBase<Level> {
 
   /**
    * The name/label for the Transport.

@@ -7,7 +7,6 @@ exports.FileTransport = void 0;
 const transport_1 = require("./transport");
 const file_stream_rotator_1 = __importDefault(require("file-stream-rotator"));
 const types_1 = require("../types");
-const utils_1 = require("../utils");
 const DEFAULTS = {
     label: 'file',
     filename: './logs/%DATE%.log',
@@ -35,7 +34,7 @@ class FileTransport extends transport_1.Transport {
         if (options.onNew)
             this.rotator.on('new', this.newfile.bind(this));
         if (options.verbose)
-            utils_1.log.info(`Transport "${this.label}" logging to file: ${this._options.filename}`);
+            console.info(`Transport "${this.label}" logging to file: ${this._options.filename}`);
     }
     /**
      * Callback handler on new file created.
@@ -46,7 +45,7 @@ class FileTransport extends transport_1.Transport {
         if (this._options.onRotate)
             return this._options.onNew(newFile);
         if (this._options.verbose)
-            utils_1.log.info(`Transport "${this.label}" logging to NEW file: ${newFile}`);
+            console.info(`Transport "${this.label}" logging to NEW file: ${newFile}`);
         return this;
     }
     /**

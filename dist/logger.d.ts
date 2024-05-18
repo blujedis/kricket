@@ -43,7 +43,7 @@ export declare class Logger<Level extends string, Meta extends Record<string, un
     /**
      * Gets Logger Transports.
      */
-    get transports(): Transport<import("./types").TransportOptions<any, any>>[];
+    get transports(): Transport<import("./types").TransportOptions>[];
     /**
      * Gets Logger's filters.
      */

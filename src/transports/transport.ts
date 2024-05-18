@@ -1,7 +1,6 @@
 import { Writable } from 'readable-stream';
 import { TransportOptions, EOL, PayloadBase, ErrorCallback, NodeCallback } from '../types';
 import { Logger } from '../logger';
-import { log } from '../utils';
 
 
 export abstract class Stream extends Writable {
@@ -21,7 +20,7 @@ export abstract class Transport<Options extends TransportOptions = TransportOpti
     this._options = { level: null, highWaterMark: 16, asJSON: true, filters: [], transforms: [], ...options };
 
     if (!this._options.label)
-      log.fatal('Failed construct Transport using label/name of undefined');
+     throw new Error('Failed to construct Transport using label/name of undefined');
 
   }
 
@@ -110,10 +109,8 @@ export abstract class Transport<Options extends TransportOptions = TransportOpti
    * @param logger the parent Logger containing log levels.
    */
   setLevel(level: string, logger: Logger<any, any>) {
-    if (typeof level === 'undefined' || !logger.levels.includes(level)) {
-      log.fatal(`Level "${level}" is invalid or not found.`);
-      return this;
-    }
+    if (typeof level === 'undefined' || !logger.levels.includes(level)) 
+     throw new Error(`Level "${level}" is invalid or not found.`);
     this._options.level = level;
     return this;
   }
@@ -125,8 +122,7 @@ export abstract class Transport<Options extends TransportOptions = TransportOpti
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   log(payload: string) {
-    const err = new Error(`Method "log" is required for Transport ${this.label} but was NOT implemented.`);
-    log.fatal(err.stack);
+    throw new Error(`Method "log" is required for Transport ${this.label} but was NOT implemented.`);
   }
 
   /**
