@@ -23,9 +23,10 @@ const DEFAULTS = {
 class FileTransport extends transport_1.Transport {
     static Type = typeof FileTransport;
     rotator;
+    options;
     constructor(options) {
         super({ ...DEFAULTS, ...options });
-        options = this._options;
+        this.options = this._options;
         if (['hourly', 'minute'].includes(options.frequency))
             options.frequency = options.frequency.charAt(0);
         this.rotator = file_stream_rotator_1.default.getStream(options);

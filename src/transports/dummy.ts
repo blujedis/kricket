@@ -9,7 +9,7 @@ export class DummyTransport<Level extends string, Label extends string = string>
 
   constructor(options?: TransportOptions<Level, Label>) {
     super({ label: 'dummy', ...options });
-    options = this._options;
+    this.options = this._options;
   }
 
   /**

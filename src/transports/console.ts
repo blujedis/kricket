@@ -13,7 +13,7 @@ export class ConsoleTransport<Level extends string, Label extends string = strin
 
   constructor(options?: ConsoleOptions<Level, Label>) {
     super({ label: 'console', ...options, asJSON: false });
-    options = this._options;
+    this.options = this._options;
   }
 
   /**

@@ -14,7 +14,7 @@ export class StreamTransport<Level extends string, Label extends string = string
 
   constructor(options?: StreamTransportOptions<Level, Label>) {
     super({ label: 'stream', ...options });
-    options = this._options;
+    this.options = this._options;
   }
 
   /**

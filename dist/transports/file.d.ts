@@ -28,6 +28,7 @@ export interface FileTransportOptions<Level extends string, Label extends string
 export declare class FileTransport<Level extends string, Label extends string = string> extends Transport<FileTransportOptions<Level, Label>> {
     static Type: "string" | "number" | "bigint" | "boolean" | "symbol" | "undefined" | "object" | "function";
     rotator: FileStreamRotator;
+    options: FileTransportOptions<Level, Label>;
     constructor(options?: FileTransportOptions<Level, Label>);
     /**
      * Callback handler on new file created.

@@ -50,11 +50,13 @@ export class FileTransport<Level extends string, Label extends string = string> 
 
   rotator: FileStreamRotator;
 
+  options: FileTransportOptions<Level, Label>
+
   constructor(options?: FileTransportOptions<Level, Label>) {
 
     super({ ...DEFAULTS, ...options });
 
-    options = this._options;
+    this.options = this._options;
 
     if (['hourly', 'minute'].includes(options.frequency))
       options.frequency = options.frequency.charAt(0) as 'h' | 'm';

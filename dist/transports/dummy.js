@@ -7,7 +7,7 @@ class DummyTransport extends transport_1.Transport {
     options;
     constructor(options) {
         super({ label: 'dummy', ...options });
-        options = this._options;
+        this.options = this._options;
     }
     /**
      * Must override log method.

@@ -1,10 +1,9 @@
 # Kicket Changes
 
-<<<<<<< HEAD
 ## (05-17-2024)
 
 - Update packages fixes types.
-=======
+
 ## (07-07-2022)
 
 - Bump, cleanup, fix eslint.
@@ -12,7 +11,6 @@
 ## (10-03-2020)
 
 - Typings fix, type not exported.
->>>>>>> 2fa12ad6deec034c156be9ad86464db58f1dfb7b
 
 ## (09-19-2020)
 

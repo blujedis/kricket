@@ -7,7 +7,7 @@ class ConsoleTransport extends transport_1.Transport {
     options;
     constructor(options) {
         super({ label: 'console', ...options, asJSON: false });
-        options = this._options;
+        this.options = this._options;
     }
     /**
      * Method called by super.

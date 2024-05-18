@@ -7,7 +7,7 @@ class StreamTransport extends transport_1.Transport {
     options;
     constructor(options) {
         super({ label: 'stream', ...options });
-        options = this._options;
+        this.options = this._options;
     }
     /**
      * Method  alled by super.
