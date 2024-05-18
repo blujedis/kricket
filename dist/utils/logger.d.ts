@@ -1,15 +1,17 @@
-export type LogGroup<T> = ILogGroup & T;
-export type LogType = keyof typeof TYPES;
-export type LogTypeExt = LogType | 'write';
-export type Color = keyof typeof ANSI_COLORS;
-export type ReverseType = keyof typeof REVERSE_TYPES;
-export type WriterCallback<T = any, E extends object = {}> = (err?: Error & E, data?: T) => void;
-export interface ILogGroup {
+/**
+ * Simple internal logger.
+ */
+export type LogGroup<T> = T & {
     end(indent: string, exit?: boolean): void;
     end(indent: number, exit?: boolean): void;
     end(exit: boolean): void;
     end(): void;
-}
+};
+export type LogType = keyof typeof TYPES;
+export type LogTypeExt = LogType | 'write';
+export type Color = keyof typeof ANSI_COLORS;
+export type ReverseType = keyof typeof REVERSE_TYPES;
+export type WriterCallback<T = any, E extends object = object> = (err?: Error & E, data?: T) => void;
 export declare const ANSI_COLORS: {
     red: import("ansi-colors").StyleFunction;
     yellow: import("ansi-colors").StyleFunction;
@@ -52,7 +54,7 @@ declare namespace log {
     var error: (message: string, ...args: any[]) => typeof log;
     var warn: (message: string, ...args: any[]) => typeof log;
     var info: (message: string, ...args: any[]) => typeof log;
-    var group: IGroup;
+    var group: Group;
 }
 declare function group(title?: string, color?: ReverseType | boolean, compact?: boolean): LogGroup<{
     write: (message: string, ...args: any[]) => any;
@@ -68,7 +70,7 @@ declare function group(title?: string, color?: ReverseType | boolean, compact?: 
     after: (value: string | number) => any;
     end: (indent?: number | string | boolean, exit?: boolean) => void;
 }>;
-interface IGroup {
+interface Group {
     (title?: string, color?: ReverseType | boolean, compact?: boolean): ReturnType<typeof group>;
     (title?: string, compact?: boolean): ReturnType<typeof group>;
 }

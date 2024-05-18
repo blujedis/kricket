@@ -80,7 +80,8 @@ export class FileTransport<Level extends string, Label extends string = string> 
   newfile(newFile: string) {
     if (this._options.onRotate)
       return this._options.onNew(newFile);
-    log.info(`Transport "${this.label}" logging to NEW file: ${newFile}`);
+    if (this._options.verbose)
+      log.info(`Transport "${this.label}" logging to NEW file: ${newFile}`);
     return this;
   }
 

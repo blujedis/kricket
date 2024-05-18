@@ -35,7 +35,7 @@ export function isPlainObject(obj: unknown) {
  * @param obj the object to inspect.
  * @param lower whether to convert resutl to lowercase.
  */
-export function getObjectName<T extends { [key: string]: any; } = {}>(obj: T, lower = true): string {
+export function getObjectName<T extends { [key: string]: any; } = object>(obj: T, lower = true): string {
   const value = obj && (obj.name || (obj.constructor && obj.constructor.name) || null);
   if (typeof value === 'string' && lower)
     return value.toLowerCase();
@@ -66,6 +66,6 @@ export function uuidv4(a?) {
  * 
  * @param radix the numberic value used to convert to strings.
  */
-export function randomID(radix = 16) {
-  return '#' + (Math.random() * 0xFFFFFF << 0).toString(radix);
-}
+// export function randomID(radix = 16) {
+//   return '#' + (Math.random() * 0xFFFFFF << 0).toString(radix);
+// }

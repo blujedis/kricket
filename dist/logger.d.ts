@@ -1,15 +1,14 @@
 /// <reference types="node" />
 import { EventEmitter } from 'events';
-import { ILoggerOptions, Filter, Transform, Callback, BaseLevel, ChildLogger, IPayload } from './types';
+import { LoggerOptions, Filter, Transform, Callback, BaseLevel, ChildLogger, PayloadBase } from './types';
 import { Transport } from './transports';
 import { Core } from './core';
-export declare class Logger<Level extends string, M extends Record<string, unknown> = Record<string, unknown>> extends EventEmitter {
-    label: string;
-    options: ILoggerOptions<Level, M>;
+export declare class Logger<Level extends string, Meta extends Record<string, unknown> = Record<string, unknown>> extends EventEmitter {
+    options: LoggerOptions<Level, Meta>;
     isChild: boolean;
     core: Core;
-    children: Map<string, Logger<Level, M>>;
-    constructor(label: string, options: ILoggerOptions<Level, M>, isChild?: boolean);
+    children: Map<string, Logger<Level, Meta>>;
+    constructor(options: LoggerOptions<Level, Meta>, isChild?: boolean);
     /**
      * Iterates Transports checks for duplicate labels.
      */
@@ -17,7 +16,6 @@ export declare class Logger<Level extends string, M extends Record<string, unkno
     /**
      * Internal method to write to Transport streams.
      *
-     * @param group optional log group.
      * @param level the level to be logged.
      * @param message the message to be logged.
      * @param args the optional format args to be applied.
@@ -37,6 +35,7 @@ export declare class Logger<Level extends string, M extends Record<string, unkno
      * @param payload the payload object to be transformed.
      */
     private transformed;
+    get label(): string;
     /**
      * Gets Logger levels.
      */
@@ -44,15 +43,15 @@ export declare class Logger<Level extends string, M extends Record<string, unkno
     /**
      * Gets Logger Transports.
      */
-    get transports(): Transport<import("./types").ITransportOptions<any, any>>[];
+    get transports(): Transport<import("./types").TransportOptions<any, any>>[];
     /**
      * Gets Logger's filters.
      */
-    get filters(): Filter<Level>[];
+    get filters(): Filter<Level, Record<string, any>>[];
     /**
      * Gets all Logger Transforms.
      */
-    get transforms(): Transform<Level>[];
+    get transforms(): Transform<Level, Record<string, any>>[];
     /**
      * Gets whether the Logger is muted.
      */
@@ -117,7 +116,7 @@ export declare class Logger<Level extends string, M extends Record<string, unkno
      * @param payload the payload containing the level to inspect.
      * @param levels the optional levels to compare against.
      */
-    isLevelActive(payload: IPayload<Level>, levels?: Level[]): boolean;
+    isLevelActive(payload: PayloadBase<Level>, levels?: Level[]): boolean;
     /**
      * Gets a new child Logger.
      *
@@ -133,26 +132,26 @@ export declare class Logger<Level extends string, M extends Record<string, unkno
      * @param transport the transport to add the filter to.
      * @param fn the Filter function to be added.
      */
-    filter(transport: string, fn: Filter<Level>): this;
+    filter<P extends Record<string, any> = Record<string, any>>(transport: string, fn: Filter<Level, P>): this;
     /**
      * Adds a global Filter function.
      *
      * @param fn the Filter function to be added.
      */
-    filter(fn: Filter<Level>): this;
+    filter<P extends Record<string, any> = Record<string, any>>(fn: Filter<Level, P>): this;
     /**
      * Adds a Transform function.
      *
      * @param transport the Transport to add the transform to.
      * @param fn the Transform function to be added.
      */
-    transform(transport: string, fn: Transform<Level>): this;
+    transform<P extends Record<string, any> = Record<string, any>>(transport: string, fn: Transform<Level, P>): this;
     /**
      * Adds a global Transform function.
      *
      * @param fn the Transform function to be added.
      */
-    transform(fn: Transform<Level>): this;
+    transform<P extends Record<string, any> = Record<string, any>>(fn: Transform<Level, P>): this;
     /**
      * Merges Filter functions into single group.
      *
@@ -163,7 +162,7 @@ export declare class Logger<Level extends string, M extends Record<string, unkno
     /**
      * Merges Filter functions into single group.
      *
-     * @param fns rest array of Filter functions to merge.
+     * @param fn rest array of Filter functions to merge.
      */
     mergeFilter(fn: Filter<Level>[]): Filter<Level>;
     /**
@@ -212,7 +211,7 @@ export declare class Logger<Level extends string, M extends Record<string, unkno
          * @param message the message to write.
          * @param args optional format args.
          */
-        write(msg: string, ...args: any[]): void;
+        write(message: string, ...args: any[]): void;
         /**
          * Ends the write stream and outputs to Transports.
          *
@@ -249,21 +248,21 @@ export declare class Logger<Level extends string, M extends Record<string, unkno
      * @param payload the current payload to inspect.
      * @param label the label to match.
      */
-    hasLogger(payload: IPayload<Level>, label: string): boolean;
+    hasLogger(payload: PayloadBase<Level>, label: string): boolean;
     /**
      * Useful helper to determine if payload contains a given Transport.
      *
      * @param payload the current payload to inspect.
      * @param label the label to match.
      */
-    hasTransport(payload: IPayload<Level>, label: string): boolean;
+    hasTransport(payload: PayloadBase<Level>, label: string): boolean;
     /**
      * Useful helper to determine if Transport contains a given Level.
      *
      * @param payload the current payload to inspect.
-     * @param label the label to match.
+     * @param compare the label to compare.
      */
-    hasLevel(payload: IPayload<Level>, compare: Level | BaseLevel): boolean;
+    hasLevel(payload: PayloadBase<Level>, compare: Level | BaseLevel): boolean;
     /**
      * Converts Symbols on payload to a simple mapped object.
      * This can be used if you wish to output Symbols as metadata to
@@ -279,7 +278,7 @@ export declare class Logger<Level extends string, M extends Record<string, unkno
      *
      * @param payload a log payload containing symbols.
      */
-    symbolsToMap(payload: IPayload<Level>, ...symbols: symbol[]): {};
+    symbolsToMap(payload: PayloadBase<Level>, ...symbols: symbol[]): {};
     /**
      * Simply extends the payload object with additional properties while also
      * maintaining typings.
@@ -287,7 +286,7 @@ export declare class Logger<Level extends string, M extends Record<string, unkno
      * @param payload the payload object to be extended.
      * @param obj the object to extend payload with.
      */
-    extendPayload<T extends object>(payload: IPayload<Level>, obj: T): IPayload<Level> & T;
+    extendPayload<T extends object>(payload: PayloadBase<Level>, obj: T): PayloadBase<Level> & T;
     /**
      * Adds a Transport to Logger.
      *

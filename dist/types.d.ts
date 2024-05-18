@@ -1,8 +1,5 @@
 import { Transport } from './transports';
 import { Logger } from './logger';
-export interface IMap<T = any> {
-    [key: string]: T;
-}
 export type KeyOf<T> = Extract<keyof T, string>;
 export type ValueOf<K extends KeyOf<T>, T> = T[K];
 export type ValuesOf<T extends any[]> = T[number];
@@ -10,20 +7,21 @@ export type NodeCallback<T = any, E extends object = {}> = (err?: (Error & E) | 
 export type Callback = (data?: any) => void;
 export type ErrorCallback = (err?: Error | null | undefined) => void;
 export type BaseLevel = 'write' | 'writeLn';
-export type Filter<Level extends string> = (payload: Payload<Level>) => boolean;
-export type Transform<Level extends string> = (payload: Payload<Level>) => Payload<Level>;
+export type Filter<Level extends string, P extends Record<string, any> = Record<string, any>> = (payload: Payload<Level, P>) => boolean;
+export type Transform<Level extends string, P extends Record<string, any> = Record<string, any>> = (payload: Payload<Level, P>) => Payload<Level, P>;
 export type LogMethod<T> = (message: any, ...args: any[]) => T;
 export type LogMethods<T, Level extends string> = Record<Level, LogMethod<T>>;
 export type ChildOmits = 'setTransportLevel' | 'addTransport' | 'muteTransport' | 'unmuteTransport';
 export type ChildLogger<Level extends string> = Omit<Logger<Level>, ChildOmits> & LogMethods<Logger<Level>, Level>;
-export type Payload<Level extends string, E extends object = {}> = IPayload<Level | BaseLevel> & E;
+export type Payload<Level extends string, E extends object = {}> = PayloadBase<Level & BaseLevel> & E;
 export declare const LOGGER: unique symbol;
 export declare const TRANSPORT: unique symbol;
 export declare const LEVEL: unique symbol;
 export declare const MESSAGE: unique symbol;
 export declare const SPLAT: unique symbol;
+export declare const META: unique symbol;
 export declare const EOL = "\n";
-export interface IPayload<Level extends string> {
+export interface PayloadBase<Level extends string> {
     /**
      * The payload's Logger label.
      */
@@ -35,11 +33,11 @@ export interface IPayload<Level extends string> {
     /**
      * The payload's log level.
      */
-    [LEVEL]: Level | BaseLevel;
+    [LEVEL]: Level;
     /**
      * The payload's message.
      */
-    [MESSAGE]: string;
+    [MESSAGE]: string | Error;
     /**
      * Array containing payload arguments beyond the primary message.
      */
@@ -53,7 +51,7 @@ export interface IPayload<Level extends string> {
      */
     [key: string]: any;
 }
-interface ITransformBase<Level extends string> {
+interface TransformBase<Level extends string> {
     /**
      * The log Level that has been assigned.
      */
@@ -75,7 +73,7 @@ interface ITransformBase<Level extends string> {
      */
     transforms?: Transform<Level>[];
 }
-export interface ITransportOptions<Level extends string = any, Label extends string = any> extends ITransformBase<Level> {
+export interface TransportOptions<Level extends string = any, Label extends string = any> extends TransformBase<Level> {
     /**
      * The name/label for the Transport.
      */
@@ -94,7 +92,14 @@ export interface ITransportOptions<Level extends string = any, Label extends str
      */
     highWaterMark?: number;
 }
-export interface ILoggerOptions<Level extends string, M extends object = {}> extends ITransformBase<Level> {
+export interface LoggerOptions<Level extends string, M extends object = {}> extends TransformBase<Level> {
+    /**
+     * The label for the logger. If not provided a
+     * random id will be generated.
+     *
+     * @default undefined
+     */
+    label?: string;
     /**
      * The Logger's log levels.
      * Once a Logger has been initialized these CANNOT be changed nor can a child change

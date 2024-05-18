@@ -1,17 +1,22 @@
-import { createLogger, ConsoleTransport, FileTransport, LEVEL, MESSAGE, SPLAT } from 'kricket';
+import { createLogger, ConsoleTransport, FileTransport, LEVEL, MESSAGE, SPLAT } from '../src';
+import { StyleFunction } from 'ansi-colors';
 import { stripColor, redBright, bgRedBright, blueBright, yellowBright, cyanBright } from 'ansi-colors';
 import { format, inspect } from 'util';
 
-const META = Symbol.for('META');
-
 type Level = keyof typeof COLOR_MAP;
+
+type PayloadMeta = {
+  [META]: Record<string, any>;
+}
+
+const META = Symbol.for('META');
 
 const COLOR_MAP = {
   fatal: bgRedBright,
   error: redBright,
   warn: yellowBright,
   info: cyanBright,
-  verbose: blueBright
+  silly: blueBright
 };
 
 const logger = createLogger<Level>({
@@ -25,7 +30,7 @@ const logger = createLogger<Level>({
 
 /**
  * Converts an error to object literal.
- * 
+ * 6
  * @param err the error to convert to object
  */
 function errToObj<E extends Error>(err: E) {
@@ -41,7 +46,7 @@ logger.filter('console', (payload) => {
   return !logger.isLevelActive(payload[LEVEL]);
 });
 
-logger.transform((payload) => {
+logger.transform<PayloadMeta>((payload) => {
 
   let meta = {};
 
@@ -49,7 +54,7 @@ logger.transform((payload) => {
     meta = payload[SPLAT].pop();
 
   // if payload message is an error.
-  if ((payload[MESSAGE] as any) instanceof Error) {
+  if ((payload[MESSAGE]) instanceof Error) {
     const err = payload[MESSAGE] as any;
     payload.message = err.message;
     meta = { ...meta, err: errToObj(err) };
@@ -69,18 +74,25 @@ logger.transform((payload) => {
 
 });
 
-logger.transform('console', (payload) => {
+logger.transform<PayloadMeta>('console', (payload) => {
+
   let label = '';
-  if (logger.levels.includes(payload[LEVEL] as any))
-    label = COLOR_MAP[payload[LEVEL]](payload[LEVEL]) + ': ';
-  if (payload[META as any]) {
-    // Strip out error as it would display stack and fill console.
-    const { err, ...clean } = payload[META as any];
-    if (Object.keys(clean).length)
-      payload.message += (' ' + inspect(clean, null, null, true));
+
+  if (logger.levels.includes(payload[LEVEL])) {
+    const styleFunc = COLOR_MAP[payload[LEVEL]] as StyleFunction;
+    label = styleFunc(payload[LEVEL]) + ': ';
   }
+
+  if (payload[META]) {
+    // Strip out error as it would display stack and fill console.
+    const { err, ...clean } = payload[META];
+    if (Object.keys(clean).length)
+      payload.message += (' ' + inspect(clean, undefined, null, true));
+  }
+
   payload.message = label + payload.message;
   return payload;
+
 });
 
 logger.transform('file', (payload) => {

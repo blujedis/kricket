@@ -44,7 +44,8 @@ class FileTransport extends transport_1.Transport {
     newfile(newFile) {
         if (this._options.onRotate)
             return this._options.onNew(newFile);
-        utils_1.log.info(`Transport "${this.label}" logging to NEW file: ${newFile}`);
+        if (this._options.verbose)
+            utils_1.log.info(`Transport "${this.label}" logging to NEW file: ${newFile}`);
         return this;
     }
     /**

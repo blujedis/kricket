@@ -1,10 +1,6 @@
 import { Transport } from './transports';
 import { Logger } from './logger';
 
-export interface IMap<T = any> {
-  [key: string]: T;
-}
-
 export type KeyOf<T> = Extract<keyof T, string>;
 
 export type ValueOf<K extends KeyOf<T>, T> = T[K];
@@ -19,9 +15,9 @@ export type ErrorCallback = (err?: Error | null | undefined) => void;
 
 export type BaseLevel = 'write' | 'writeLn';
 
-export type Filter<Level extends string> = (payload: Payload<Level>) => boolean;
+export type Filter<Level extends string, P extends Record<string, any> = Record<string, any>> = (payload: Payload<Level, P>) => boolean;
 
-export type Transform<Level extends string> = (payload: Payload<Level>) => Payload<Level>;
+export type Transform<Level extends string, P extends Record<string, any> = Record<string, any>> = (payload: Payload<Level, P>) => Payload<Level, P>;
 
 export type LogMethod<T> = (message: any, ...args: any[]) => T;
 
@@ -31,7 +27,7 @@ export type ChildOmits = 'setTransportLevel' | 'addTransport' | 'muteTransport' 
 
 export type ChildLogger<Level extends string> = Omit<Logger<Level>, ChildOmits> & LogMethods<Logger<Level>, Level>;
 
-export type Payload<Level extends string, E extends object = {}> = IPayload<Level | BaseLevel> & E;
+export type Payload<Level extends string, E extends object = {}> = PayloadBase<Level & BaseLevel> & E;
 
 export const LOGGER = Symbol.for('LOGGER');
 
@@ -43,9 +39,11 @@ export const MESSAGE = Symbol.for('MESSAGE');
 
 export const SPLAT = Symbol.for('SPLAT');
 
+export const META = Symbol.for('META');
+
 export const EOL = '\n';
 
-export interface IPayload<Level extends string> {
+export interface PayloadBase<Level extends string> {
 
   /**
    * The payload's Logger label.
@@ -60,12 +58,12 @@ export interface IPayload<Level extends string> {
   /**
    * The payload's log level.
    */
-  [LEVEL]: Level | BaseLevel;
+  [LEVEL]: Level;
 
   /**
    * The payload's message.
    */
-  [MESSAGE]: string;
+  [MESSAGE]: string | Error;
 
   /**
    * Array containing payload arguments beyond the primary message.
@@ -137,6 +135,14 @@ export interface TransportOptions<Level extends string = any, Label extends stri
 }
 
 export interface LoggerOptions<Level extends string, M extends object = {}> extends TransformBase<Level> {
+
+  /**
+   * The label for the logger. If not provided a
+   * random id will be generated.
+   * 
+   * @default undefined
+   */
+  label?: string;
 
   /**
    * The Logger's log levels.

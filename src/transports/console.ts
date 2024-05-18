@@ -19,7 +19,7 @@ export class ConsoleTransport<Level extends string, Label extends string = strin
   /**
    * Method called by super.
    * 
-   * @param payload the payload object to ouptut.
+   * @param payload the payload to ouptut.
    */
   log(payload: string) {
     process.stdout.write(payload, (err) => {

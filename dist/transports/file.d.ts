@@ -1,8 +1,8 @@
 import { Transport } from './transport';
-import { ITransportOptions } from '../types';
+import { TransportOptions } from '../types';
 import FileStreamRotator from 'file-stream-rotator/lib/FileStreamRotator';
 export type Frequency = 'minute' | 'hourly' | 'daily' | 'custom' | 'test' | 'h' | 'm';
-export interface IFileOptions {
+export interface FileOptions {
     flags?: string;
     encoding?: string;
     fd?: number;
@@ -11,7 +11,7 @@ export interface IFileOptions {
     start?: number;
     highWaterMark?: number;
 }
-export interface IFileTransportOptions<Level extends string, Label extends string = string> extends ITransportOptions<Level, Label> {
+export interface FileTransportOptions<Level extends string, Label extends string = string> extends TransportOptions<Level, Label> {
     filename?: string;
     frequency?: Frequency;
     verbose?: boolean;
@@ -20,15 +20,15 @@ export interface IFileTransportOptions<Level extends string, Label extends strin
     max_logs?: string;
     audit_file?: string;
     end_stream?: boolean;
-    file_options?: IFileOptions;
+    file_options?: FileOptions;
     eol?: string;
     onRotate?(oldFile?: string, newFile?: string): void;
     onNew?(newFile?: string): void;
 }
-export declare class FileTransport<Level extends string, Label extends string = string> extends Transport<IFileTransportOptions<Level, Label>> {
+export declare class FileTransport<Level extends string, Label extends string = string> extends Transport<FileTransportOptions<Level, Label>> {
     static Type: "string" | "number" | "bigint" | "boolean" | "symbol" | "undefined" | "object" | "function";
     rotator: FileStreamRotator;
-    constructor(options?: IFileTransportOptions<Level, Label>);
+    constructor(options?: FileTransportOptions<Level, Label>);
     /**
      * Callback handler on new file created.
      *

@@ -1,9 +1,9 @@
 import { Writable } from 'readable-stream';
-import { ITransportOptions, ErrorCallback, NodeCallback } from '../types';
+import { TransportOptions, ErrorCallback, NodeCallback } from '../types';
 import { Logger } from '../logger';
 export declare abstract class Stream extends Writable {
 }
-export declare abstract class Transport<Options extends ITransportOptions = ITransportOptions> extends Stream {
+export declare abstract class Transport<Options extends TransportOptions = TransportOptions> extends Stream {
     static Type: any;
     _options: Options;
     _buffer: string;
@@ -37,11 +37,11 @@ export declare abstract class Transport<Options extends ITransportOptions = ITra
     /**
      * Gets Transport's Filters.
      */
-    get filters(): import("../types").Filter<any>[];
+    get filters(): import("../types").Filter<any, Record<string, any>>[];
     /**
      * Gets Transport's Transforms.
      */
-    get transforms(): import("../types").Transform<any>[];
+    get transforms(): import("../types").Transform<any, Record<string, any>>[];
     /**
      * Mutes the Transport.
      */
@@ -106,20 +106,4 @@ export declare abstract class Transport<Options extends ITransportOptions = ITra
      * @param cb optional callback.
      */
     end(chunk: any, enc: string, cb?: NodeCallback): this;
-<<<<<<< HEAD:dist/src/transports/transport.d.ts
-=======
-    /**
-     * Ends the stream, outputs if needed then calls destroy.
-     *
-     * @param chunk optional chunk to output on end.
-     * @param cb optional callback.
-     */
-    end(chunk: any, cb?: NodeCallback): this;
-    /**
-     * Ends the stream, outputs if needed then calls destroy.
-     *
-     * @param cb optional callback.
-     */
-    end(cb?: NodeCallback): this;
->>>>>>> 2fa12ad6deec034c156be9ad86464db58f1dfb7b:dist/transports/transport.d.ts
 }

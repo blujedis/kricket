@@ -11,14 +11,12 @@ const util_1 = require("util");
 const utils_1 = require("./utils");
 const core_1 = __importDefault(require("./core"));
 class Logger extends events_1.EventEmitter {
-    label;
     options;
     isChild;
     core = core_1.default;
     children = new Map();
-    constructor(label, options, isChild = false) {
+    constructor(options, isChild = false) {
         super();
-        this.label = label;
         this.options = options;
         this.isChild = isChild;
         this.options = { ...{ levels: [], transports: [], filters: [], transforms: [], muted: false, level: null }, ...this.options };
@@ -55,7 +53,6 @@ class Logger extends events_1.EventEmitter {
     /**
      * Internal method to write to Transport streams.
      *
-     * @param group optional log group.
      * @param level the level to be logged.
      * @param message the message to be logged.
      * @param args the optional format args to be applied.
@@ -190,6 +187,9 @@ class Logger extends events_1.EventEmitter {
             utils_1.log.fatal(`Transform "${tname}" resulted in malformed type of "${typeof transformed}".\n`);
         }
         return transformed;
+    }
+    get label() {
+        return this.options.label;
     }
     /**
      * Gets Logger levels.
@@ -329,6 +329,7 @@ class Logger extends events_1.EventEmitter {
         // eslint-disable-next-line @typescript-eslint/no-this-alias
         const self = this;
         const options = {
+            label,
             level: this.level,
             muted: this.muted,
             get levels() {
@@ -342,7 +343,7 @@ class Logger extends events_1.EventEmitter {
             filters: [...this.filters],
             meta: { ...this.options.meta, ...{ ...meta, [label]: true } }
         };
-        child = new Logger(label, options, true);
+        child = new Logger(options, true);
         // eslint-disable-next-line no-console
         const disabled = type => (...args) => utils_1.log.warn(`${type} disabled for child Loggers.`);
         child.setTransportLevel = disabled('setTransportLevel');
@@ -455,9 +456,9 @@ class Logger extends events_1.EventEmitter {
              * @param message the message to write.
              * @param args optional format args.
              */
-            write(msg, ...args) {
+            write(message, ...args) {
                 const meta = !buffer.length ? { [key]: true, groupStart: true } : { [key]: true };
-                buffer.push([msg, args, meta]);
+                buffer.push([message, args, meta]);
             },
             /**
              * Ends the write stream and outputs to Transports.
@@ -550,7 +551,7 @@ class Logger extends events_1.EventEmitter {
      * Useful helper to determine if Transport contains a given Level.
      *
      * @param payload the current payload to inspect.
-     * @param label the label to match.
+     * @param compare the label to compare.
      */
     hasLevel(payload, compare) {
         const level = payload[types_1.LEVEL];

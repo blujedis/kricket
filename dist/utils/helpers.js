@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.randomID = exports.uuidv4 = exports.flatten = exports.noop = exports.getObjectName = exports.isPlainObject = exports.isFunction = exports.isObject = void 0;
+exports.uuidv4 = exports.flatten = exports.noop = exports.getObjectName = exports.isPlainObject = exports.isFunction = exports.isObject = void 0;
 /**
  * Checks if value is an object.
  *
@@ -68,8 +68,7 @@ exports.uuidv4 = uuidv4;
  *
  * @param radix the numberic value used to convert to strings.
  */
-function randomID(radix = 16) {
-    return '#' + (Math.random() * 0xFFFFFF << 0).toString(radix);
-}
-exports.randomID = randomID;
+// export function randomID(radix = 16) {
+//   return '#' + (Math.random() * 0xFFFFFF << 0).toString(radix);
+// }
 //# sourceMappingURL=helpers.js.map

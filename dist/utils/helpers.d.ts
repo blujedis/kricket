@@ -24,7 +24,7 @@ export declare function isPlainObject(obj: unknown): boolean;
  */
 export declare function getObjectName<T extends {
     [key: string]: any;
-} = {}>(obj: T, lower?: boolean): string;
+} = object>(obj: T, lower?: boolean): string;
 export declare function noop(...args: any[]): void;
 /**
  * Flattens multi dimensional array.
@@ -41,4 +41,3 @@ export declare function uuidv4(a?: any): any;
  *
  * @param radix the numberic value used to convert to strings.
  */
-export declare function randomID(radix?: number): string;

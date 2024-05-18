@@ -1,4 +1,7 @@
 "use strict";
+/**
+ * Simple internal logger.
+ */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.log = exports.colorize = exports.ANSI_COLORS = void 0;
 const ansi_colors_1 = require("ansi-colors");

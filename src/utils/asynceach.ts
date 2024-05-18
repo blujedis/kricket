@@ -1,7 +1,10 @@
 
+type Handler = (...args: any[]) => any;
 export type RunnerResult<T> = T[] | { [key: string]: T; };
 export type RunnerCallback<T> = (err: Error | Error[], results: RunnerResult<T>) => void;
-export type RunnerEvents = Function[] | { [key: string]: Function; };
+// export type RunnerEvents = Function[] | { [key: string]: Function; };
+export type RunnerEvents = Handler[] | { [key: string]: Handler; };
+
 
 /**
  * Runs events in parallel return results.
@@ -125,7 +128,7 @@ export function asynceach<T>(events: RunnerEvents, onErrorHalt: boolean | Runner
   // Iterating Array.
   else {
 
-    (events as any[]).forEach((task: Function, i: number) => {
+    (events as any[]).forEach((task: Handler, i: number) => {
 
       task((err: Error, result: T) => {
         each(i, err, result);

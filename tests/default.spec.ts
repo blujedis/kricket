@@ -4,7 +4,8 @@ import { createLogger, DummyTransport, LEVEL, ConsoleTransport } from '../src';
 
 const dummyTransport = new DummyTransport();
 
-const testLogger = createLogger('testLogger', {
+const testLogger = createLogger({
+  label: 'testLogger',
   levels: ['fatal', 'error', 'warn', 'info', 'debug'],
   transports: [dummyTransport]
 });

@@ -1,7 +1,16 @@
+/**
+ * Simple internal logger.
+ */
+
 import { red, yellow, cyan, white, bgBlue } from 'ansi-colors';
 import { format } from 'util';
 
-export type LogGroup<T> = ILogGroup & T;
+export type LogGroup<T> = T & {
+  end(indent: string, exit?: boolean): void;
+  end(indent: number, exit?: boolean): void;
+  end(exit: boolean): void;
+  end(): void;
+}
 
 export type LogType = keyof typeof TYPES;
 
@@ -11,14 +20,8 @@ export type Color = keyof typeof ANSI_COLORS;
 
 export type ReverseType = keyof typeof REVERSE_TYPES;
 
-export type WriterCallback<T = any, E extends object = {}> = (err?: Error & E, data?: T) => void;
+export type WriterCallback<T = any, E extends object = object> = (err?: Error & E, data?: T) => void;
 
-export interface ILogGroup {
-  end(indent: string, exit?: boolean): void;
-  end(indent: number, exit?: boolean): void;
-  end(exit: boolean): void;
-  end(): void;
-}
 
 export const ANSI_COLORS = {
   red,
@@ -233,11 +236,11 @@ function group(title?: string, color?: ReverseType | boolean, compact?: boolean)
 
 }
 
-interface IGroup {
+interface Group {
   (title?: string, color?: ReverseType | boolean, compact?: boolean): ReturnType<typeof group>;
   (title?: string, compact?: boolean): ReturnType<typeof group>;
 }
 
-log.group = group as unknown as IGroup;
+log.group = group as unknown as Group;
 
 export { log };

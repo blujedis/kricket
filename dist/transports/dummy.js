@@ -4,8 +4,10 @@ exports.DummyTransport = void 0;
 const transport_1 = require("./transport");
 class DummyTransport extends transport_1.Transport {
     static Type = typeof DummyTransport;
+    options;
     constructor(options) {
         super({ label: 'dummy', ...options });
+        options = this._options;
     }
     /**
      * Must override log method.

@@ -1,5 +1,5 @@
 import { Writable } from 'readable-stream';
-import { TransportOptions, EOL, IPayload, ErrorCallback, NodeCallback } from '../types';
+import { TransportOptions, EOL, PayloadBase, ErrorCallback, NodeCallback } from '../types';
 import { Logger } from '../logger';
 import { log } from '../utils';
 
@@ -17,7 +17,7 @@ export abstract class Transport<Options extends TransportOptions = TransportOpti
   _buffer = '';
 
   constructor(options?: Options) {
-    super({ highWaterMark: (options || {} as any).highWaterMark || 16 });
+    super({ highWaterMark: ({ ...options }).highWaterMark || 16 });
     this._options = { level: null, highWaterMark: 16, asJSON: true, filters: [], transforms: [], ...options };
 
     if (!this._options.label)
@@ -41,7 +41,7 @@ export abstract class Transport<Options extends TransportOptions = TransportOpti
     // Loose check maybe should be more comprehensive.
     if (this.isJSON || chunk.charAt(0) !== '{')
       return chunk;
-    const payload = JSON.parse(chunk) as IPayload<any>;
+    const payload = JSON.parse(chunk) as PayloadBase<any>;
     return payload.message;
   }
 
@@ -111,7 +111,6 @@ export abstract class Transport<Options extends TransportOptions = TransportOpti
    */
   setLevel(level: string, logger: Logger<any, any>) {
     if (typeof level === 'undefined' || !logger.levels.includes(level)) {
-      // eslint-disable-next-line no-console
       log.fatal(`Level "${level}" is invalid or not found.`);
       return this;
     }
