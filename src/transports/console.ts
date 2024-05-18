@@ -1,16 +1,19 @@
 import { Transport } from './transport';
-import { ITransportOptions } from '../types';
+import { TransportOptions } from '../types';
 
-export interface IConsoleOptions<Level extends string, Label extends string = string> extends ITransportOptions<Level, Label> {
+export interface ConsoleOptions<Level extends string, Label extends string = string> extends TransportOptions<Level, Label> {
 
 }
 
-export class ConsoleTransport<Level extends string, Label extends string = string> extends Transport<IConsoleOptions<Level, Label>> {
+export class ConsoleTransport<Level extends string, Label extends string = string> extends Transport<ConsoleOptions<Level, Label>> {
 
   static Type = typeof ConsoleTransport;
 
-  constructor(options?: IConsoleOptions<Level, Label>) {
+  options: TransportOptions<Level, Label>;
+
+  constructor(options?: ConsoleOptions<Level, Label>) {
     super({ label: 'console', ...options, asJSON: false });
+    options = this._options;
   }
 
   /**

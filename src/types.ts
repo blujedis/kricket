@@ -84,7 +84,7 @@ export interface IPayload<Level extends string> {
 
 }
 
-interface ITransformBase<Level extends string> {
+interface TransformBase<Level extends string> {
 
   /**
    * The log Level that has been assigned.
@@ -112,7 +112,7 @@ interface ITransformBase<Level extends string> {
 
 }
 
-export interface ITransportOptions<Level extends string = any, Label extends string = any> extends ITransformBase<Level> {
+export interface TransportOptions<Level extends string = any, Label extends string = any> extends TransformBase<Level> {
 
   /**
    * The name/label for the Transport.
@@ -136,7 +136,7 @@ export interface ITransportOptions<Level extends string = any, Label extends str
 
 }
 
-export interface ILoggerOptions<Level extends string, M extends object = {}> extends ITransformBase<Level> {
+export interface LoggerOptions<Level extends string, M extends object = {}> extends TransformBase<Level> {
 
   /**
    * The Logger's log levels.

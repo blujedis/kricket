@@ -1,12 +1,15 @@
 import { Transport } from './transport';
-import { ITransportOptions } from '../types';
+import { TransportOptions as TransportOptions } from '../types';
 
-export class DummyTransport<Level extends string, Label extends string = string> extends Transport<ITransportOptions<Level, Label>> {
+export class DummyTransport<Level extends string, Label extends string = string> extends Transport<TransportOptions<Level, Label>> {
 
   static Type = typeof DummyTransport;
 
-  constructor(options?: ITransportOptions<Level, Label>) {
+  options: TransportOptions<Level, Label>;
+
+  constructor(options?: TransportOptions<Level, Label>) {
     super({ label: 'dummy', ...options });
+    options = this._options;
   }
 
   /**

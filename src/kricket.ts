@@ -3,7 +3,7 @@ import { Logger } from './logger';
 import { ConsoleTransport } from './transports';
 import core from './core';
 import { randomID } from './utils';
-import { ILoggerOptions, LogMethods } from './types';
+import { LoggerOptions, LogMethods } from './types';
 
 /**
  * Creates a new Logger.
@@ -11,19 +11,19 @@ import { ILoggerOptions, LogMethods } from './types';
  * @param label the name of the Logger. 
  * @param options the options used to create the Logger.
  */
-export function createLogger<Level extends string, M extends Record<string, unknown> = Record<string, unknown>>(label: string, options?: ILoggerOptions<Level, M>): Logger<Level, M> & LogMethods<Logger<Level, M>, Level>;
+export function createLogger<Level extends string, M extends Record<string, unknown> = Record<string, unknown>>(label: string, options?: LoggerOptions<Level, M>): Logger<Level, M> & LogMethods<Logger<Level, M>, Level>;
 
 /**
  * Creates a new Logger.
  * 
  * @param options the options used to create the Logger.
  */
-export function createLogger<Level extends string, M extends Record<string, unknown> = Record<string, unknown>>(options: ILoggerOptions<Level, M>): Logger<Level, M> & LogMethods<Logger<Level, M>, Level>;
+export function createLogger<Level extends string, M extends Record<string, unknown> = Record<string, unknown>>(options: LoggerOptions<Level, M>): Logger<Level, M> & LogMethods<Logger<Level, M>, Level>;
 
-export function createLogger<Level extends string, M extends Record<string, unknown> = Record<string, unknown>>(label: string | ILoggerOptions<Level, M>, options?: ILoggerOptions<Level, M>) {
+export function createLogger<Level extends string, M extends Record<string, unknown> = Record<string, unknown>>(label: string | LoggerOptions<Level, M>, options?: LoggerOptions<Level, M>) {
 
   if (typeof label === 'object') {
-    options = label as ILoggerOptions<Level, M>;
+    options = label as LoggerOptions<Level, M>;
     label = undefined;
   }
 

@@ -1,14 +1,14 @@
 import { Writable } from 'readable-stream';
-import { ITransportOptions, EOL, IPayload, ErrorCallback, NodeCallback } from '../types';
+import { TransportOptions, EOL, IPayload, ErrorCallback, NodeCallback } from '../types';
 import { Logger } from '../logger';
 import { log } from '../utils';
 
 
 export abstract class Stream extends Writable {
- // writable: boolean;
+  // writable: boolean;
 }
 
-export abstract class Transport<Options extends ITransportOptions = ITransportOptions> extends Stream {
+export abstract class Transport<Options extends TransportOptions = TransportOptions> extends Stream {
 
   static Type;
 
@@ -178,12 +178,12 @@ export abstract class Transport<Options extends ITransportOptions = ITransportOp
     return this;
   }
 
-   /**
-   * Ends the stream, outputs if needed then calls destroy.
-   * 
-   * @param cb optional callback.
-   */
-   end(cb?: NodeCallback): this;
+  /**
+  * Ends the stream, outputs if needed then calls destroy.
+  * 
+  * @param cb optional callback.
+  */
+  end(cb?: NodeCallback): this;
 
 
   /**

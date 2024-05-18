@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import { ILoggerOptions, LEVEL, MESSAGE, SPLAT, Filter, Transform, LOGGER, TRANSPORT, Callback, BaseLevel, ChildLogger, IPayload, Payload } from './types';
+import { LoggerOptions, LEVEL, MESSAGE, SPLAT, Filter, Transform, LOGGER, TRANSPORT, Callback, BaseLevel, ChildLogger, IPayload, Payload } from './types';
 import { Transport } from './transports';
 import fastJson from 'fast-json-stable-stringify';
 import { format } from 'util';
@@ -11,7 +11,7 @@ export class Logger<Level extends string, M extends Record<string, unknown> = Re
   core: Core = core;
   children = new Map<string, Logger<Level, M>>();
 
-  constructor(public label: string, public options: ILoggerOptions<Level, M>, public isChild = false) {
+  constructor(public label: string, public options: LoggerOptions<Level, M>, public isChild = false) {
 
     super();
 

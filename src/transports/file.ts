@@ -1,12 +1,12 @@
 import { Transport } from './transport';
 import rotator from 'file-stream-rotator';
-import { ITransportOptions, EOL } from '../types';
+import { TransportOptions, EOL } from '../types';
 import { log } from '../utils';
 import FileStreamRotator from 'file-stream-rotator/lib/FileStreamRotator';
 
 export type Frequency = 'minute' | 'hourly' | 'daily' | 'custom' | 'test' | 'h' | 'm';
 
-export interface IFileOptions {
+export interface FileOptions {
   flags?: string;
   encoding?: string;
   fd?: number;
@@ -16,7 +16,7 @@ export interface IFileOptions {
   highWaterMark?: number;
 }
 
-export interface IFileTransportOptions<Level extends string, Label extends string = string> extends ITransportOptions<Level, Label> {
+export interface FileTransportOptions<Level extends string, Label extends string = string> extends TransportOptions<Level, Label> {
   filename?: string;                                    // file path for logs
   frequency?: Frequency;                                // (default: YYYYMMDD)             
   verbose?: boolean;                                    // (default: true)
@@ -25,13 +25,13 @@ export interface IFileTransportOptions<Level extends string, Label extends strin
   max_logs?: string;                                    // string with d for days
   audit_file?: string;                                  // optional path to write audit file.
   end_stream?: boolean;                                 // use true if looping (default: false)
-  file_options?: IFileOptions;                          // node file option flags.
+  file_options?: FileOptions;                          // node file option flags.
   eol?: string;                                         // (default: os.EOL)define end of line.
   onRotate?(oldFile?: string, newFile?: string): void;  // callback on file rotation.
   onNew?(newFile?: string): void;                       // callback on file rotation.
 }
 
-const DEFAULTS: IFileTransportOptions<any, any> = {
+const DEFAULTS: FileTransportOptions<any, any> = {
   label: 'file',
   filename: './logs/%DATE%.log',
   frequency: 'daily',
@@ -44,13 +44,13 @@ const DEFAULTS: IFileTransportOptions<any, any> = {
   eol: EOL
 };
 
-export class FileTransport<Level extends string, Label extends string = string> extends Transport<IFileTransportOptions<Level, Label>> {
+export class FileTransport<Level extends string, Label extends string = string> extends Transport<FileTransportOptions<Level, Label>> {
 
   static Type = typeof FileTransport;
 
   rotator: FileStreamRotator;
 
-  constructor(options?: IFileTransportOptions<Level, Label>) {
+  constructor(options?: FileTransportOptions<Level, Label>) {
 
     super({ ...DEFAULTS, ...options });
 
