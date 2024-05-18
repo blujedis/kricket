@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "commonjs",
-    "rootDir": ".",
+    "rootDir": "test",
     "baseUrl": "test",
     "moduleResolution": "node",
     "strict": true,

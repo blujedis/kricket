@@ -6,11 +6,10 @@ import { format } from 'util';
 import { getObjectName, isPlainObject, asynceach, noop, flatten, uuidv4, log } from './utils';
 import core, { Core } from './core';
 
-export class Logger<Level extends string, M extends object = {}> extends EventEmitter {
+export class Logger<Level extends string, M extends Record<string, unknown> = Record<string, unknown>> extends EventEmitter {
 
   core: Core = core;
   children = new Map<string, Logger<Level, M>>();
-
 
   constructor(public label: string, public options: ILoggerOptions<Level, M>, public isChild = false) {
 

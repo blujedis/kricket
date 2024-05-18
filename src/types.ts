@@ -45,30 +45,6 @@ export const SPLAT = Symbol.for('SPLAT');
 
 export const EOL = '\n';
 
-export interface IEventData {
-
-  /**
-   * The payload's Logger label.
-   */
-  LOGGER?: string;
-
-  /**
-   * The payload's Transport label
-   */
-  TRANSPORT?: string;
-
-  /**
-   * The payload's log level.
-   */
-  LEVEL?: string;
-
-  /**
-   * I unique identifier for the payload.
-   */
-  UUID?: string;
-
-}
-
 export interface IPayload<Level extends string> {
 
   /**

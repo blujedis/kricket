@@ -3,6 +3,7 @@ import { ITransportOptions, EOL, IPayload, ErrorCallback, NodeCallback } from '.
 import { Logger } from '../logger';
 import { log } from '../utils';
 
+
 export abstract class Stream extends Writable {
  // writable: boolean;
 }

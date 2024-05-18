@@ -9,12 +9,21 @@ class Stream extends readable_stream_1.Writable {
 exports.Stream = Stream;
 class Transport extends Stream {
     static Type;
+<<<<<<< HEAD:dist/src/transports/transport.js
     _options;
     _buffer = '';
     constructor(options) {
         super({ highWaterMark: (options || {}).highWaterMark || 16 });
         this._options = { level: null, highWaterMark: 16, asJSON: true, filters: [], transforms: [], ...options };
         if (!this._options.label)
+=======
+    options;
+    buffer = '';
+    constructor(options) {
+        super({ highWaterMark: (options || {}).highWaterMark || 16 });
+        this.options = { level: null, highWaterMark: 16, asJSON: true, filters: [], transforms: [], ...options };
+        if (!this.options.label)
+>>>>>>> 2fa12ad6deec034c156be9ad86464db58f1dfb7b:dist/transports/transport.js
             utils_1.log.fatal('Failed construct Transport using label/name of undefined');
     }
     /**

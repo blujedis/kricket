@@ -3,7 +3,7 @@ import { EventEmitter } from 'events';
 import { ILoggerOptions, Filter, Transform, Callback, BaseLevel, ChildLogger, IPayload } from './types';
 import { Transport } from './transports';
 import { Core } from './core';
-export declare class Logger<Level extends string, M extends object = {}> extends EventEmitter {
+export declare class Logger<Level extends string, M extends Record<string, unknown> = Record<string, unknown>> extends EventEmitter {
     label: string;
     options: ILoggerOptions<Level, M>;
     isChild: boolean;

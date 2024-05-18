@@ -6,7 +6,6 @@ export interface IStreamTransportOptions<Level extends string, Label extends str
 }
 export declare class StreamTransport<Level extends string, Label extends string = string> extends Transport<IStreamTransportOptions<Level, Label>> {
     static Type: "string" | "number" | "bigint" | "boolean" | "symbol" | "undefined" | "object" | "function";
-    options: IStreamTransportOptions<Level, Label>;
     constructor(options?: IStreamTransportOptions<Level, Label>);
     /**
      * Method  alled by super.

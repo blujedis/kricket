@@ -106,4 +106,20 @@ export declare abstract class Transport<Options extends ITransportOptions = ITra
      * @param cb optional callback.
      */
     end(chunk: any, enc: string, cb?: NodeCallback): this;
+<<<<<<< HEAD:dist/src/transports/transport.d.ts
+=======
+    /**
+     * Ends the stream, outputs if needed then calls destroy.
+     *
+     * @param chunk optional chunk to output on end.
+     * @param cb optional callback.
+     */
+    end(chunk: any, cb?: NodeCallback): this;
+    /**
+     * Ends the stream, outputs if needed then calls destroy.
+     *
+     * @param cb optional callback.
+     */
+    end(cb?: NodeCallback): this;
+>>>>>>> 2fa12ad6deec034c156be9ad86464db58f1dfb7b:dist/transports/transport.d.ts
 }

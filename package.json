@@ -1,6 +1,6 @@
 {
   "name": "kricket",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "license": "ISC",
   "main": "dist/index.js",
   "publishConfig": {
@@ -12,11 +12,9 @@
     "lint": "eslint -c ./.eslintrc.js ./src/**/*.ts",
     "lint-fix": "eslint -c ./.eslintrc.js ./src/**/*.ts --fix",
     "watch": "tsc -b -w",
-    "docs": "typedoc ./src --options ./typedoc.json --out ./docs && touch ./docs/.nojekyll",
+    "docs": "rimraf docs/ && typedoc src/index.ts && touch ./docs/.nojekyll",
     "test": "mocha tests/**/*.spec.ts* --require ./register.js --bail",
-    "commit": "git commit -a -m",
-    "commit-pub": "npm run commit -- 'auto commit'",
-    "prep": "npm run clean && npm run build && npm run test && npm run lint && npm run docs && npm run commit-pub"
+    "prep": "npm run clean && npm run build && npm run test && npm run lint && npm run docs"
   },
   "repository": {
     "type": "git",
