@@ -25,7 +25,7 @@ class Transport extends Stream {
     /**
      * Formats as JSON or just message string.
      *
-     * @param chunk the currently logged chunk.
+     * @param chunk the current logged chunk.
      */
     format(chunk) {
         // Loose check maybe should be more comprehensive.

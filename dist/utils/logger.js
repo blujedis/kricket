@@ -1,6 +1,8 @@
 "use strict";
 /**
  * Simple internal logger.
+ *
+ * @deprecated favor throwing errors as that's all this was used for.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.log = exports.colorize = exports.ANSI_COLORS = void 0;

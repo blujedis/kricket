@@ -1,5 +1,7 @@
 /**
  * Simple internal logger.
+ *
+ * @deprecated favor throwing errors as that's all this was used for.
  */
 export type LogGroup<T> = T & {
     end(indent: string, exit?: boolean): void;

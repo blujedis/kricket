@@ -34,7 +34,7 @@ export abstract class Transport<Options extends TransportOptions = TransportOpti
   /**
    * Formats as JSON or just message string.
    * 
-   * @param chunk the currently logged chunk.
+   * @param chunk the current logged chunk.
    */
   format(chunk: string) {
     // Loose check maybe should be more comprehensive.
