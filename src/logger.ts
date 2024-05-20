@@ -1,11 +1,11 @@
 import { EventEmitter } from 'events';
-import { LoggerOptions, LEVEL, MESSAGE, SPLAT, Filter, Transform, LOGGER, TRANSPORT, Callback, BaseLevel, ChildLogger, PayloadBase, Payload } from './types';
 import { Transport } from './transports';
 import fastJson from 'fast-json-stable-stringify';
 import { format } from 'util';
 import { getObjectName, isPlainObject, asynceach, noop, flatten, uuidv4, log } from './utils';
 import core, { Core } from './core';
 import currentLine from './utils/trace';
+import { LoggerOptions, LEVEL, MESSAGE, SPLAT, Filter, Transform, LOGGER, TRANSPORT, Callback, BaseLevel, ChildLogger, PayloadBase, Payload, UUID, TRACE, META, TIMESTAMP } from './types';
 
 export class Logger<Level extends string, Meta extends Record<string, unknown> = Record<string, unknown>> extends EventEmitter {
 
@@ -65,34 +65,29 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
     if (this.muted || (this.level && !this.isLevelActive(level)))
       return;
 
+    const id = uuidv4();
     const label = level;
     const cb = typeof args[args.length - 1] === 'function' ? args.pop() : null;
     const meta = isPlainObject(args[args.length - 1]) ? args.pop() : null;
-    const hasAnyMeta = !!meta || this.options.defaultMeta || !!this.options.meta;
-    const defaultMetaKey = this.options.defaultMetaKey;
-
     const trace = currentLine({ frames: 2 });
-
-    // Build default metadata.
-    let defaultMeta: any = this.options.defaultMeta ? {
-      uuid: uuidv4(),
-      logger: this.label,
-      level,
-      ...trace,
-    } : null;
-
-    // If Default meta is in nested key...
-    if (defaultMetaKey && defaultMeta)
-      defaultMeta = { [defaultMetaKey]: defaultMeta };
+    const globalMeta = { ...this.options.meta };
+    const timestamp = new Date();
 
     type LoggedLevel = Level | BaseLevel;
 
-    const rawPayload = {
+    const initIncludes = this.options.includes ? {
+      [UUID]: id,
+      [TIMESTAMP]: timestamp,
       [LOGGER]: this.label,
+      [TRACE]: trace,
+    } : {};
+
+    const rawPayload = {
+      ...initIncludes,
       [LEVEL]: label as LoggedLevel,
+      [META]: globalMeta,
       [MESSAGE]: message,
-      // ONlY add meta if exists.
-      [SPLAT]: hasAnyMeta ? [...args, { ...meta, ...this.options.meta, ...defaultMeta }] : args,
+      [SPLAT]: isPlainObject(meta) ? [...args, { ...meta }] : args,
       message
     };
 
@@ -109,22 +104,22 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
 
         try {
 
-          // Update default metadata with the Transport label now that we have it.
-          if (defaultMeta) {
-            if (defaultMetaKey)
-              defaultMeta[defaultMetaKey].transport = transport.label;
-            else
-              defaultMeta.transport = transport.label;
-          }
+          const transportIncludes = this.options.includes ? {
+            [UUID]: id,
+            [TIMESTAMP]: timestamp,
+            [LOGGER]: this.label,
+            [TRACE]: trace,
+            [TRANSPORT]: transport.label
+          } : {};
 
           const payload = {
-            [LOGGER]: logger.label,
-            [TRANSPORT]: transport.label,
+            ...transportIncludes,
             [LEVEL]: label,
+            [META]: globalMeta,
             [MESSAGE]: message,
-            [SPLAT]: hasAnyMeta ? [...args, { ...meta, ...this.options.meta, ...defaultMeta }] : args,
+            [SPLAT]: isPlainObject(meta) ? [...args, { ...meta }] : args,
             message
-          } as Payload<Level, Meta>;
+          } as Payload<Level>;
 
           // Inspect transport level.
           if ((transport.level && !this.isLevelActive(transport.level as Level)) || transport.muted || this.filtered(transport, payload))
@@ -134,7 +129,6 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
 
           // Payload symbols now stripped.
           transport.write(fastJson(transformed));
-
           transport.emit('log', payload, transport);
           transport.emit(`log:${label}`, payload, transport);
 
@@ -150,12 +144,11 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
           done(ex, null);
         }
 
-
       };
 
     };
 
-    asynceach<PayloadBase<Level>>(this.transports.map(transport => event(transport)), (err, payloads) => {
+    asynceach<PayloadBase<Level, Meta>>(this.transports.map(transport => event(transport)), (err, payloads) => {
 
       if (err) {
         if (!Array.isArray(err))
@@ -185,7 +178,7 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
    * @param transport the Transport to get filters for.
    * @param payload the payload to pass when filtering.
    */
-  private filtered(transport: Transport, payload: Payload<Level, Meta>) {
+  private filtered(transport: Transport, payload: Payload<Level>) {
     return [...this.filters, ...transport.filters]
       .some(filter => filter(payload));
   }
@@ -196,7 +189,7 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
    * @param transport the Transport to include Transfroms from.
    * @param payload the payload object to be transformed.
    */
-  private transformed(transport: Transport, payload: Payload<Level, Meta>) {
+  private transformed(transport: Transport, payload: Payload<Level>) {
 
     const transforms = [...this.transforms, ...transport.transforms];
 
@@ -211,7 +204,7 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
         tname = getObjectName(transformer);
         if (tname === 'function')
           tname = 'anonymous';
-        transformed = transformer(transformed) as Payload<Level, Meta>
+        transformed = transformer(transformed) as Payload<Level>
         valid = isPlainObject(transformed);
       }
       catch (ex) {
@@ -394,8 +387,8 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
    * @param payload the payload containing the level to inspect.
    * @param levels the optional levels to compare against.
    */
-  isLevelActive(payload: PayloadBase<Level>, levels?: Level[]): boolean;
-  isLevelActive(level: Level | BaseLevel | PayloadBase<Level>, levels: Level[] = this.levels): boolean {
+  isLevelActive(payload: PayloadBase<Level, Meta>, levels?: Level[]): boolean;
+  isLevelActive(level: Level | BaseLevel | PayloadBase<Level, Meta>, levels: Level[] = this.levels): boolean {
     if (typeof level === 'object')
       level = level[LEVEL];
     if (['write', 'writeLn'].includes(level))
@@ -462,14 +455,14 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
    * @param transport the transport to add the filter to.
    * @param fn the Filter function to be added.
    */
-  filter<P extends Record<string, any> = Record<string, any>>(transport: string, fn: Filter<Level, P>): this;
+  filter<Extend extends Record<string, any> = Record<string, any>>(transport: string, fn: Filter<Level, Extend>): this;
 
   /**
    * Adds a global Filter function.
    * 
    * @param fn the Filter function to be added.
    */
-  filter<P extends Record<string, any> = Record<string, any>>(fn: Filter<Level, P>): this;
+  filter<Extend extends Record<string, any> = Record<string, any>>(fn: Filter<Level, Extend>): this;
   filter(transport: string | Filter<Level>, fn?: Filter<Level>) {
     if (typeof transport === 'function') {
       fn = transport;
@@ -502,7 +495,7 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
    * 
    * @param fn the Transform function to be added.
    */
-  transform<P extends Record<string, any> = Record<string, any>>(fn: Transform<Level, P>): this;
+  transform<Extend extends Record<string, any> = Record<string, any>>(fn: Transform<Level, Extend>): this;
   transform(transport: string | Transform<Level>, fn?: Transform<Level>) {
     if (typeof transport === 'function') {
       fn = transport;
@@ -715,7 +708,7 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
    * @param payload the current payload to inspect.
    * @param label the label to match.
    */
-  hasLogger(payload: PayloadBase<Level>, label: string) {
+  hasLogger(payload: PayloadBase<Level, Meta>, label: string) {
     const logger = payload[LOGGER];
     return logger === label;
   }
@@ -726,7 +719,7 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
    * @param payload the current payload to inspect.
    * @param label the label to match.
    */
-  hasTransport(payload: PayloadBase<Level>, label: string) {
+  hasTransport(payload: PayloadBase<Level, Meta>, label: string) {
     const transport = payload[TRANSPORT];
     return transport === label;
   }
@@ -737,7 +730,7 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
    * @param payload the current payload to inspect.
    * @param compare the label to compare.
    */
-  hasLevel(payload: PayloadBase<Level>, compare: Level | BaseLevel) {
+  hasLevel(payload: PayloadBase<Level, Meta>, compare: Level | BaseLevel) {
     const level = payload[LEVEL];
     return level === compare;
   }
@@ -757,7 +750,7 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
    * 
    * @param payload a log payload containing symbols.
    */
-  symbolsToMap(payload: PayloadBase<Level>, ...symbols: symbol[]) {
+  symbolsToMap(payload: PayloadBase<Level, Meta>, ...symbols: symbol[]) {
 
     if (!symbols.length)
       symbols = [LOGGER, TRANSPORT, LEVEL];
@@ -779,12 +772,12 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
    * @param payload the payload object to be extended.
    * @param obj the object to extend payload with.
    */
-  extendPayload<T extends object>(payload: PayloadBase<Level>, obj: T) {
+  extendPayload<T extends object>(payload: PayloadBase<Level, Meta>, obj: T) {
     for (const k in obj) {
       if (!Object.prototype.hasOwnProperty.call(obj, k)) continue;
       payload[k] = obj[k];
     }
-    return payload as PayloadBase<Level> & T;
+    return payload as PayloadBase<Level, Meta> & T;
   }
 
   /**

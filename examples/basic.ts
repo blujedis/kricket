@@ -5,12 +5,6 @@ import { format, inspect } from 'util';
 
 type Level = keyof typeof COLOR_MAP;
 
-type PayloadMeta = {
-  [META]: Record<string, any>;
-}
-
-const META = Symbol.for('META');
-
 const COLOR_MAP = {
   fatal: bgRedBright,
   error: redBright,
@@ -46,7 +40,7 @@ logger.filter('console', (payload) => {
   return !logger.isLevelActive(payload[LEVEL]);
 });
 
-logger.transform<PayloadMeta>((payload) => {
+logger.transform((payload) => {
 
   let meta = {};
 
@@ -60,12 +54,6 @@ logger.transform<PayloadMeta>((payload) => {
     meta = { ...meta, err: errToObj(err) };
   }
 
-  // Store meta we'll use in console.
-  payload = {
-    ...payload,
-    [META]: meta
-  };
-
   // format args add metadata.
   payload.message = format(payload.message, ...payload[SPLAT]);
   payload = { ...payload, ...meta };
@@ -74,20 +62,13 @@ logger.transform<PayloadMeta>((payload) => {
 
 });
 
-logger.transform<PayloadMeta>('console', (payload) => {
+logger.transform('console', (payload) => {
 
   let label = '';
 
   if (logger.levels.includes(payload[LEVEL])) {
     const styleFunc = COLOR_MAP[payload[LEVEL]] as StyleFunction;
     label = styleFunc(payload[LEVEL]) + ': ';
-  }
-
-  if (payload[META]) {
-    // Strip out error as it would display stack and fill console.
-    const { err, ...clean } = payload[META];
-    if (Object.keys(clean).length)
-      payload.message += (' ' + inspect(clean, undefined, null, true));
   }
 
   payload.message = label + payload.message;

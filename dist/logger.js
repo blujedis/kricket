@@ -5,12 +5,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Logger = void 0;
 const events_1 = require("events");
-const types_1 = require("./types");
 const fast_json_stable_stringify_1 = __importDefault(require("fast-json-stable-stringify"));
 const util_1 = require("util");
 const utils_1 = require("./utils");
 const core_1 = __importDefault(require("./core"));
 const trace_1 = __importDefault(require("./utils/trace"));
+const types_1 = require("./types");
 class Logger extends events_1.EventEmitter {
     options;
     isChild;
@@ -61,28 +61,25 @@ class Logger extends events_1.EventEmitter {
     writer(level, message = '', ...args) {
         if (this.muted || (this.level && !this.isLevelActive(level)))
             return;
+        const id = (0, utils_1.uuidv4)();
         const label = level;
         const cb = typeof args[args.length - 1] === 'function' ? args.pop() : null;
         const meta = (0, utils_1.isPlainObject)(args[args.length - 1]) ? args.pop() : null;
-        const hasAnyMeta = !!meta || this.options.defaultMeta || !!this.options.meta;
-        const defaultMetaKey = this.options.defaultMetaKey;
         const trace = (0, trace_1.default)({ frames: 2 });
-        // Build default metadata.
-        let defaultMeta = this.options.defaultMeta ? {
-            uuid: (0, utils_1.uuidv4)(),
-            logger: this.label,
-            level,
-            ...trace,
-        } : null;
-        // If Default meta is in nested key...
-        if (defaultMetaKey && defaultMeta)
-            defaultMeta = { [defaultMetaKey]: defaultMeta };
-        const rawPayload = {
+        const globalMeta = { ...this.options.meta };
+        const timestamp = new Date();
+        const initIncludes = this.options.includes ? {
+            [types_1.UUID]: id,
+            [types_1.TIMESTAMP]: timestamp,
             [types_1.LOGGER]: this.label,
+            [types_1.TRACE]: trace,
+        } : {};
+        const rawPayload = {
+            ...initIncludes,
             [types_1.LEVEL]: label,
+            [types_1.META]: globalMeta,
             [types_1.MESSAGE]: message,
-            // ONlY add meta if exists.
-            [types_1.SPLAT]: hasAnyMeta ? [...args, { ...meta, ...this.options.meta, ...defaultMeta }] : args,
+            [types_1.SPLAT]: (0, utils_1.isPlainObject)(meta) ? [...args, { ...meta }] : args,
             message
         };
         // Emit raw payload.
@@ -93,19 +90,19 @@ class Logger extends events_1.EventEmitter {
         const event = (transport) => {
             return (done) => {
                 try {
-                    // Update default metadata with the Transport label now that we have it.
-                    if (defaultMeta) {
-                        if (defaultMetaKey)
-                            defaultMeta[defaultMetaKey].transport = transport.label;
-                        else
-                            defaultMeta.transport = transport.label;
-                    }
+                    const transportIncludes = this.options.includes ? {
+                        [types_1.UUID]: id,
+                        [types_1.TIMESTAMP]: timestamp,
+                        [types_1.LOGGER]: this.label,
+                        [types_1.TRACE]: trace,
+                        [types_1.TRANSPORT]: transport.label
+                    } : {};
                     const payload = {
-                        [types_1.LOGGER]: logger.label,
-                        [types_1.TRANSPORT]: transport.label,
+                        ...transportIncludes,
                         [types_1.LEVEL]: label,
+                        [types_1.META]: globalMeta,
                         [types_1.MESSAGE]: message,
-                        [types_1.SPLAT]: hasAnyMeta ? [...args, { ...meta, ...this.options.meta, ...defaultMeta }] : args,
+                        [types_1.SPLAT]: (0, utils_1.isPlainObject)(meta) ? [...args, { ...meta }] : args,
                         message
                     };
                     // Inspect transport level.

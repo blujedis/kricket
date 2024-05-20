@@ -16,9 +16,9 @@ export type ErrorCallback = (err?: Error | null | undefined) => void;
 
 export type BaseLevel = 'write' | 'writeLn';
 
-export type Filter<Level extends string, P extends Record<string, any> = Record<string, any>> = (payload: Payload<Level, P>) => boolean;
+export type Filter<Level extends string, Extend extends Record<string, any> = Record<string, any>> = (payload: Payload<Level, Extend>) => boolean;
 
-export type Transform<Level extends string, P extends Record<string, any> = Record<string, any>> = (payload: Payload<Level, P>) => Payload<Level, P>;
+export type Transform<Level extends string, Extend extends Record<string, any> = Record<string, any>> = (payload: Payload<Level, Extend>) => Payload<Level, Extend>;
 
 export type LogMethod<T> = (message: any, ...args: any[]) => T;
 
@@ -28,7 +28,9 @@ export type ChildOmits = 'setTransportLevel' | 'addTransport' | 'muteTransport' 
 
 export type ChildLogger<Level extends string> = Omit<Logger<Level>, ChildOmits> & LogMethods<Logger<Level>, Level>;
 
-export type Payload<Level extends string, E extends Record<string, unknown> = Record<string, unknown>> = PayloadBase<Level & BaseLevel> & E;
+export type Payload<Level extends string, Extend extends Record<string, unknown> = Record<string, unknown>, Meta extends Record<string, unknown> = Record<string, unknown>> = PayloadBase<Level & BaseLevel, Meta> & Extend;
+
+export const UUID = Symbol.for('UUID');
 
 export const LOGGER = Symbol.for('LOGGER');
 
@@ -36,15 +38,34 @@ export const TRANSPORT = Symbol.for('TRANSPORT');
 
 export const LEVEL = Symbol.for('LEVEL');
 
+export const TRACE = Symbol.for('TRACE');
+
+export const META = Symbol.for('META');
+
+export const TIMESTAMP = Symbol.for('TIMESTAMP');
+
 export const MESSAGE = Symbol.for('MESSAGE');
 
 export const SPLAT = Symbol.for('SPLAT');
 
-export const TRACE = Symbol.for('TRACE');
-
 export const EOL = '\n';
 
-export interface PayloadBase<Level extends string> {
+export interface PayloadBase<Level extends string, Meta extends Record<string, unknown> = Record<string, unknown>> {
+
+  /**
+   * The payload's log id.
+   */
+  [UUID]: string;
+
+  /**
+ * The payload's log id.
+ */
+  [TIMESTAMP]: Date;
+
+  /**
+   * The payload's message.
+   */
+  [TRACE]: Location;
 
   /**
    * The payload's Logger label.
@@ -57,14 +78,14 @@ export interface PayloadBase<Level extends string> {
   [TRANSPORT]?: string;
 
   /**
-   * The payload's log level.
-   */
+  * The payload's log level.
+  */
   [LEVEL]: Level;
 
   /**
-   * The payload's message.
+   * The payload's global metadata.
    */
-  [MESSAGE]: string | Error;
+  [META]: Meta;
 
   /**
    * Array containing payload arguments beyond the primary message.
@@ -72,9 +93,9 @@ export interface PayloadBase<Level extends string> {
   [SPLAT]: any[];
 
   /**
-   * Object containing trace information for the logged message location.
+   * The payload's message.
    */
-  [TRACE]: Location;
+  [MESSAGE]: string | Error;
 
   /**
    * Primary log payload message.
@@ -175,13 +196,20 @@ export interface LoggerOptions<Level extends string, M extends Record<string, un
    */
   meta?: M;
 
+  /** 
+   * Built in included properties useful for logging.
+   * 
+   * uuid, logger, transport, level, trace, timestamp
+   */
+  includes?: boolean;
+
   /**
    * When true default meta data is added to payload including, 
    * the Logger name, Transport name, Level name and uuid v4.
    * 
    * @default undefined
    */
-  defaultMeta?: boolean;
+  // defaultMeta?: boolean;
 
   /**
    * When defined the default metadata will be nested in this key.
@@ -189,6 +217,6 @@ export interface LoggerOptions<Level extends string, M extends Record<string, un
    * 
    * @default undefined
    */
-  defaultMetaKey?: string;
+  // defaultMetaKey?: string;
 
 }

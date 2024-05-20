@@ -1,6 +1,6 @@
 import 'mocha';
 import { assert } from 'chai';
-import { createLogger, DummyTransport, LEVEL, ConsoleTransport, Logger } from '../src';
+import { createLogger, DummyTransport, LEVEL, ConsoleTransport } from '../src';
 
 const dummyTransport = new DummyTransport();
 
@@ -8,7 +8,7 @@ const testLogger = createLogger({
   label: 'testLogger',
   levels: ['fatal', 'error', 'warn', 'info', 'debug'],
   transports: [dummyTransport],
-  defaultMeta: true
+  includes: true
 });
 
 describe('Kricket', () => {

@@ -1,5 +1,9 @@
 # Kicket Changes
 
+## (05-20-2024)
+
+- Remove defaultMeta in favor of symbol that automatically is stripped when converting to JSON.
+
 ## (05-19-2024)
 
 - Add line, method, char and file to optional defaultMeta.

@@ -1,8 +1,8 @@
 /// <reference types="node" />
 import { EventEmitter } from 'events';
-import { LoggerOptions, Filter, Transform, Callback, BaseLevel, ChildLogger, PayloadBase } from './types';
 import { Transport } from './transports';
 import { Core } from './core';
+import { LoggerOptions, Filter, Transform, Callback, BaseLevel, ChildLogger, PayloadBase } from './types';
 export declare class Logger<Level extends string, Meta extends Record<string, unknown> = Record<string, unknown>> extends EventEmitter {
     options: LoggerOptions<Level, Meta>;
     isChild: boolean;
@@ -116,7 +116,7 @@ export declare class Logger<Level extends string, Meta extends Record<string, un
      * @param payload the payload containing the level to inspect.
      * @param levels the optional levels to compare against.
      */
-    isLevelActive(payload: PayloadBase<Level>, levels?: Level[]): boolean;
+    isLevelActive(payload: PayloadBase<Level, Meta>, levels?: Level[]): boolean;
     /**
      * Gets a new child Logger.
      *
@@ -132,13 +132,13 @@ export declare class Logger<Level extends string, Meta extends Record<string, un
      * @param transport the transport to add the filter to.
      * @param fn the Filter function to be added.
      */
-    filter<P extends Record<string, any> = Record<string, any>>(transport: string, fn: Filter<Level, P>): this;
+    filter<Extend extends Record<string, any> = Record<string, any>>(transport: string, fn: Filter<Level, Extend>): this;
     /**
      * Adds a global Filter function.
      *
      * @param fn the Filter function to be added.
      */
-    filter<P extends Record<string, any> = Record<string, any>>(fn: Filter<Level, P>): this;
+    filter<Extend extends Record<string, any> = Record<string, any>>(fn: Filter<Level, Extend>): this;
     /**
      * Adds a Transform function.
      *
@@ -151,7 +151,7 @@ export declare class Logger<Level extends string, Meta extends Record<string, un
      *
      * @param fn the Transform function to be added.
      */
-    transform<P extends Record<string, any> = Record<string, any>>(fn: Transform<Level, P>): this;
+    transform<Extend extends Record<string, any> = Record<string, any>>(fn: Transform<Level, Extend>): this;
     /**
      * Merges Filter functions into single group.
      *
@@ -248,21 +248,21 @@ export declare class Logger<Level extends string, Meta extends Record<string, un
      * @param payload the current payload to inspect.
      * @param label the label to match.
      */
-    hasLogger(payload: PayloadBase<Level>, label: string): boolean;
+    hasLogger(payload: PayloadBase<Level, Meta>, label: string): boolean;
     /**
      * Useful helper to determine if payload contains a given Transport.
      *
      * @param payload the current payload to inspect.
      * @param label the label to match.
      */
-    hasTransport(payload: PayloadBase<Level>, label: string): boolean;
+    hasTransport(payload: PayloadBase<Level, Meta>, label: string): boolean;
     /**
      * Useful helper to determine if Transport contains a given Level.
      *
      * @param payload the current payload to inspect.
      * @param compare the label to compare.
      */
-    hasLevel(payload: PayloadBase<Level>, compare: Level | BaseLevel): boolean;
+    hasLevel(payload: PayloadBase<Level, Meta>, compare: Level | BaseLevel): boolean;
     /**
      * Converts Symbols on payload to a simple mapped object.
      * This can be used if you wish to output Symbols as metadata to
@@ -278,7 +278,7 @@ export declare class Logger<Level extends string, Meta extends Record<string, un
      *
      * @param payload a log payload containing symbols.
      */
-    symbolsToMap(payload: PayloadBase<Level>, ...symbols: symbol[]): {};
+    symbolsToMap(payload: PayloadBase<Level, Meta>, ...symbols: symbol[]): {};
     /**
      * Simply extends the payload object with additional properties while also
      * maintaining typings.
@@ -286,7 +286,7 @@ export declare class Logger<Level extends string, Meta extends Record<string, un
      * @param payload the payload object to be extended.
      * @param obj the object to extend payload with.
      */
-    extendPayload<T extends object>(payload: PayloadBase<Level>, obj: T): PayloadBase<Level> & T;
+    extendPayload<T extends object>(payload: PayloadBase<Level, Meta>, obj: T): PayloadBase<Level, Meta> & T;
     /**
      * Adds a Transport to Logger.
      *
