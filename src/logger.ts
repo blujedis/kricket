@@ -5,7 +5,7 @@ import fastJson from 'fast-json-stable-stringify';
 import { format } from 'util';
 import { getObjectName, isPlainObject, asynceach, noop, flatten, uuidv4, log } from './utils';
 import core, { Core } from './core';
-import currentLine from 'get-current-line';
+import * as currentLine from 'get-current-line';
 
 export class Logger<Level extends string, Meta extends Record<string, unknown> = Record<string, unknown>> extends EventEmitter {
 
@@ -71,7 +71,8 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
     const meta = isPlainObject(args[args.length - 1]) ? args.pop() : null;
     const hasAnyMeta = !!meta || this.options.defaultMeta || !!this.options.meta;
     const defaultMetaKey = this.options.defaultMetaKey;
-    const trace = currentLine({ frames: 2 });
+
+    const trace = currentLine.default({ frames: 2 });
 
     // Build default metadata.
     let defaultMeta: any = this.options.defaultMeta ? {
