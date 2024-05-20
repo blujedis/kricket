@@ -112,9 +112,9 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
           // Update default metadata with the Transport label now that we have it.
           if (defaultMeta) {
             if (defaultMetaKey)
-              defaultMeta[defaultMetaKey].TRANSPORT = transport.label;
+              defaultMeta[defaultMetaKey].transport = transport.label;
             else
-              defaultMeta.TRANSPORT = transport.label;
+              defaultMeta.transport = transport.label;
           }
 
           const payload = {

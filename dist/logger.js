@@ -96,9 +96,9 @@ class Logger extends events_1.EventEmitter {
                     // Update default metadata with the Transport label now that we have it.
                     if (defaultMeta) {
                         if (defaultMetaKey)
-                            defaultMeta[defaultMetaKey].TRANSPORT = transport.label;
+                            defaultMeta[defaultMetaKey].transport = transport.label;
                         else
-                            defaultMeta.TRANSPORT = transport.label;
+                            defaultMeta.transport = transport.label;
                     }
                     const payload = {
                         [types_1.LOGGER]: logger.label,
