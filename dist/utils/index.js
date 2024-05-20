@@ -17,4 +17,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./helpers"), exports);
 __exportStar(require("./asynceach"), exports);
 __exportStar(require("./logger"), exports);
+__exportStar(require("./trace"), exports);
 //# sourceMappingURL=index.js.map

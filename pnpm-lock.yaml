@@ -14,9 +14,6 @@ importers:
       file-stream-rotator:
         specifier: ^1.0.0
         version: 1.0.0
-      get-current-line:
-        specifier: ^7.4.0
-        version: 7.4.0
       readable-stream:
         specifier: ^3.6.0
         version: 3.6.2
@@ -392,10 +389,6 @@ packages:
   eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
 
-  editions@6.21.0:
-    resolution: {integrity: sha512-ofkXJtn7z0urokN62DI3SBo/5xAtF0rR7tn+S/bSYV79Ka8pTajIIl+fFQ1q88DQEImymmo97M4azY3WX/nUdg==}
-    engines: {node: '>=4'}
-
   emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
 
@@ -504,10 +497,6 @@ packages:
   get-caller-file@2.0.5:
     resolution: {integrity: sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==}
     engines: {node: 6.* || 8.* || >= 10.*}
-
-  get-current-line@7.4.0:
-    resolution: {integrity: sha512-iPHQyqGX7ztEviLIrgq9qYZ/xTbxpQrOsZeUwiFs03uixOPK4IBQRQI4YE4Nsk9A5edUynAqK4BmRnd2Hh2a3g==}
-    engines: {node: '>=4'}
 
   get-func-name@2.0.2:
     resolution: {integrity: sha512-8vXOvuE167CtIc3OyItco7N/dpRtBbYOsPsXCz7X/PMnlGjYjSGuZJgM1Y7mmew7BKf9BqvLX2tnOVy1BBUsxQ==}
@@ -924,10 +913,6 @@ packages:
   v8-compile-cache-lib@3.0.1:
     resolution: {integrity: sha512-wa7YjyUGfNZngI/vtK0UHAN+lgDCxBPCylVXGp0zu59Fz5aiGtNXaq3DhIov063MorB+VfufLh3JlF2KdTK3xg==}
 
-  version-range@4.14.0:
-    resolution: {integrity: sha512-gjb0ARm9qlcBAonU4zPwkl9ecKkas+tC2CGwFfptTCWWIVTWY1YUbT2zZKsOAF1jR/tNxxyLwwG0cb42XlYcTg==}
-    engines: {node: '>=4'}
-
   vscode-oniguruma@1.7.0:
     resolution: {integrity: sha512-L9WMGRfrjOhgHSdOYgCt/yRMsXzLDJSL7BPrOZt73gU0iWO4mpqzqQzOz5srxqTvMBaR0XZTSrVWo4j55Rc6cA==}
 
@@ -1309,10 +1294,6 @@ snapshots:
 
   eastasianwidth@0.2.0: {}
 
-  editions@6.21.0:
-    dependencies:
-      version-range: 4.14.0
-
   emoji-regex@8.0.0: {}
 
   emoji-regex@9.2.2: {}
@@ -1440,10 +1421,6 @@ snapshots:
     optional: true
 
   get-caller-file@2.0.5: {}
-
-  get-current-line@7.4.0:
-    dependencies:
-      editions: 6.21.0
 
   get-func-name@2.0.2: {}
 
@@ -1833,8 +1810,6 @@ snapshots:
   util-deprecate@1.0.2: {}
 
   v8-compile-cache-lib@3.0.1: {}
-
-  version-range@4.14.0: {}
 
   vscode-oniguruma@1.7.0: {}
 

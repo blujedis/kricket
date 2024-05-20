@@ -1,6 +1,6 @@
 import { Transport } from './transports';
 import { Logger } from './logger';
-import { type Location } from 'get-current-line';
+import { type Location } from './utils/trace';
 export type KeyOf<T> = Extract<keyof T, string>;
 export type ValueOf<K extends KeyOf<T>, T> = T[K];
 export type ValuesOf<T extends any[]> = T[number];

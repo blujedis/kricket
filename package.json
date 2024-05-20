@@ -30,7 +30,6 @@
   "dependencies": {
     "fast-json-stable-stringify": "^2.1.0",
     "file-stream-rotator": "^1.0.0",
-    "get-current-line": "^7.4.0",
     "readable-stream": "^3.6.0"
   },
   "devDependencies": {

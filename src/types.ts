@@ -1,6 +1,6 @@
 import { Transport } from './transports';
 import { Logger } from './logger';
-import { type Location } from 'get-current-line';
+import { type Location } from './utils/trace';
 
 export type KeyOf<T> = Extract<keyof T, string>;
 
