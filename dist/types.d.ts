@@ -1,5 +1,6 @@
 import { Transport } from './transports';
 import { Logger } from './logger';
+import { type Location } from 'get-current-line';
 export type KeyOf<T> = Extract<keyof T, string>;
 export type ValueOf<K extends KeyOf<T>, T> = T[K];
 export type ValuesOf<T extends any[]> = T[number];
@@ -13,13 +14,13 @@ export type LogMethod<T> = (message: any, ...args: any[]) => T;
 export type LogMethods<T, Level extends string> = Record<Level, LogMethod<T>>;
 export type ChildOmits = 'setTransportLevel' | 'addTransport' | 'muteTransport' | 'unmuteTransport';
 export type ChildLogger<Level extends string> = Omit<Logger<Level>, ChildOmits> & LogMethods<Logger<Level>, Level>;
-export type Payload<Level extends string, E extends object = {}> = PayloadBase<Level & BaseLevel> & E;
+export type Payload<Level extends string, E extends Record<string, unknown> = Record<string, unknown>> = PayloadBase<Level & BaseLevel> & E;
 export declare const LOGGER: unique symbol;
 export declare const TRANSPORT: unique symbol;
 export declare const LEVEL: unique symbol;
 export declare const MESSAGE: unique symbol;
 export declare const SPLAT: unique symbol;
-export declare const META: unique symbol;
+export declare const TRACE: unique symbol;
 export declare const EOL = "\n";
 export interface PayloadBase<Level extends string> {
     /**
@@ -42,6 +43,10 @@ export interface PayloadBase<Level extends string> {
      * Array containing payload arguments beyond the primary message.
      */
     [SPLAT]: any[];
+    /**
+     * Object containing trace information for the logged message location.
+     */
+    [TRACE]: Location;
     /**
      * Primary log payload message.
      */
@@ -93,7 +98,7 @@ export interface TransportOptionsBase<Level extends string = any, Label extends 
      */
     highWaterMark?: number;
 }
-export interface LoggerOptions<Level extends string, M extends object = {}> extends TransformBase<Level> {
+export interface LoggerOptions<Level extends string, M extends Record<string, unknown> = Record<string, unknown>> extends TransformBase<Level> {
     /**
      * The label for the logger. If not provided a
      * random id will be generated.

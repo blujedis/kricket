@@ -7,7 +7,8 @@ const dummyTransport = new DummyTransport();
 const testLogger = createLogger({
   label: 'testLogger',
   levels: ['fatal', 'error', 'warn', 'info', 'debug'],
-  transports: [dummyTransport]
+  transports: [dummyTransport],
+  defaultMeta: true
 });
 
 describe('Kricket', () => {
@@ -65,6 +66,5 @@ describe('Kricket', () => {
     assert.equal(testLogger.transports?.length, 1);
     done();
   });
-
 
 });

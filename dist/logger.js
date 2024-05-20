@@ -10,6 +10,7 @@ const fast_json_stable_stringify_1 = __importDefault(require("fast-json-stable-s
 const util_1 = require("util");
 const utils_1 = require("./utils");
 const core_1 = __importDefault(require("./core"));
+const get_current_line_1 = __importDefault(require("get-current-line"));
 class Logger extends events_1.EventEmitter {
     options;
     isChild;
@@ -19,7 +20,7 @@ class Logger extends events_1.EventEmitter {
         super();
         this.options = options;
         this.isChild = isChild;
-        this.options = { ...{ levels: [], transports: [], filters: [], transforms: [], muted: false, level: null }, ...this.options };
+        this.options = { ...{ levels: [], transports: [], filters: [], transforms: [], muted: false, level: null, defaultMetaKey: '' }, ...this.options };
         // Bind levels
         this.levels.forEach(level => {
             this[level] = (message, ...args) => this.writer(level, message, ...args);
@@ -65,11 +66,13 @@ class Logger extends events_1.EventEmitter {
         const meta = (0, utils_1.isPlainObject)(args[args.length - 1]) ? args.pop() : null;
         const hasAnyMeta = !!meta || this.options.defaultMeta || !!this.options.meta;
         const defaultMetaKey = this.options.defaultMetaKey;
+        const trace = (0, get_current_line_1.default)({ frames: 2 });
         // Build default metadata.
         let defaultMeta = this.options.defaultMeta ? {
-            LOGGER: this.label,
-            LEVEL: label,
-            UUID: (0, utils_1.uuidv4)()
+            uuid: (0, utils_1.uuidv4)(),
+            logger: this.label,
+            level,
+            ...trace,
         } : null;
         // If Default meta is in nested key...
         if (defaultMetaKey && defaultMeta)

@@ -5,6 +5,7 @@ import fastJson from 'fast-json-stable-stringify';
 import { format } from 'util';
 import { getObjectName, isPlainObject, asynceach, noop, flatten, uuidv4, log } from './utils';
 import core, { Core } from './core';
+import currentLine from 'get-current-line';
 
 export class Logger<Level extends string, Meta extends Record<string, unknown> = Record<string, unknown>> extends EventEmitter {
 
@@ -15,7 +16,7 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
 
     super();
 
-    this.options = { ...{ levels: [], transports: [], filters: [], transforms: [], muted: false, level: null }, ...this.options };
+    this.options = { ...{ levels: [], transports: [], filters: [], transforms: [], muted: false, level: null, defaultMetaKey: '' }, ...this.options };
 
     // Bind levels
     this.levels.forEach(level => {
@@ -64,17 +65,20 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
     if (this.muted || (this.level && !this.isLevelActive(level)))
       return;
 
+
     const label = level;
     const cb = typeof args[args.length - 1] === 'function' ? args.pop() : null;
     const meta = isPlainObject(args[args.length - 1]) ? args.pop() : null;
     const hasAnyMeta = !!meta || this.options.defaultMeta || !!this.options.meta;
     const defaultMetaKey = this.options.defaultMetaKey;
+    const trace = currentLine({ frames: 2 });
 
     // Build default metadata.
     let defaultMeta: any = this.options.defaultMeta ? {
-      LOGGER: this.label,
-      LEVEL: label,
-      UUID: uuidv4()
+      uuid: uuidv4(),
+      logger: this.label,
+      level,
+      ...trace,
     } : null;
 
     // If Default meta is in nested key...
@@ -120,7 +124,7 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
             [MESSAGE]: message,
             [SPLAT]: hasAnyMeta ? [...args, { ...meta, ...this.options.meta, ...defaultMeta }] : args,
             message
-          } as Payload<Level>;
+          } as Payload<Level, Meta>;
 
           // Inspect transport level.
           if ((transport.level && !this.isLevelActive(transport.level as Level)) || transport.muted || this.filtered(transport, payload))
@@ -181,7 +185,7 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
    * @param transport the Transport to get filters for.
    * @param payload the payload to pass when filtering.
    */
-  private filtered(transport: Transport, payload: Payload<Level>) {
+  private filtered(transport: Transport, payload: Payload<Level, Meta>) {
     return [...this.filters, ...transport.filters]
       .some(filter => filter(payload));
   }
@@ -192,7 +196,7 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
    * @param transport the Transport to include Transfroms from.
    * @param payload the payload object to be transformed.
    */
-  private transformed(transport: Transport, payload: Payload<Level>) {
+  private transformed(transport: Transport, payload: Payload<Level, Meta>) {
 
     const transforms = [...this.transforms, ...transport.transforms];
 
@@ -207,7 +211,7 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
         tname = getObjectName(transformer);
         if (tname === 'function')
           tname = 'anonymous';
-        transformed = transformer(transformed);
+        transformed = transformer(transformed) as Payload<Level, Meta>
         valid = isPlainObject(transformed);
       }
       catch (ex) {
@@ -435,7 +439,7 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
       meta: { ...this.options.meta, ...{ ...meta, [label]: true } }
     };
 
-  
+
     child = new Logger(options, true);
 
     // eslint-disable-next-line no-console

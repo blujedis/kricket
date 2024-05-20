@@ -18,9 +18,8 @@ export abstract class Transport<Options extends TransportOptions = TransportOpti
   constructor(options?: Options) {
     super({ highWaterMark: ({ ...options }).highWaterMark || 16 });
     this._options = { level: null, highWaterMark: 16, asJSON: true, filters: [], transforms: [], ...options };
-
     if (!this._options.label)
-     throw new Error('Failed to construct Transport using label/name of undefined');
+      throw new Error('Failed to construct Transport using label/name of undefined');
 
   }
 
@@ -109,8 +108,8 @@ export abstract class Transport<Options extends TransportOptions = TransportOpti
    * @param logger the parent Logger containing log levels.
    */
   setLevel(level: string, logger: Logger<any, any>) {
-    if (typeof level === 'undefined' || !logger.levels.includes(level)) 
-     throw new Error(`Level "${level}" is invalid or not found.`);
+    if (typeof level === 'undefined' || !logger.levels.includes(level))
+      throw new Error(`Level "${level}" is invalid or not found.`);
     this._options.level = level;
     return this;
   }

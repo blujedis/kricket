@@ -1,5 +1,6 @@
 import { Transport } from './transports';
 import { Logger } from './logger';
+import { type Location } from 'get-current-line';
 
 export type KeyOf<T> = Extract<keyof T, string>;
 
@@ -27,7 +28,7 @@ export type ChildOmits = 'setTransportLevel' | 'addTransport' | 'muteTransport' 
 
 export type ChildLogger<Level extends string> = Omit<Logger<Level>, ChildOmits> & LogMethods<Logger<Level>, Level>;
 
-export type Payload<Level extends string, E extends object = {}> = PayloadBase<Level & BaseLevel> & E;
+export type Payload<Level extends string, E extends Record<string, unknown> = Record<string, unknown>> = PayloadBase<Level & BaseLevel> & E;
 
 export const LOGGER = Symbol.for('LOGGER');
 
@@ -39,7 +40,7 @@ export const MESSAGE = Symbol.for('MESSAGE');
 
 export const SPLAT = Symbol.for('SPLAT');
 
-export const META = Symbol.for('META');
+export const TRACE = Symbol.for('TRACE');
 
 export const EOL = '\n';
 
@@ -69,6 +70,11 @@ export interface PayloadBase<Level extends string> {
    * Array containing payload arguments beyond the primary message.
    */
   [SPLAT]: any[];
+
+  /**
+   * Object containing trace information for the logged message location.
+   */
+  [TRACE]: Location;
 
   /**
    * Primary log payload message.
@@ -136,7 +142,7 @@ export interface TransportOptionsBase<Level extends string = any, Label extends 
 
 }
 
-export interface LoggerOptions<Level extends string, M extends object = {}> extends TransformBase<Level> {
+export interface LoggerOptions<Level extends string, M extends Record<string, unknown> = Record<string, unknown>> extends TransformBase<Level> {
 
   /**
    * The label for the logger. If not provided a

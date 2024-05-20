@@ -1,5 +1,9 @@
 # Kicket Changes
 
+## (05-19-2024)
+
+- Add line, method, char and file to optional defaultMeta.
+
 ## (05-17-2024)
 
 - Update packages fixes types.
