@@ -53,15 +53,17 @@ export const TOKEN_MAP = {
 
 type AnsiExcludes = 'ansiRegex' | 'symbols' | 'ok' | 'styles';
 
+export type FormatPrimitive = TypeOrValue<TokenKey> | number | Date | boolean;
+
 export type AnsiColor = Exclude<keyof typeof ansiColors, AnsiExcludes>;
 
 export type TokenKey = keyof typeof TOKEN_MAP;
 
-export type FormatArg = (TypeOrValue<TokenKey> | number | Date | boolean | any[]);
+export type FormatFn = (value: any, token: TypeOrValue<TokenKey>) => FormatPrimitive | [FormatPrimitive, ...AnsiColor[]]
 
-export type FormatTuple = [FormatArg, ...AnsiColor[]];
+export type FormatTuple = [FormatPrimitive, FormatFn | AnsiColor, ...AnsiColor[]];
 
-export type FormatArgs = FormatArg | FormatTuple;
+export type FormatArgs = FormatPrimitive | FormatTuple;
 
 export type TypeOrValue<Keys extends string | number | symbol> = Keys | (string & { value?: unknown });
 

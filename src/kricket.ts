@@ -41,6 +41,7 @@ defaultLogger.transform('console', (payload) => {
   // timestamp, filename, level, message
   const template = `%s %s %s - %s`;
   payload.message = defaultLogger.formatMessage(payload, template, 'timestamp', 'filename', 'level', 'message');
+  defaultLogger.getToken(payload, '')
   return payload;
 });
 

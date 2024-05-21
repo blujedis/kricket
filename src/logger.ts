@@ -2,10 +2,10 @@ import { EventEmitter } from 'events';
 import { Transport } from './transports';
 import fastJson from 'fast-json-stable-stringify';
 import { format } from 'util';
-import { getObjectName, isPlainObject, asynceach, noop, flatten, uuidv4, log, isObject, errorToObject, ensureArray, colorizeString } from './utils';
+import { getObjectName, isPlainObject, asynceach, noop, flatten, uuidv4, log, isObject, errorToObject, ensureArray, colorizeString, isFunction } from './utils';
 import core, { Core } from './core';
 import currentLine from './utils/trace';
-import { LoggerOptions, LEVEL, MESSAGE, SPLAT, Filter, Transform, LOGGER, TRANSPORT, Callback, BaseLevel, ChildLogger, Payload, UUID, TIMESTAMP, TypeOrValue, LEVELINT, TOKEN_MAP, FormatArg, FormatTuple, LINE, CHAR, METHOD, FILENAME, FILEPATH, TokenKey, PayloadMeta } from './types';
+import { LoggerOptions, LEVEL, MESSAGE, SPLAT, Filter, Transform, LOGGER, TRANSPORT, Callback, BaseLevel, ChildLogger, Payload, UUID, TIMESTAMP, TypeOrValue, LEVELINT, TOKEN_MAP, FormatTuple, LINE, CHAR, METHOD, FILENAME, FILEPATH, TokenKey, PayloadMeta, FormatPrimitive } from './types';
 
 export class Logger<Level extends string, Meta extends Record<string, unknown> = Record<string, unknown>, Key extends string = string> extends EventEmitter {
 
@@ -845,7 +845,7 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
    * @param template the string template used to format the message.
    * @param args the additional arguments 
    */
-  formatMessage(template: string, ...args: FormatArg[]): string;
+  formatMessage(template: string, ...args: FormatPrimitive[]): string;
   /**
    * Formats a message using Node's util.format function. Arguments which match
    * payload token keys will be mapped to their corresponding values.
@@ -854,10 +854,10 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
    * @param template the string template used to format the message.
    * @param args the additional arguments 
    */
-  formatMessage(payload: Payload<Level>, template: string, ...args: FormatArg[]): string;
-  formatMessage(payloadOrTemplate: string | Record<string, unknown>, template: FormatArg, ...args: FormatArg[]) {
+  formatMessage(payload: Payload<Level>, template: string, ...args: FormatPrimitive[]): string;
+  formatMessage(payloadOrTemplate: string | Payload<Level>, template: FormatPrimitive, ...args: FormatPrimitive[]) {
 
-    let payload = {} as Record<string, unknown>;
+    let payload = {} as Payload<Level>;
     if (typeof payloadOrTemplate === 'string') {
       if (typeof template !== 'undefined')
         args.unshift(template);
@@ -869,24 +869,58 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
     }
 
     const normalized = args.map(arg => {
-      const [token, ...rest] = ensureArray(arg) as FormatTuple;
+
+      const [token, colorOrFn, ...rest] = ensureArray(arg) as FormatTuple;
+
+      let ansiArgs = rest;
+
       if (typeof token === 'string' && typeof TOKEN_MAP[token] !== 'undefined') {
-        let value = payload[TOKEN_MAP[token]];
-        if (value)
-          arg = value as FormatArg;
-        if (!rest.length) // if no color values return existing or mapped arg.
+
+        let value = this.getToken(payload, token as TokenKey);
+
+        if (value) {
+          if (isFunction(colorOrFn)) { // callback func returns either value or Ansicolors.
+            const result = colorOrFn(value, token);
+            if (Array.isArray(result)) {
+              const [resultVal, ...resultRest] = result;
+              arg = resultVal;
+              ansiArgs = [...ansiArgs, ...resultRest];
+            }
+          }
+          else if (typeof colorOrFn !== 'undefined') {
+            ansiArgs.unshift(colorOrFn);
+            arg = value as FormatPrimitive;
+          }
+        }
+
+        if (!ansiArgs.length) // if no color values return existing or mapped arg.
           return arg;
-        return colorizeString(arg, ...rest); // colorize the argument.
+
+        return colorizeString(arg, ...ansiArgs); // colorize the argument.
+
       }
+      else if (isFunction(colorOrFn)) {
+        throw new Error(`Format arg for token/value "${token}" is invalid. Functions can only be called when using a known payload token e.g. ['uuid', 'timestamp'...]`)
+      }
+
       return arg;
+
     });
 
     return format(template, ...normalized); // return formatted string using normalized args.
 
   }
 
-  getToken<P extends Payload<Level>>(payload: P, key: TokenKey | keyof P) {
-
+  /**
+   * Gets the value of a token within the payload.
+   * 
+   * @param payload the payload object to get token from.
+   * @param key the key to get value for.
+   */
+  getToken(payload: Payload<Level>, key: TokenKey) {
+    const sym = TOKEN_MAP[key];
+    if (!sym) return null;
+    return payload[sym as keyof Payload<Level>];
   }
 
 }
