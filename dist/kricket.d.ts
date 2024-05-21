@@ -5,16 +5,9 @@ import { LoggerOptions, LogMethods } from './types';
  *
  * @param options the options used to create the Logger.
  */
+export declare function createLogger<Level extends string, Meta extends Record<string, unknown> = Record<string, unknown>>(options?: LoggerOptions<Level, Meta>): Logger<Level, Meta, string> & LogMethods<Logger<Level, Meta, string>, Level>;
 /**
- * Creates a new Logger.
- *
- * @param label the name of the Logger.
- * @param options the options used to create the Logger.
+ * Creates a default logger with basic levels and settings.
  */
-/**
- * Creates a new Logger.
- *
- * @param options the options used to create the Logger.
- */
-export declare function createLogger<Level extends string, Meta extends Record<string, unknown> = Record<string, unknown>>(options?: LoggerOptions<Level, Meta>): Logger<Level, Meta> & LogMethods<Logger<Level, Meta>, Level>;
-export declare const defaultLogger: Logger<"error" | "warn" | "info" | "fatal" | "debug", Record<string, unknown>> & LogMethods<Logger<"error" | "warn" | "info" | "fatal" | "debug", Record<string, unknown>>, "error" | "warn" | "info" | "fatal" | "debug">;
+declare const defaultLogger: Logger<string, Record<string, unknown>, string> & LogMethods<Logger<string, Record<string, unknown>, string>, string>;
+export { defaultLogger };

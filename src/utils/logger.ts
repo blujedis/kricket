@@ -4,7 +4,7 @@
  * @deprecated favor throwing errors as that's all this was used for.
  */
 
-import { red, yellow, cyan, white, bgBlue } from 'ansi-colors';
+import { red, yellow, cyan, white, bgBlue, blueBright } from 'ansi-colors';
 import { format } from 'util';
 
 export type LogGroup<T> = T & {
@@ -118,7 +118,7 @@ function write(color: string, message: string, ...args: any[]) {
     message = color as string;
     color = undefined;
   }
-  return log(format(message, ...args));
+  return log(blueBright(`[KRICKET]:`) + ` ` + format(message, ...args));
 }
 
 log.write = write;
@@ -178,6 +178,7 @@ function group(title?: string, color?: ReverseType | boolean, compact?: boolean)
     /**
      * Adds value after group is logged.
      * if number repeats line returns.
+     * 
      * @param value a string or number rep the number of line returns.
      */
     after: (value: string | number) => {

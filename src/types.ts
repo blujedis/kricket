@@ -1,6 +1,69 @@
 import { Transport } from './transports';
 import { Logger } from './logger';
 import { type Location } from './utils/trace';
+import type ansiColors from 'ansi-colors';
+
+//  CONSTANTS
+// ----------------------------------------------------------
+
+export const UUID = Symbol.for('UUID');
+
+export const LOGGER = Symbol.for('LOGGER');
+
+export const TRANSPORT = Symbol.for('TRANSPORT');
+
+export const LEVEL = Symbol.for('LEVEL');
+
+export const LEVELINT = Symbol.for('LEVELINT');
+
+export const LINE = Symbol.for('LINE');
+
+export const CHAR = Symbol.for('CHAR');
+
+export const METHOD = Symbol.for('METHOD');
+
+export const FILEPATH = Symbol.for('METHOD');
+
+export const FILENAME = Symbol.for('FILENAME');
+
+export const TIMESTAMP = Symbol.for('FILENAME');
+
+export const MESSAGE = Symbol.for('MESSAGE');
+
+export const SPLAT = Symbol.for('SPLAT');
+
+export const EOL = '\n';
+
+export const TOKEN_MAP = {
+  uuid: UUID,
+  logger: LOGGER,
+  transport: TRANSPORT,
+  level: LEVEL,
+  levelint: LEVELINT,
+  char: CHAR,
+  line: LINE,
+  filepath: FILEPATH,
+  filename: FILENAME,
+  timestamp: TIMESTAMP,
+  message: MESSAGE
+};
+
+//  TYPES
+// ----------------------------------------------------------
+
+type AnsiExcludes = 'ansiRegex' | 'symbols' | 'ok' | 'styles';
+
+export type AnsiColor = Exclude<keyof typeof ansiColors, AnsiExcludes>;
+
+export type TokenKey = keyof typeof TOKEN_MAP;
+
+export type FormatArg = (TypeOrValue<TokenKey> | number | Date | boolean | any[]);
+
+export type FormatTuple = [FormatArg, ...AnsiColor[]];
+
+export type FormatArgs = FormatArg | FormatTuple;
+
+export type TypeOrValue<Keys extends string | number | symbol> = Keys | (string & { value?: unknown });
 
 export type KeyOf<T> = Extract<keyof T, string>;
 
@@ -16,9 +79,9 @@ export type ErrorCallback = (err?: Error | null | undefined) => void;
 
 export type BaseLevel = 'write' | 'writeLn';
 
-export type Filter<Level extends string, Extend extends Record<string, any> = Record<string, any>> = (payload: Payload<Level, Extend>) => boolean;
+export type Filter<Level extends string, Extend extends Record<string, any> = Record<string, any>> = <P extends Payload<Level>>(payload: P & Extend) => boolean;
 
-export type Transform<Level extends string, Extend extends Record<string, any> = Record<string, any>> = (payload: Payload<Level, Extend>) => Payload<Level, Extend>;
+export type Transform<Level extends string, Extend extends Record<string, any> = Record<string, any>> = <P extends Payload<Level>>(payload: P & Extend) => Payload<Level> & Extend;
 
 export type LogMethod<T> = (message: any, ...args: any[]) => T;
 
@@ -28,29 +91,12 @@ export type ChildOmits = 'setTransportLevel' | 'addTransport' | 'muteTransport' 
 
 export type ChildLogger<Level extends string> = Omit<Logger<Level>, ChildOmits> & LogMethods<Logger<Level>, Level>;
 
-export type Payload<Level extends string, Extend extends Record<string, unknown> = Record<string, unknown>, Meta extends Record<string, unknown> = Record<string, unknown>> = PayloadBase<Level & BaseLevel, Meta> & Extend;
-
-export const UUID = Symbol.for('UUID');
-
-export const LOGGER = Symbol.for('LOGGER');
-
-export const TRANSPORT = Symbol.for('TRANSPORT');
-
-export const LEVEL = Symbol.for('LEVEL');
-
-export const TRACE = Symbol.for('TRACE');
-
-export const META = Symbol.for('META');
-
-export const TIMESTAMP = Symbol.for('TIMESTAMP');
-
-export const MESSAGE = Symbol.for('MESSAGE');
-
-export const SPLAT = Symbol.for('SPLAT');
-
-export const EOL = '\n';
-
-export interface PayloadBase<Level extends string, Meta extends Record<string, unknown> = Record<string, unknown>> {
+export type PayloadMeta<Meta extends Record<string, unknown>, K extends string> = 
+  K extends undefined 
+  ? Meta 
+  : Record<K, Meta>;
+  
+export interface Payload<Level extends string> {
 
   /**
    * The payload's log id.
@@ -63,9 +109,29 @@ export interface PayloadBase<Level extends string, Meta extends Record<string, u
   [TIMESTAMP]: Date;
 
   /**
-   * The payload's message.
+   * The log message's line position.
    */
-  [TRACE]: Location;
+  [LINE]: Location['line'];
+
+  /**
+   * The log message's character position.
+   */
+  [CHAR]: Location['char'];
+
+  /**
+   * The log message's target method.
+   */
+  [METHOD]: Location['method'];
+
+  /**
+   * The log message's filepath.
+   */
+  [FILEPATH]: Location['filepath'];
+
+  /**
+   * The log message's filename.
+   */
+  [FILENAME]: Location['filename'];
 
   /**
    * The payload's Logger label.
@@ -81,11 +147,6 @@ export interface PayloadBase<Level extends string, Meta extends Record<string, u
   * The payload's log level.
   */
   [LEVEL]: Level;
-
-  /**
-   * The payload's global metadata.
-   */
-  [META]: Meta;
 
   /**
    * Array containing payload arguments beyond the primary message.
@@ -163,7 +224,7 @@ export interface TransportOptionsBase<Level extends string = any, Label extends 
 
 }
 
-export interface LoggerOptions<Level extends string, M extends Record<string, unknown> = Record<string, unknown>> extends TransformBase<Level> {
+export interface LoggerOptions<Level extends string, M extends Record<string, unknown> = Record<string, unknown>, Key extends string = string> extends TransformBase<Level> {
 
   /**
    * The label for the logger. If not provided a
@@ -202,6 +263,19 @@ export interface LoggerOptions<Level extends string, M extends Record<string, un
    * uuid, logger, transport, level, trace, timestamp
    */
   includes?: boolean;
+
+  /**
+   * When a meta key is provided it is set as the property name in the meta object within the SPLAT.
+   * If a meta key is not provided and no objects have been passed then there is no metadata object
+   * passed to SPLAT. If no metadata exists but a metaKey exits it will be set to an empty object.
+   * 
+   * @example 
+   * payload = { message: 'some message', [your_key]: { ...metadata here }}
+   * 
+   * @default undefined
+   * 
+   */
+  metaKey?: Key;
 
   /**
    * When true default meta data is added to payload including, 

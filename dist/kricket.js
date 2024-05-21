@@ -8,20 +8,7 @@ const logger_1 = require("./logger");
 const transports_1 = require("./transports");
 const core_1 = __importDefault(require("./core"));
 const utils_1 = require("./utils");
-/**
- * Creates a new Logger.
- *
- * @param options the options used to create the Logger.
- */
-// export function createLogger<Level extends string, M extends Record<string, unknown> = Record<string, unknown>>(options: LoggerOptions<Level, M>): Logger<Level, M> & LogMethods<Logger<Level, M>, Level>;
-/**
- * Creates a new Logger.
- *
- * @param label the name of the Logger.
- * @param options the options used to create the Logger.
- */
-// export function createLogger<Level extends string, M extends Record<string, unknown> = Record<string, unknown>>(label: string, options?: LoggerOptions<Level, M>): Logger<Level, M> & LogMethods<Logger<Level, M>, Level>;
-// export function createLogger<Level extends string, M extends Record<string, unknown> = Record<string, unknown>>(labelOrOptions: string | LoggerOptions<Level, M>, options?: LoggerOptions<Level, M>) {
+const types_1 = require("./types");
 /**
  * Creates a new Logger.
  *
@@ -34,12 +21,28 @@ function createLogger(options) {
     return logger;
 }
 exports.createLogger = createLogger;
-exports.defaultLogger = createLogger({
+/**
+ * Creates a default logger with basic levels and settings.
+ */
+const defaultLogger = createLogger({
     label: 'default',
-    level: 'info',
+    level: process.env.LOG_LEVEL || 'info',
     levels: ['fatal', 'error', 'warn', 'info', 'debug'],
     transports: [
         new transports_1.ConsoleTransport()
     ]
+});
+exports.defaultLogger = defaultLogger;
+defaultLogger.filter('console', (payload) => {
+    return !defaultLogger.isLevelActive(payload[types_1.LEVEL]);
+});
+defaultLogger.transform((payload) => {
+    return defaultLogger.parsePayload(payload);
+});
+defaultLogger.transform('console', (payload) => {
+    // timestamp, filename, level, message
+    const template = `%s %s %s - %s`;
+    payload.message = defaultLogger.formatMessage(payload, template, 'timestamp', 'filename', 'level', 'message');
+    return payload;
 });
 //# sourceMappingURL=kricket.js.map

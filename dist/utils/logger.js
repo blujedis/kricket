@@ -77,7 +77,7 @@ function write(color, message, ...args) {
         message = color;
         color = undefined;
     }
-    return log((0, util_1.format)(message, ...args));
+    return log((0, ansi_colors_1.blueBright)(`[KRICKET]:`) + ` ` + (0, util_1.format)(message, ...args));
 }
 log.write = write;
 log.fatal = (message, ...args) => log((0, util_1.format)(message, ...args), { type: 'error', exit: true });
@@ -121,6 +121,7 @@ function group(title, color, compact) {
         /**
          * Adds value after group is logged.
          * if number repeats line returns.
+         *
          * @param value a string or number rep the number of line returns.
          */
         after: (value) => {

@@ -63,46 +63,56 @@ class Logger extends events_1.EventEmitter {
             return;
         const id = (0, utils_1.uuidv4)();
         const label = level;
+        const index = this.options.levels.indexOf(label);
         const cb = typeof args[args.length - 1] === 'function' ? args.pop() : null;
         const meta = (0, utils_1.isPlainObject)(args[args.length - 1]) ? args.pop() : null;
         const trace = (0, trace_1.default)({ frames: 2 });
-        const globalMeta = { ...this.options.meta };
+        const globalMeta = (0, utils_1.isPlainObject)(this.options.meta) ? { ...this.options.meta } : null;
         const timestamp = new Date();
+        let mergedMeta = (!meta && !globalMeta ? null : { ...(globalMeta || {}), ...(meta || {}) });
+        if (this.options.metaKey)
+            mergedMeta = mergedMeta === null ? {} : { [this.options.metaKey]: mergedMeta };
         const initIncludes = this.options.includes ? {
             [types_1.UUID]: id,
+            [types_1.LEVELINT]: index,
             [types_1.TIMESTAMP]: timestamp,
             [types_1.LOGGER]: this.label,
-            [types_1.TRACE]: trace,
+            [types_1.LINE]: trace.line,
+            [types_1.CHAR]: trace.char,
+            [types_1.METHOD]: trace.method,
+            [types_1.FILEPATH]: trace.filepath,
+            [types_1.FILENAME]: trace.filename,
         } : {};
         const rawPayload = {
             ...initIncludes,
             [types_1.LEVEL]: label,
-            [types_1.META]: globalMeta,
             [types_1.MESSAGE]: message,
-            [types_1.SPLAT]: (0, utils_1.isPlainObject)(meta) ? [...args, { ...meta }] : args,
+            [types_1.SPLAT]: mergedMeta ? [...args, { ...mergedMeta }] : args,
             message
         };
         // Emit raw payload.
         this.emit('log', rawPayload);
         this.emit(`log:${label}`, rawPayload);
-        // eslint-disable-next-line @typescript-eslint/no-this-alias
-        const logger = this;
         const event = (transport) => {
             return (done) => {
                 try {
                     const transportIncludes = this.options.includes ? {
                         [types_1.UUID]: id,
+                        [types_1.LEVELINT]: index,
                         [types_1.TIMESTAMP]: timestamp,
                         [types_1.LOGGER]: this.label,
-                        [types_1.TRACE]: trace,
-                        [types_1.TRANSPORT]: transport.label
+                        [types_1.TRANSPORT]: transport.label,
+                        [types_1.LINE]: trace.line,
+                        [types_1.CHAR]: trace.char,
+                        [types_1.METHOD]: trace.method,
+                        [types_1.FILEPATH]: trace.filepath,
+                        [types_1.FILENAME]: trace.filename,
                     } : {};
                     const payload = {
                         ...transportIncludes,
                         [types_1.LEVEL]: label,
-                        [types_1.META]: globalMeta,
                         [types_1.MESSAGE]: message,
-                        [types_1.SPLAT]: (0, utils_1.isPlainObject)(meta) ? [...args, { ...meta }] : args,
+                        [types_1.SPLAT]: mergedMeta ? [...args, { ...mergedMeta }] : args,
                         message
                     };
                     // Inspect transport level.
@@ -148,6 +158,7 @@ class Logger extends events_1.EventEmitter {
      * @param payload the payload to pass when filtering.
      */
     filtered(transport, payload) {
+        console.log(transport.label, [...this.filters, ...transport.filters]);
         return [...this.filters, ...transport.filters]
             .some(filter => filter(payload));
     }
@@ -305,6 +316,17 @@ class Logger extends events_1.EventEmitter {
         _transport.setLevel(level, this);
         return this;
     }
+    /**
+     *
+     * @param payload your current payload object.
+     * @param level the level you wish to change to.
+     */
+    changeLevel(payload, level) {
+        return {
+            ...payload,
+            [types_1.LEVEL]: level
+        };
+    }
     isLevelActive(level, levels = this.levels) {
         if (typeof level === 'object')
             level = level[types_1.LEVEL];
@@ -360,15 +382,12 @@ class Logger extends events_1.EventEmitter {
         }
         if (!transport) {
             this.options.filters.push(fn);
+            return this;
         }
-        else {
-            const _transport = this.getTransport(transport);
-            if (!_transport) {
-                utils_1.log.fatal(`Transport ${transport} could NOT be found.`);
-                return this;
-            }
-            _transport._options.filters.push(fn);
-        }
+        const _transport = this.getTransport(transport);
+        if (!_transport)
+            throw new Error(`Transport ${transport} could NOT be found.`);
+        _transport._options.filters.push(fn);
         return this;
     }
     transform(transport, fn) {
@@ -518,16 +537,6 @@ class Logger extends events_1.EventEmitter {
         return new Klass(label, options);
     }
     /**
-     * Convenience method to generate simple uuid v4. Although this
-     * works for most simple scenarios consider using a first class
-     * UUIDV4 library.
-     *
-     * @see https://www.npmjs.com/package/uuid
-     */
-    uuidv4() {
-        return (0, utils_1.uuidv4)();
-    }
-    /**
      * Useful helper to determine if payload contains a given Logger.
      *
      * @param payload the current payload to inspect.
@@ -556,47 +565,6 @@ class Logger extends events_1.EventEmitter {
     hasLevel(payload, compare) {
         const level = payload[types_1.LEVEL];
         return level === compare;
-    }
-    /**
-     * Converts Symbols on payload to a simple mapped object.
-     * This can be used if you wish to output Symbols as metadata to
-     * your final output.
-     *
-     * Defaults to Symbols [LOGGER, TRANSPORT, LEVEL]
-     *
-     * @example
-     * defaultLogger.transform(payload => {
-     *    payload.metadata = defaultLogger.symbolsToMap(payload);
-     *    return payload;
-     * });
-     *
-     * @param payload a log payload containing symbols.
-     */
-    symbolsToMap(payload, ...symbols) {
-        if (!symbols.length)
-            symbols = [types_1.LOGGER, types_1.TRANSPORT, types_1.LEVEL];
-        return symbols.reduce((a, c) => {
-            const name = c.description;
-            if (!name)
-                throw new Error(`Symbols to Map failed accessing Symbol ${c.toString()} description.`);
-            a[name] = payload[c];
-            return a;
-        }, {});
-    }
-    /**
-     * Simply extends the payload object with additional properties while also
-     * maintaining typings.
-     *
-     * @param payload the payload object to be extended.
-     * @param obj the object to extend payload with.
-     */
-    extendPayload(payload, obj) {
-        for (const k in obj) {
-            if (!Object.prototype.hasOwnProperty.call(obj, k))
-                continue;
-            payload[k] = obj[k];
-        }
-        return payload;
     }
     /**
      * Adds a Transport to Logger.
@@ -628,6 +596,72 @@ class Logger extends events_1.EventEmitter {
         const idx = this.transports.indexOf(transport);
         this.transports.splice(idx, 1);
         return this;
+    }
+    /**
+     * Extend a payload object with additional properties optionally assigning exteded object at
+     * property name defined as options.metaKey.
+     *
+     * @param payload the payload object to be extended.
+     * @param extend the object to extend payload with.
+     * @param useMetaKey when true the extended object is assiged to metaKey name in payload.
+     */
+    extendPayload(payload, extend, useMetaKey = false) {
+        if (useMetaKey) {
+            if (!this.options.metaKey)
+                throw new Error(`Cannot use "metaKey" of undefined. Is it set at "options.metaKey"?`);
+            return (payload[this.options.metaKey] = extend);
+        }
+        for (const k in extend) {
+            if (!Object.prototype.hasOwnProperty.call(extend, k))
+                continue;
+            payload[k] = extend[k];
+        }
+        return payload;
+    }
+    /**
+     * Parses payload inspecting for error argument as message and/or meta object within splat.
+     *
+     * @param payload the payload object to be parsed.
+     */
+    parsePayload(payload, extend = {}) {
+        let meta = {};
+        // Check if last arg in splat is an object. 
+        if ((0, utils_1.isObject)(payload[types_1.SPLAT].slice(-1)[0]))
+            meta = payload[types_1.SPLAT].pop();
+        // if payload message is an error convert to object, set message to error's message.
+        if ((payload[types_1.MESSAGE]) instanceof Error) {
+            const err = payload[types_1.MESSAGE];
+            payload.message = err.message;
+            meta = { ...meta, err: (0, utils_1.errorToObject)(err) };
+        }
+        payload.message = (0, util_1.format)(payload.message, ...payload[types_1.SPLAT]);
+        return this.extendPayload(payload, { ...meta, ...extend }, true);
+    }
+    formatMessage(payloadOrTemplate, template, ...args) {
+        let payload = {};
+        if (typeof payloadOrTemplate === 'string') {
+            if (typeof template !== 'undefined')
+                args.unshift(template);
+            template = payloadOrTemplate;
+        }
+        else if ((0, utils_1.isObject)(payloadOrTemplate)) {
+            payload = payloadOrTemplate;
+        }
+        const normalized = args.map(arg => {
+            const [token, ...rest] = (0, utils_1.ensureArray)(arg);
+            if (typeof token === 'string' && typeof types_1.TOKEN_MAP[token] !== 'undefined') {
+                let value = payload[types_1.TOKEN_MAP[token]];
+                if (value)
+                    arg = value;
+                if (!rest.length) // if no color values return existing or mapped arg.
+                    return arg;
+                return (0, utils_1.colorizeString)(arg, ...rest); // colorize the argument.
+            }
+            return arg;
+        });
+        return (0, util_1.format)(template, ...normalized); // return formatted string using normalized args.
+    }
+    getToken(payload, key) {
     }
 }
 exports.Logger = Logger;

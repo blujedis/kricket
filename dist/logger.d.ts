@@ -2,13 +2,13 @@
 import { EventEmitter } from 'events';
 import { Transport } from './transports';
 import { Core } from './core';
-import { LoggerOptions, Filter, Transform, Callback, BaseLevel, ChildLogger, PayloadBase } from './types';
-export declare class Logger<Level extends string, Meta extends Record<string, unknown> = Record<string, unknown>> extends EventEmitter {
-    options: LoggerOptions<Level, Meta>;
+import { LoggerOptions, Filter, Transform, Callback, ChildLogger, Payload, TypeOrValue, FormatArg, TokenKey } from './types';
+export declare class Logger<Level extends string, Meta extends Record<string, unknown> = Record<string, unknown>, Key extends string = string> extends EventEmitter {
+    options: LoggerOptions<Level, Meta, Key>;
     isChild: boolean;
     core: Core;
-    children: Map<string, Logger<Level, Meta>>;
-    constructor(options: LoggerOptions<Level, Meta>, isChild?: boolean);
+    children: Map<string, Logger<Level, Meta, Key>>;
+    constructor(options: LoggerOptions<Level, Meta, Key>, isChild?: boolean);
     /**
      * Iterates Transports checks for duplicate labels.
      */
@@ -88,35 +88,41 @@ export declare class Logger<Level extends string, Meta extends Record<string, un
      * @param level the level to set the Logger to.
      * @param cascade when true apply to child Transports (default: true).
      */
-    setLevel(level: Level, cascade?: boolean): this;
+    setLevel(level: TypeOrValue<Level>, cascade?: boolean): this;
     /**
      * Sets the level for a Logger Transport.
      *
      * @param transport the Transport to set the level for.
      * @param level the level to be set on the Transport.
      */
-    setTransportLevel(transport: Transport, level: Level): this;
+    setTransportLevel(transport: Transport, level: TypeOrValue<Level>): this;
     /**
      * Sets the level for a Logger Transport.
      *
      * @param transport the Transport label to set the level for.
      * @param level the level to be set on the Transport.
      */
-    setTransportLevel(transport: string, level: Level): this;
+    setTransportLevel(transport: string, level: TypeOrValue<Level>): this;
+    /**
+     *
+     * @param payload your current payload object.
+     * @param level the level you wish to change to.
+     */
+    changeLevel(payload: Payload<Level>, level: Level): Payload<Level>;
     /**
      * Checks if a level is active.
      *
      * @param level the level to compare.
      * @param levels the optional levels to compare against.
      */
-    isLevelActive(level: Level | BaseLevel, levels?: Level[]): boolean;
+    isLevelActive(level: TypeOrValue<Level>, levels?: TypeOrValue<Level>[]): boolean;
     /**
      * Checks if a level is active by payload.
      *
      * @param payload the payload containing the level to inspect.
      * @param levels the optional levels to compare against.
      */
-    isLevelActive(payload: PayloadBase<Level, Meta>, levels?: Level[]): boolean;
+    isLevelActive(payload: Payload<Level>, levels?: TypeOrValue<Level>[]): boolean;
     /**
      * Gets a new child Logger.
      *
@@ -132,26 +138,26 @@ export declare class Logger<Level extends string, Meta extends Record<string, un
      * @param transport the transport to add the filter to.
      * @param fn the Filter function to be added.
      */
-    filter<Extend extends Record<string, any> = Record<string, any>>(transport: string, fn: Filter<Level, Extend>): this;
+    filter<Extend extends Record<string, unknown> = Record<string, unknown>>(transport: string, fn: Filter<Level, Extend>): this;
     /**
      * Adds a global Filter function.
      *
      * @param fn the Filter function to be added.
      */
-    filter<Extend extends Record<string, any> = Record<string, any>>(fn: Filter<Level, Extend>): this;
+    filter<Extend extends Record<string, unknown> = Record<string, unknown>>(fn: Filter<Level, Extend>): this;
     /**
      * Adds a Transform function.
      *
      * @param transport the Transport to add the transform to.
      * @param fn the Transform function to be added.
      */
-    transform<P extends Record<string, any> = Record<string, any>>(transport: string, fn: Transform<Level, P>): this;
+    transform<P extends Record<string, unknown> = Record<string, unknown>>(transport: string, fn: Transform<Level, P>): this;
     /**
      * Adds a global Transform function.
      *
      * @param fn the Transform function to be added.
      */
-    transform<Extend extends Record<string, any> = Record<string, any>>(fn: Transform<Level, Extend>): this;
+    transform<Extend extends Record<string, unknown> = Record<string, unknown>>(fn: Transform<Level, Extend>): this;
     /**
      * Merges Filter functions into single group.
      *
@@ -235,58 +241,26 @@ export declare class Logger<Level extends string, Meta extends Record<string, un
      */
     cloneTransport<Label extends string, T extends Transport>(label: Label, transport: T): T;
     /**
-     * Convenience method to generate simple uuid v4. Although this
-     * works for most simple scenarios consider using a first class
-     * UUIDV4 library.
-     *
-     * @see https://www.npmjs.com/package/uuid
-     */
-    uuidv4(): any;
-    /**
      * Useful helper to determine if payload contains a given Logger.
      *
      * @param payload the current payload to inspect.
      * @param label the label to match.
      */
-    hasLogger(payload: PayloadBase<Level, Meta>, label: string): boolean;
+    hasLogger(payload: Payload<Level>, label: string): boolean;
     /**
      * Useful helper to determine if payload contains a given Transport.
      *
      * @param payload the current payload to inspect.
      * @param label the label to match.
      */
-    hasTransport(payload: PayloadBase<Level, Meta>, label: string): boolean;
+    hasTransport(payload: Payload<Level>, label: string): boolean;
     /**
      * Useful helper to determine if Transport contains a given Level.
      *
      * @param payload the current payload to inspect.
      * @param compare the label to compare.
      */
-    hasLevel(payload: PayloadBase<Level, Meta>, compare: Level | BaseLevel): boolean;
-    /**
-     * Converts Symbols on payload to a simple mapped object.
-     * This can be used if you wish to output Symbols as metadata to
-     * your final output.
-     *
-     * Defaults to Symbols [LOGGER, TRANSPORT, LEVEL]
-     *
-     * @example
-     * defaultLogger.transform(payload => {
-     *    payload.metadata = defaultLogger.symbolsToMap(payload);
-     *    return payload;
-     * });
-     *
-     * @param payload a log payload containing symbols.
-     */
-    symbolsToMap(payload: PayloadBase<Level, Meta>, ...symbols: symbol[]): {};
-    /**
-     * Simply extends the payload object with additional properties while also
-     * maintaining typings.
-     *
-     * @param payload the payload object to be extended.
-     * @param obj the object to extend payload with.
-     */
-    extendPayload<T extends object>(payload: PayloadBase<Level, Meta>, obj: T): PayloadBase<Level, Meta> & T;
+    hasLevel(payload: Payload<Level>, compare: Level): boolean;
     /**
      * Adds a Transport to Logger.
      *
@@ -305,4 +279,40 @@ export declare class Logger<Level extends string, Meta extends Record<string, un
      * @param transport the Transport name/label to be removed.
      */
     removeTransport(transport: string): this;
+    /**
+     * Extend a payload object with additional properties optionally assigning exteded object at
+     * property name defined as options.metaKey.
+     *
+     * @param payload the payload object to be extended.
+     * @param extend the object to extend payload with.
+     * @param useMetaKey when true the extended object is assiged to metaKey name in payload.
+     */
+    extendPayload<P extends Payload<Level>, E extends Partial<P>>(payload: P, extend: E, useMetaKey?: boolean): (P & {
+        [key: string]: E;
+    }) | (P & E);
+    /**
+     * Parses payload inspecting for error argument as message and/or meta object within splat.
+     *
+     * @param payload the payload object to be parsed.
+     */
+    parsePayload<P extends Payload<Level>, E extends Partial<P>>(payload: P, extend?: E): (P & {
+        [key: string]: E;
+    }) | (P & E);
+    /**
+     * Formats a message using Node's util.format function.
+     *
+     * @param template the string template used to format the message.
+     * @param args the additional arguments
+     */
+    formatMessage(template: string, ...args: FormatArg[]): string;
+    /**
+     * Formats a message using Node's util.format function. Arguments which match
+     * payload token keys will be mapped to their corresponding values.
+     *
+     * @param payload the current payload use to parse tokens from.
+     * @param template the string template used to format the message.
+     * @param args the additional arguments
+     */
+    formatMessage(payload: Payload<Level>, template: string, ...args: FormatArg[]): string;
+    getToken<P extends Payload<Level>>(payload: P, key: TokenKey | keyof P): void;
 }

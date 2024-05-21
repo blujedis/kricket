@@ -2,17 +2,17 @@ import { EventEmitter } from 'events';
 import { Transport } from './transports';
 import fastJson from 'fast-json-stable-stringify';
 import { format } from 'util';
-import { getObjectName, isPlainObject, asynceach, noop, flatten, uuidv4, log } from './utils';
+import { getObjectName, isPlainObject, asynceach, noop, flatten, uuidv4, log, isObject, errorToObject, ensureArray, colorizeString } from './utils';
 import core, { Core } from './core';
 import currentLine from './utils/trace';
-import { LoggerOptions, LEVEL, MESSAGE, SPLAT, Filter, Transform, LOGGER, TRANSPORT, Callback, BaseLevel, ChildLogger, PayloadBase, Payload, UUID, TRACE, META, TIMESTAMP } from './types';
+import { LoggerOptions, LEVEL, MESSAGE, SPLAT, Filter, Transform, LOGGER, TRANSPORT, Callback, BaseLevel, ChildLogger, Payload, UUID, TIMESTAMP, TypeOrValue, LEVELINT, TOKEN_MAP, FormatArg, FormatTuple, LINE, CHAR, METHOD, FILENAME, FILEPATH, TokenKey, PayloadMeta } from './types';
 
-export class Logger<Level extends string, Meta extends Record<string, unknown> = Record<string, unknown>> extends EventEmitter {
+export class Logger<Level extends string, Meta extends Record<string, unknown> = Record<string, unknown>, Key extends string = string> extends EventEmitter {
 
   core: Core = core;
-  children = new Map<string, Logger<Level, Meta>>();
+  children = new Map<string, Logger<Level, Meta, Key>>();
 
-  constructor(public options: LoggerOptions<Level, Meta>, public isChild = false) {
+  constructor(public options: LoggerOptions<Level, Meta, Key>, public isChild = false) {
 
     super();
 
@@ -62,41 +62,47 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
    */
   private writer(level: Level | BaseLevel, message: any = '', ...args: any[]) {
 
+    type LoggedLevel = Level | BaseLevel;
+
     if (this.muted || (this.level && !this.isLevelActive(level)))
       return;
 
     const id = uuidv4();
     const label = level;
+    const index = this.options.levels.indexOf(label as Level);
     const cb = typeof args[args.length - 1] === 'function' ? args.pop() : null;
     const meta = isPlainObject(args[args.length - 1]) ? args.pop() : null;
     const trace = currentLine({ frames: 2 });
-    const globalMeta = { ...this.options.meta };
+    const globalMeta = isPlainObject(this.options.meta) ? { ...this.options.meta } : null;
     const timestamp = new Date();
+    let mergedMeta = (!meta && !globalMeta ? null : { ...(globalMeta || {}), ...(meta || {}) }) as null | Record<string, unknown>;
 
-    type LoggedLevel = Level | BaseLevel;
+    if (this.options.metaKey)
+      mergedMeta = mergedMeta === null ? {} : { [this.options.metaKey]: mergedMeta };
 
     const initIncludes = this.options.includes ? {
       [UUID]: id,
+      [LEVELINT]: index,
       [TIMESTAMP]: timestamp,
       [LOGGER]: this.label,
-      [TRACE]: trace,
+      [LINE]: trace.line,
+      [CHAR]: trace.char,
+      [METHOD]: trace.method,
+      [FILEPATH]: trace.filepath,
+      [FILENAME]: trace.filename,
     } : {};
 
     const rawPayload = {
       ...initIncludes,
       [LEVEL]: label as LoggedLevel,
-      [META]: globalMeta,
       [MESSAGE]: message,
-      [SPLAT]: isPlainObject(meta) ? [...args, { ...meta }] : args,
+      [SPLAT]: mergedMeta ? [...args, { ...mergedMeta }] : args,
       message
     };
 
     // Emit raw payload.
     this.emit('log', rawPayload);
     this.emit(`log:${label}`, rawPayload);
-
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
-    const logger = this;
 
     const event = (transport: Transport) => {
 
@@ -106,18 +112,22 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
 
           const transportIncludes = this.options.includes ? {
             [UUID]: id,
+            [LEVELINT]: index,
             [TIMESTAMP]: timestamp,
             [LOGGER]: this.label,
-            [TRACE]: trace,
-            [TRANSPORT]: transport.label
+            [TRANSPORT]: transport.label,
+            [LINE]: trace.line,
+            [CHAR]: trace.char,
+            [METHOD]: trace.method,
+            [FILEPATH]: trace.filepath,
+            [FILENAME]: trace.filename,
           } : {};
 
           const payload = {
             ...transportIncludes,
             [LEVEL]: label,
-            [META]: globalMeta,
             [MESSAGE]: message,
-            [SPLAT]: isPlainObject(meta) ? [...args, { ...meta }] : args,
+            [SPLAT]: mergedMeta ? [...args, { ...mergedMeta }] : args,
             message
           } as Payload<Level>;
 
@@ -148,7 +158,7 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
 
     };
 
-    asynceach<PayloadBase<Level, Meta>>(this.transports.map(transport => event(transport)), (err, payloads) => {
+    asynceach<Payload<Level>>(this.transports.map(transport => event(transport)), (err, payloads) => {
 
       if (err) {
         if (!Array.isArray(err))
@@ -204,7 +214,7 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
         tname = getObjectName(transformer);
         if (tname === 'function')
           tname = 'anonymous';
-        transformed = transformer(transformed) as Payload<Level>
+        transformed = transformer(transformed);
         valid = isPlainObject(transformed);
       }
       catch (ex) {
@@ -340,13 +350,14 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
    * @param level the level to set the Logger to.
    * @param cascade when true apply to child Transports (default: true).
    */
-  setLevel(level: Level, cascade = true) {
-    if (typeof level === 'undefined' || !this.levels.includes(level)) {
+  setLevel(level: TypeOrValue<Level>, cascade = true) {
+
+    if (typeof level === 'undefined' || !this.levels.includes(level as Level)) {
       // eslint-disable-next-line no-console
       log.warn(`Level "${level}" is invalid or not found.`);
       return this;
     }
-    this.options.level = level;
+    this.options.level = level as Level;
     if (cascade)
       [...this.children.values()].forEach(child => child.setLevel(level));
     return this;
@@ -358,7 +369,7 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
    * @param transport the Transport to set the level for.
    * @param level the level to be set on the Transport.
    */
-  setTransportLevel(transport: Transport, level: Level): this;
+  setTransportLevel(transport: Transport, level: TypeOrValue<Level>): this;
 
   /**
    * Sets the level for a Logger Transport.
@@ -366,11 +377,23 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
    * @param transport the Transport label to set the level for.
    * @param level the level to be set on the Transport.
    */
-  setTransportLevel(transport: string, level: Level): this;
+  setTransportLevel(transport: string, level: TypeOrValue<Level>): this;
   setTransportLevel(transport: string | Transport, level: Level) {
     const _transport = (typeof transport === 'string' ? this.getTransport(transport as string) : transport) as Transport;
     _transport.setLevel(level, this);
     return this;
+  }
+
+  /**
+   * 
+   * @param payload your current payload object. 
+   * @param level the level you wish to change to.
+   */
+  changeLevel(payload: Payload<Level>, level: Level) {
+    return {
+      ...payload,
+      [LEVEL]: level
+    } as Payload<Level>;
   }
 
   /**
@@ -379,7 +402,7 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
    * @param level the level to compare.
    * @param levels the optional levels to compare against.
    */
-  isLevelActive(level: Level | BaseLevel, levels?: Level[]): boolean;
+  isLevelActive(level: TypeOrValue<Level>, levels?: TypeOrValue<Level>[]): boolean;
 
   /**
    * Checks if a level is active by payload.
@@ -387,8 +410,8 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
    * @param payload the payload containing the level to inspect.
    * @param levels the optional levels to compare against.
    */
-  isLevelActive(payload: PayloadBase<Level, Meta>, levels?: Level[]): boolean;
-  isLevelActive(level: Level | BaseLevel | PayloadBase<Level, Meta>, levels: Level[] = this.levels): boolean {
+  isLevelActive(payload: Payload<Level>, levels?: TypeOrValue<Level>[]): boolean;
+  isLevelActive(level: TypeOrValue<Level> | Payload<Level>, levels: TypeOrValue<Level>[] = this.levels): boolean {
     if (typeof level === 'object')
       level = level[LEVEL];
     if (['write', 'writeLn'].includes(level))
@@ -455,14 +478,14 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
    * @param transport the transport to add the filter to.
    * @param fn the Filter function to be added.
    */
-  filter<Extend extends Record<string, any> = Record<string, any>>(transport: string, fn: Filter<Level, Extend>): this;
+  filter<Extend extends Record<string, unknown> = Record<string, unknown>>(transport: string, fn: Filter<Level, Extend>): this;
 
   /**
    * Adds a global Filter function.
    * 
    * @param fn the Filter function to be added.
    */
-  filter<Extend extends Record<string, any> = Record<string, any>>(fn: Filter<Level, Extend>): this;
+  filter<Extend extends Record<string, unknown> = Record<string, unknown>>(fn: Filter<Level, Extend>): this;
   filter(transport: string | Filter<Level>, fn?: Filter<Level>) {
     if (typeof transport === 'function') {
       fn = transport;
@@ -470,15 +493,12 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
     }
     if (!transport) {
       this.options.filters.push(fn);
+      return this;
     }
-    else {
-      const _transport = this.getTransport(transport as string);
-      if (!_transport) {
-        log.fatal(`Transport ${transport} could NOT be found.`);
-        return this;
-      }
-      _transport._options.filters.push(fn);
-    }
+    const _transport = this.getTransport(transport as string);
+    if (!_transport)
+      throw new Error(`Transport ${transport} could NOT be found.`);
+    _transport._options.filters.push(fn);
     return this;
   }
 
@@ -488,14 +508,14 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
    * @param transport the Transport to add the transform to.
    * @param fn the Transform function to be added.
    */
-  transform<P extends Record<string, any> = Record<string, any>>(transport: string, fn: Transform<Level, P>): this;
+  transform<P extends Record<string, unknown> = Record<string, unknown>>(transport: string, fn: Transform<Level, P>): this;
 
   /**
    * Adds a global Transform function.
    * 
    * @param fn the Transform function to be added.
    */
-  transform<Extend extends Record<string, any> = Record<string, any>>(fn: Transform<Level, Extend>): this;
+  transform<Extend extends Record<string, unknown> = Record<string, unknown>>(fn: Transform<Level, Extend>): this;
   transform(transport: string | Transform<Level>, fn?: Transform<Level>) {
     if (typeof transport === 'function') {
       fn = transport;
@@ -531,7 +551,7 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
   mergeFilter(fn: Filter<Level>[]): Filter<Level>;
   mergeFilter(...fns: (Filter<Level> | Filter<Level>[])[]) {
     const filters = flatten(fns) as Filter<Level>[];
-    return (payload: PayloadBase<Level & BaseLevel> & Meta) => filters.some(filter => filter(payload));
+    return (payload: Payload<Level> & Meta) => filters.some(filter => filter(payload));
   }
 
   /**
@@ -550,7 +570,7 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
   mergeTransform(fns: Transform<Level>[]): Transform<Level>;
   mergeTransform(...fns: (Transform<Level> | Transform<Level>[])[]) {
     const arr = flatten(fns) as Transform<Level>[];
-    return (payload: PayloadBase<Level & BaseLevel>) => {
+    return (payload: Payload<Level>) => {
       return arr.reduce((result, transform) => {
         return transform(result);
       }, payload);
@@ -692,25 +712,15 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
   }
 
   /**
-   * Convenience method to generate simple uuid v4. Although this
-   * works for most simple scenarios consider using a first class
-   * UUIDV4 library.
-   * 
-   * @see https://www.npmjs.com/package/uuid
-   */
-  uuidv4() {
-    return uuidv4();
-  }
-
-  /**
    * Useful helper to determine if payload contains a given Logger.
    * 
    * @param payload the current payload to inspect.
    * @param label the label to match.
    */
-  hasLogger(payload: PayloadBase<Level, Meta>, label: string) {
+  hasLogger(payload: Payload<Level>, label: string) {
     const logger = payload[LOGGER];
     return logger === label;
+
   }
 
   /**
@@ -719,7 +729,7 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
    * @param payload the current payload to inspect.
    * @param label the label to match.
    */
-  hasTransport(payload: PayloadBase<Level, Meta>, label: string) {
+  hasTransport(payload: Payload<Level>, label: string) {
     const transport = payload[TRANSPORT];
     return transport === label;
   }
@@ -730,54 +740,9 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
    * @param payload the current payload to inspect.
    * @param compare the label to compare.
    */
-  hasLevel(payload: PayloadBase<Level, Meta>, compare: Level | BaseLevel) {
+  hasLevel(payload: Payload<Level>, compare: Level) {
     const level = payload[LEVEL];
     return level === compare;
-  }
-
-  /**
-   * Converts Symbols on payload to a simple mapped object.
-   * This can be used if you wish to output Symbols as metadata to
-   * your final output.
-   * 
-   * Defaults to Symbols [LOGGER, TRANSPORT, LEVEL]
-   * 
-   * @example
-   * defaultLogger.transform(payload => {
-   *    payload.metadata = defaultLogger.symbolsToMap(payload);
-   *    return payload;
-   * });
-   * 
-   * @param payload a log payload containing symbols.
-   */
-  symbolsToMap(payload: PayloadBase<Level, Meta>, ...symbols: symbol[]) {
-
-    if (!symbols.length)
-      symbols = [LOGGER, TRANSPORT, LEVEL];
-
-    return symbols.reduce((a, c) => {
-      const name = (c as any).description;
-      if (!name)
-        throw new Error(`Symbols to Map failed accessing Symbol ${c.toString()} description.`);
-      a[name] = payload[c as any];
-      return a;
-    }, {});
-
-  }
-
-  /**
-   * Simply extends the payload object with additional properties while also
-   * maintaining typings.
-   * 
-   * @param payload the payload object to be extended.
-   * @param obj the object to extend payload with.
-   */
-  extendPayload<T extends object>(payload: PayloadBase<Level, Meta>, obj: T) {
-    for (const k in obj) {
-      if (!Object.prototype.hasOwnProperty.call(obj, k)) continue;
-      payload[k] = obj[k];
-    }
-    return payload as PayloadBase<Level, Meta> & T;
   }
 
   /**
@@ -824,6 +789,104 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
     const idx = this.transports.indexOf(transport);
     this.transports.splice(idx, 1);
     return this;
+  }
+
+  /**
+   * Extend a payload object with additional properties optionally assigning exteded object at 
+   * property name defined as options.metaKey.
+   * 
+   * @param payload the payload object to be extended.
+   * @param extend the object to extend payload with.
+   * @param useMetaKey when true the extended object is assiged to metaKey name in payload.
+   */
+  extendPayload<P extends Payload<Level>, E extends Partial<P>>(payload: P, extend: E, useMetaKey = false) {
+    if (useMetaKey) {
+      if (!this.options.metaKey)
+        throw new Error(`Cannot use "metaKey" of undefined. Is it set at "options.metaKey"?`)
+      return (payload[this.options.metaKey as keyof P] = extend as any) as P & { [key: string]: typeof extend };
+    }
+    for (const k in extend) {
+      if (!Object.prototype.hasOwnProperty.call(extend, k)) continue;
+      payload[k] = extend[k] as any;
+    }
+    return payload as P & E;
+  }
+
+
+  /**
+   * Parses payload inspecting for error argument as message and/or meta object within splat.
+   * 
+   * @param payload the payload object to be parsed. 
+   */
+  parsePayload<P extends Payload<Level>, E extends Partial<P>>(payload: P, extend = {} as E) {
+
+    let meta = {} as E;
+
+    // Check if last arg in splat is an object. 
+    if (isObject(payload[SPLAT].slice(-1)[0]))
+      meta = payload[SPLAT].pop();
+
+    // if payload message is an error convert to object, set message to error's message.
+    if ((payload[MESSAGE]) instanceof Error) {
+      const err = payload[MESSAGE] as any;
+      payload.message = err.message;
+      meta = { ...meta, err: errorToObject(err) };
+    }
+
+    payload.message = format(payload.message, ...payload[SPLAT]);
+
+    return this.extendPayload(payload, { ...meta, ...extend }, true);
+
+  }
+
+  /**
+   * Formats a message using Node's util.format function. 
+   * 
+   * @param template the string template used to format the message.
+   * @param args the additional arguments 
+   */
+  formatMessage(template: string, ...args: FormatArg[]): string;
+  /**
+   * Formats a message using Node's util.format function. Arguments which match
+   * payload token keys will be mapped to their corresponding values.
+   * 
+   * @param payload the current payload use to parse tokens from.
+   * @param template the string template used to format the message.
+   * @param args the additional arguments 
+   */
+  formatMessage(payload: Payload<Level>, template: string, ...args: FormatArg[]): string;
+  formatMessage(payloadOrTemplate: string | Record<string, unknown>, template: FormatArg, ...args: FormatArg[]) {
+
+    let payload = {} as Record<string, unknown>;
+    if (typeof payloadOrTemplate === 'string') {
+      if (typeof template !== 'undefined')
+        args.unshift(template);
+      template = payloadOrTemplate as string;
+    }
+
+    else if (isObject(payloadOrTemplate)) {
+      payload = payloadOrTemplate
+    }
+
+    const normalized = args.map(arg => {
+      const [token, ...rest] = ensureArray(arg) as FormatTuple;
+      if (typeof token === 'string' && typeof TOKEN_MAP[token] !== 'undefined') {
+        let value = payload[TOKEN_MAP[token]];
+        if (value)
+          arg = value as FormatArg;
+        if (!rest.length) // if no color values return existing or mapped arg.
+          return arg;
+        return colorizeString(arg, ...rest); // colorize the argument.
+      }
+      return arg;
+    });
+
+    return format(template, ...normalized); // return formatted string using normalized args.
+
+  }
+
+  getToken<P extends Payload<Level>>(payload: P, key: TokenKey | keyof P) {
+
   }
 
 }

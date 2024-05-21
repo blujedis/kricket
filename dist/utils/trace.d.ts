@@ -13,7 +13,9 @@ export interface Location {
     /** the method name that was executing at the time */
     method: string;
     /** the file path that was executing at the time */
-    file: string;
+    filepath: string;
+    /** returns the filename only stripping the full path */
+    filename: string;
 }
 /**
  * If provided, continue skipping until:
@@ -38,7 +40,7 @@ export interface Offset {
      * if provided alongside a method, will continue until neither the file nor method are found
      * this allows file and method to act as fallbacks for each other, such that if one is not found, it doesn't skip everything
      */
-    file?: RegExp | string | null;
+    filename?: RegExp | string | null;
     /**
      * once we have satisfied the found condition, if any, then apply this index offset to the frames
      * e.g. 1 would mean next frame, and -1 would mean the previous frame
@@ -67,7 +69,12 @@ export declare function getLocationWithOffset(locations: Array<Location>, offset
  * Get the file path that appears in the stack of the passed error.
  * If no offset is provided, then the first location that has a file path will be used.
  */
-export declare function getFileFromError(error: Error, offset?: Offset): string;
+export declare function getFilePathFromError(error: Error, offset?: Offset): string;
+/**
+ * Get the file path that appears in the stack of the passed error.
+ * If no offset is provided, then the first location that has a file path will be used.
+ */
+export declare function getFileNameFromError(error: Error, offset?: Offset): string;
 /**
  * Get first determined location information that appears in the stack of the error.
  * If no offset is provided, then the offset used will determine the first location information.

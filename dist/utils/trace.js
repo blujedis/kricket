@@ -6,7 +6,8 @@
  * @see https://github.com/bevry/get-current-line/blob/master/source/index.ts
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getLocationFromError = exports.getFileFromError = exports.getLocationWithOffset = exports.getLocationsFromFrames = exports.getFramesFromError = void 0;
+exports.getLocationFromError = exports.getFileNameFromError = exports.getFilePathFromError = exports.getLocationWithOffset = exports.getLocationsFromFrames = exports.getFramesFromError = void 0;
+const path_1 = require("path");
 /**
  * For an error instance, return its stack frames as an array.
  */
@@ -77,20 +78,22 @@ function getLocationsFromFrames(frames) {
             if (match && match.groups) {
                 locations.push({
                     method: match.groups.method || '',
-                    file: match.groups.file || '',
+                    filepath: match.groups.file || '',
                     line: Number(match.groups.line),
                     char: Number(match.groups.char),
+                    filename: (0, path_1.basename)(match.groups.file || '')
                 });
             }
         }
         else {
-            const [match, method, file, line, char] = frame.match(frameRegexNumberedGroups) || [];
+            const [match, method, filepath, line, char] = frame.match(frameRegexNumberedGroups) || [];
             if (match) {
                 locations.push({
                     method: method || '',
-                    file: file || '',
+                    filepath: filepath || '',
                     line: Number(line),
                     char: Number(char),
+                    filename: (0, path_1.basename)(filepath)
                 });
             }
         }
@@ -105,7 +108,8 @@ const failureLocation = {
     line: -1,
     char: -1,
     method: '',
-    file: '',
+    filepath: '',
+    filename: ''
 };
 /**
  * From a list of locations, get the location that is determined by the offset.
@@ -113,16 +117,16 @@ const failureLocation = {
  */
 function getLocationWithOffset(locations, offset) {
     // Continue
-    let found = !offset.file && !offset.method;
+    let found = !offset.filename && !offset.method;
     // use while loop so we can skip ahead
     let i = 0;
     while (i < locations.length) {
         const location = locations[i];
         // the current location matches the offset
-        if ((offset.file &&
-            (typeof offset.file === 'string'
-                ? location.file.includes(offset.file)
-                : offset.file.test(location.file))) ||
+        if ((offset.filename &&
+            (typeof offset.filename === 'string'
+                ? location.filepath.includes(offset.filename)
+                : offset.filename.test(location.filepath))) ||
             (offset.method &&
                 (typeof offset.method === 'string'
                     ? location.method.includes(offset.method)
@@ -169,14 +173,26 @@ function getLocationsFromError(error) {
  * Get the file path that appears in the stack of the passed error.
  * If no offset is provided, then the first location that has a file path will be used.
  */
-function getFileFromError(error, offset = {
-    file: /./,
+function getFilePathFromError(error, offset = {
+    filename: /./,
     immediate: true,
 }) {
     const locations = getLocationsFromError(error);
-    return getLocationWithOffset(locations, offset).file;
+    return getLocationWithOffset(locations, offset).filepath;
 }
-exports.getFileFromError = getFileFromError;
+exports.getFilePathFromError = getFilePathFromError;
+/**
+ * Get the file path that appears in the stack of the passed error.
+ * If no offset is provided, then the first location that has a file path will be used.
+ */
+function getFileNameFromError(error, offset = {
+    filename: /./,
+    immediate: true,
+}) {
+    const locations = getLocationsFromError(error);
+    return getLocationWithOffset(locations, offset).filename;
+}
+exports.getFileNameFromError = getFileNameFromError;
 /**
  * Get first determined location information that appears in the stack of the error.
  * If no offset is provided, then the offset used will determine the first location information.
@@ -210,7 +226,8 @@ function getCurrentLine(offset = {
     frames: 0,
     immediate: false,
 }) {
-    return getLocationFromError(new Error(), offset);
+    const result = getLocationFromError(new Error(), offset);
+    return result;
 }
 exports.default = getCurrentLine;
 //# sourceMappingURL=trace.js.map

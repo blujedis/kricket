@@ -43,7 +43,8 @@ describe('Kricket', () => {
   it('Should transform message adding level label to messages.', (done) => {
     testLogger.setLevel('info');
     testLogger.transform((payload) => {
-      if (payload[LEVEL] !== 'write' && payload[LEVEL] !== 'writeLn')
+      const level = payload[LEVEL] as string;
+      if (level !== 'write' && level !== 'writeLn')
         payload.message = payload[LEVEL] + ': ' + payload.message;
       return payload;
     });

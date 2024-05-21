@@ -1,32 +1,34 @@
+import ansiColors, { StyleFunction, stripColor } from 'ansi-colors';
+import { AnsiColor } from '../types';
 
 /**
  * Checks if value is an object.
  * 
- * @param val the value to inspect as object.
+ * @param value the value to inspect as object.
  */
-export function isObject(val: unknown) {
-  return val != null && typeof val === 'object' && Array.isArray(val) === false;
+export function isObject(value: unknown): value is object {
+  return value != null && typeof value === 'object' && Array.isArray(value) === false;
 }
 
 /**
  * Checks if value is a function
  * 
- * @param val the value to inspect as function.
+ * @param value the value to inspect as function.
  */
-export function isFunction(val: unknown) {
-  return typeof val === 'function';
+export function isFunction(value: unknown): value is Function {
+  return typeof value === 'function';
 }
 
 /**
  * Checks if object is plain object literal.
  * 
- * @param obj the object to inspect as object literal.
+ * @param value the object to inspect as object literal.
  */
-export function isPlainObject(obj: unknown) {
-  return (isObject(obj) === true &&
-    Object.prototype.toString.call(obj) === '[object Object]') &&
-    isFunction(obj.constructor) &&
-    obj.constructor.name === 'Object';
+export function isPlainObject(value: unknown): value is object {
+  return (isObject(value) === true &&
+    Object.prototype.toString.call(value) === '[object Object]') &&
+    isFunction(value.constructor) &&
+    value.constructor.name === 'Object';
 }
 
 /**
@@ -62,10 +64,108 @@ export function uuidv4(a?) {
 }
 
 /**
- * Generate simple random id. 
+ * Converts an error to object literal.
  * 
- * @param radix the numberic value used to convert to strings.
+ * @param err the error to convert to object
  */
-// export function randomID(radix = 16) {
-//   return '#' + (Math.random() * 0xFFFFFF << 0).toString(radix);
-// }
+export function errorToObject<E extends Error>(err: E) {
+  if (!(err instanceof Error))
+    return err;
+  return Object.getOwnPropertyNames(err).reduce((a, c) => {
+    a[c] = err[c];
+    return a;
+  }, {} as Record<keyof E, any>);
+}
+
+
+/**
+ * If undefined empty array is returned otherwise the array or value wrapped as array is.
+ *
+ * @param value the value to inspect as any array.
+ * @param clean when true and is array clean any undefined.
+ */
+export function ensureArray<T = any>(value?: null | T | T[], clean = true) {
+  if (typeof value === 'undefined' || value === null || value === '') return [] as T[];
+  if (Array.isArray(value))
+    return (clean ? value.filter((v) => typeof v !== 'undefined') : value) as T[];
+  return [value] as T[];
+}
+
+/**
+ * Colorizes a value using ansi-colors.
+ * 
+ * @param value the value to be colorized.
+ * @param colors the style or stles to be applied.
+ */
+export function colorizeString(value: any, ...colors: AnsiColor[]) {
+  return colors.reduce((a, c) => {
+    const fn = ansiColors[c] as StyleFunction;
+    if (!fn || !isFunction(fn))
+      return a;
+    return fn(c);
+  }, String(value));
+}
+
+/**
+ * Aligns a string based on all possible values.
+ * 
+ * 
+ * @param value the value to be aligned. 
+ * @param align whether to align left right or center relative to all possible values.
+ * @param values the possible values which alignment is relative to.
+ */
+export function alignString(value: any, align: 'left' | 'right' | 'center', values: string[]) {
+  const maxLen = values.reduce((a, c) => (c.length > a ? c.length : a), 0);
+  value = String(value);
+  value = stripColor(value); // ensure we don't count any ansi color tokens. 
+  const len = Math.max(0, maxLen - value.length);
+  if (align === 'left')
+    return value + ' '.repeat(len);
+  else if (align === 'right')
+    return ' '.repeat(len) + value;
+  const floor = Math.floor(len / 2);
+  const rem = len % 2;
+  return ' '.repeat(rem) + ' '.repeat(floor) + value + ' '.repeat(floor);
+}
+
+export function prepareString(value: any) {
+
+  let _value = String(value);
+
+  const api = {
+    colorize,
+    align,
+    capitalize,
+    uppercase,
+    lowercase,
+    stripColor: colorStrip,
+    value: _value
+  };
+
+  function align(alignment: Parameters<typeof alignString>[1], values: Parameters<typeof alignString>[2],) {
+    _value = alignString(_value, alignment, values);
+  }
+
+  function colorize(...args: Parameters<typeof colorizeString>[1][]) {
+    _value = colorizeString(_value, ...args);
+  }
+
+  function capitalize() {
+    _value = _value.charAt(0).toUpperCase() + _value.slice(1);
+  }
+
+  function uppercase() {
+    _value = _value.toUpperCase();
+  }
+
+  function lowercase() {
+    _value = _value.toLowerCase();
+  }
+
+  function colorStrip() {
+    _value = stripColor(_value);
+  }
+
+  return api;
+
+}

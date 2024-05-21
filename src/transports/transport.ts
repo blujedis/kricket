@@ -1,5 +1,5 @@
 import { Writable } from 'readable-stream';
-import { TransportOptions, EOL, PayloadBase, ErrorCallback, NodeCallback } from '../types';
+import { TransportOptions, EOL, Payload, ErrorCallback, NodeCallback } from '../types';
 import { Logger } from '../logger';
 
 
@@ -39,7 +39,7 @@ export abstract class Transport<Options extends TransportOptions = TransportOpti
     // Loose check maybe should be more comprehensive.
     if (this.isJSON || chunk.charAt(0) !== '{')
       return chunk;
-    const payload = JSON.parse(chunk) as PayloadBase<any>;
+    const payload = JSON.parse(chunk) as Payload<any>;
     return payload.message;
   }
 

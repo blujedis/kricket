@@ -67,6 +67,7 @@ declare function group(title?: string, color?: ReverseType | boolean, compact?: 
     /**
      * Adds value after group is logged.
      * if number repeats line returns.
+     *
      * @param value a string or number rep the number of line returns.
      */
     after: (value: string | number) => any;
