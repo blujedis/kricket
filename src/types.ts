@@ -63,7 +63,7 @@ export type FormatFn = (value: any, token: TypeOrValue<TokenKey>) => FormatPrimi
 
 export type FormatTuple = [FormatPrimitive, FormatFn | AnsiColor, ...AnsiColor[]];
 
-export type FormatArgs = FormatPrimitive | FormatTuple;
+export type FormatArg = FormatPrimitive | FormatTuple;
 
 export type TypeOrValue<Keys extends string | number | symbol> = Keys | (string & { value?: unknown });
 

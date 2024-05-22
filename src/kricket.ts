@@ -2,8 +2,17 @@
 import { Logger } from './logger';
 import { ConsoleTransport } from './transports';
 import core from './core';
-import { uuidv4 } from './utils';
+import { prepareString, uuidv4 } from './utils';
+import { bgRedBright, cyanBright, magentaBright, redBright, yellowBright } from 'ansi-colors';
 import { LEVEL, LoggerOptions, LogMethods } from './types';
+
+const COLOR_MAP = {
+  fatal: bgRedBright,
+  error: redBright,
+  warn: yellowBright,
+  info: cyanBright,
+  debug: magentaBright
+};
 
 /**
  * Creates a new Logger.
@@ -39,9 +48,19 @@ defaultLogger.transform((payload) => {
 
 defaultLogger.transform('console', (payload) => {
   // timestamp, filename, level, message
-  const template = `%s %s %s - %s`;
-  payload.message = defaultLogger.formatMessage(payload, template, 'timestamp', 'filename', 'level', 'message');
-  defaultLogger.getToken(payload, '')
+  const template = `%s %s %s: %s`;
+  payload.message = defaultLogger.formatMessage(
+    payload, template,
+    'timestamp', 'filename',
+    ['level', (value) => {
+      const color = COLOR_MAP[value] || '';
+      return prepareString(value)
+        .align('right', defaultLogger.options.levels)
+        .uppercase()
+        .colorize(color)
+        .value;
+    }], 'message',
+  );
   return payload;
 });
 

@@ -144,26 +144,34 @@ export function prepareString(value: any) {
 
   function align(alignment: Parameters<typeof alignString>[1], values: Parameters<typeof alignString>[2],) {
     _value = alignString(_value, alignment, values);
+    return api;
   }
 
   function colorize(...args: Parameters<typeof colorizeString>[1][]) {
+    if (!args.length)
+      return api;
     _value = colorizeString(_value, ...args);
+    return api;
   }
 
   function capitalize() {
     _value = _value.charAt(0).toUpperCase() + _value.slice(1);
+    return api;
   }
 
   function uppercase() {
     _value = _value.toUpperCase();
+    return api;
   }
 
   function lowercase() {
     _value = _value.toLowerCase();
+    return api
   }
 
   function colorStrip() {
     _value = stripColor(_value);
+    return api
   }
 
   return api;

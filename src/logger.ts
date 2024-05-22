@@ -5,7 +5,7 @@ import { format } from 'util';
 import { getObjectName, isPlainObject, asynceach, noop, flatten, uuidv4, log, isObject, errorToObject, ensureArray, colorizeString, isFunction } from './utils';
 import core, { Core } from './core';
 import currentLine from './utils/trace';
-import { LoggerOptions, LEVEL, MESSAGE, SPLAT, Filter, Transform, LOGGER, TRANSPORT, Callback, BaseLevel, ChildLogger, Payload, UUID, TIMESTAMP, TypeOrValue, LEVELINT, TOKEN_MAP, FormatTuple, LINE, CHAR, METHOD, FILENAME, FILEPATH, TokenKey, PayloadMeta, FormatPrimitive } from './types';
+import { LoggerOptions, LEVEL, MESSAGE, SPLAT, Filter, Transform, LOGGER, TRANSPORT, Callback, BaseLevel, ChildLogger, Payload, UUID, TIMESTAMP, TypeOrValue, LEVELINT, TOKEN_MAP, FormatTuple, LINE, CHAR, METHOD, FILENAME, FILEPATH, TokenKey, PayloadMeta, FormatPrimitive, FormatArg } from './types';
 
 export class Logger<Level extends string, Meta extends Record<string, unknown> = Record<string, unknown>, Key extends string = string> extends EventEmitter {
 
@@ -845,7 +845,7 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
    * @param template the string template used to format the message.
    * @param args the additional arguments 
    */
-  formatMessage(template: string, ...args: FormatPrimitive[]): string;
+  formatMessage(template: string, ...args: FormatArg[]): string;
   /**
    * Formats a message using Node's util.format function. Arguments which match
    * payload token keys will be mapped to their corresponding values.
@@ -854,8 +854,8 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
    * @param template the string template used to format the message.
    * @param args the additional arguments 
    */
-  formatMessage(payload: Payload<Level>, template: string, ...args: FormatPrimitive[]): string;
-  formatMessage(payloadOrTemplate: string | Payload<Level>, template: FormatPrimitive, ...args: FormatPrimitive[]) {
+  formatMessage(payload: Payload<Level>, template: string | FormatArg, ...args: FormatArg[]): string;
+  formatMessage(payloadOrTemplate: string | Payload<Level>, template: string | FormatArg, ...args: FormatArg[]) {
 
     let payload = {} as Payload<Level>;
     if (typeof payloadOrTemplate === 'string') {
