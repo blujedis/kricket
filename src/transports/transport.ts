@@ -107,7 +107,7 @@ export abstract class Transport<Options extends TransportOptions = TransportOpti
    * @param level the level to set the Logger to.
    * @param logger the parent Logger containing log levels.
    */
-  setLevel(level: string, logger: Logger<any, any>) {
+  setLevel(level: string, logger: Logger<any, any, any>) {
     if (typeof level === 'undefined' || !logger.levels.includes(level))
       throw new Error(`Level "${level}" is invalid or not found.`);
     this._options.level = level;

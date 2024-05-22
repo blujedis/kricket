@@ -7,12 +7,12 @@ import core, { Core } from './core';
 import currentLine from './utils/trace';
 import { LoggerOptions, LEVEL, MESSAGE, SPLAT, Filter, Transform, LOGGER, TRANSPORT, Callback, BaseLevel, ChildLogger, Payload, UUID, TIMESTAMP, TypeOrValue, LEVELINT, TOKEN_MAP, FormatTuple, LINE, CHAR, METHOD, FILENAME, FILEPATH, TokenKey, PayloadMeta, FormatPrimitive, FormatArg } from './types';
 
-export class Logger<Level extends string, Meta extends Record<string, unknown> = Record<string, unknown>, Key extends string = string> extends EventEmitter {
+export class Logger<Level extends string, Meta extends Record<string, unknown>, MetaKey extends string> extends EventEmitter {
 
   core: Core = core;
-  children = new Map<string, Logger<Level, Meta, Key>>();
+  children = new Map<string, Logger<Level, Meta, MetaKey>>();
 
-  constructor(public options: LoggerOptions<Level, Meta, Key>, public isChild = false) {
+  constructor(public options: LoggerOptions<Level, Meta, MetaKey>, public isChild = false) {
 
     super();
 
@@ -80,7 +80,7 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
     if (this.options.metaKey)
       mergedMeta = mergedMeta === null ? {} : { [this.options.metaKey]: mergedMeta };
 
-    const initIncludes = this.options.includes ? {
+    const initIncludes = {
       [UUID]: id,
       [LEVELINT]: index,
       [TIMESTAMP]: timestamp,
@@ -90,7 +90,7 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
       [METHOD]: trace.method,
       [FILEPATH]: trace.filepath,
       [FILENAME]: trace.filename,
-    } : {};
+    };
 
     const rawPayload = {
       ...initIncludes,
@@ -110,7 +110,7 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
 
         try {
 
-          const transportIncludes = this.options.includes ? {
+          const transportIncludes = {
             [UUID]: id,
             [LEVELINT]: index,
             [TIMESTAMP]: timestamp,
@@ -121,7 +121,7 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
             [METHOD]: trace.method,
             [FILEPATH]: trace.filepath,
             [FILENAME]: trace.filename,
-          } : {};
+          };
 
           const payload = {
             ...transportIncludes,
@@ -429,7 +429,7 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
    * @param label the Logger label to be used.
    * @param meta child metadata for child.
    */
-  child(label: string, meta: { [key: string]: any; } = {}): ChildLogger<Level> {
+  child(label: string, meta: { [key: string]: any; } = {}): ChildLogger<Level, Meta, MetaKey> {
 
     let child = this.children.get(label);
 
@@ -835,7 +835,7 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
 
     payload.message = format(payload.message, ...payload[SPLAT]);
 
-    return this.extendPayload(payload, { ...meta, ...extend }, true);
+    return this.extendPayload(payload, { ...meta, ...extend }, typeof this.options.metaKey !== 'undefined');
 
   }
 
@@ -874,23 +874,34 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
 
       let ansiArgs = rest;
 
-      if (typeof token === 'string' && typeof TOKEN_MAP[token] !== 'undefined') {
+      let value = this.getToken(payload, token as TypeOrValue<TokenKey>);
+
+      if (typeof token === 'string' && value) {
 
         let value = this.getToken(payload, token as TokenKey);
 
         if (value) {
+
+          arg = value;
+
           if (isFunction(colorOrFn)) { // callback func returns either value or Ansicolors.
             const result = colorOrFn(value, token);
+
             if (Array.isArray(result)) {
               const [resultVal, ...resultRest] = result;
               arg = resultVal;
               ansiArgs = [...ansiArgs, ...resultRest];
             }
+            else {
+              arg = result;
+            }
+
+
           }
           else if (typeof colorOrFn !== 'undefined') {
             ansiArgs.unshift(colorOrFn);
-            arg = value as FormatPrimitive;
           }
+
         }
 
         if (!ansiArgs.length) // if no color values return existing or mapped arg.
@@ -917,9 +928,9 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
    * @param payload the payload object to get token from.
    * @param key the key to get value for.
    */
-  getToken(payload: Payload<Level>, key: TokenKey) {
+  getToken(payload: Payload<Level>, key: TypeOrValue<TokenKey>) {
     const sym = TOKEN_MAP[key];
-    if (!sym) return null;
+    if (!sym) return payload[key] || null;
     return payload[sym as keyof Payload<Level>];
   }
 

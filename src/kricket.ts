@@ -3,15 +3,14 @@ import { Logger } from './logger';
 import { ConsoleTransport } from './transports';
 import core from './core';
 import { prepareString, uuidv4 } from './utils';
-import { bgRedBright, cyanBright, magentaBright, redBright, yellowBright } from 'ansi-colors';
-import { LEVEL, LoggerOptions, LogMethods } from './types';
+import { LEVEL, LoggerOptions, LogMethods, TIMESTAMP } from './types';
 
 const COLOR_MAP = {
-  fatal: bgRedBright,
-  error: redBright,
-  warn: yellowBright,
-  info: cyanBright,
-  debug: magentaBright
+  fatal: 'bgRedBright',
+  error: 'redBright',
+  warn: 'yellowBright',
+  info: 'cyanBright',
+  debug: 'magentaBright'
 };
 
 /**
@@ -19,11 +18,11 @@ const COLOR_MAP = {
  * 
  * @param options the options used to create the Logger.
  */
-export function createLogger<Level extends string, Meta extends Record<string, unknown> = Record<string, unknown>>(options?: LoggerOptions<Level, Meta>) {
+export function createLogger<Level extends string, Meta extends Record<string, unknown>, MetaKey extends string>(options?: LoggerOptions<Level, Meta, MetaKey>) {
   options.label = options.label || uuidv4();
-  const logger = new Logger<Level, Meta>(options);
+  const logger = new Logger<Level, Meta, MetaKey>(options);
   core.loggers.set(options.label, logger);
-  return logger as Logger<Level, Meta> & LogMethods<Logger<Level, Meta>, Level>;
+  return logger as Logger<Level, Meta, MetaKey> & LogMethods<Level, Meta, MetaKey>;
 }
 
 /**
@@ -31,7 +30,7 @@ export function createLogger<Level extends string, Meta extends Record<string, u
  */
 const defaultLogger = createLogger({
   label: 'default',
-  level: process.env.LOG_LEVEL || 'info',
+  level: (process.env.LOG_LEVEL || 'info') as 'info',
   levels: ['fatal', 'error', 'warn', 'info', 'debug'],
   transports: [
     new ConsoleTransport()
@@ -43,6 +42,7 @@ defaultLogger.filter('console', (payload) => {
 });
 
 defaultLogger.transform((payload) => {
+  payload[TIMESTAMP] = (payload[TIMESTAMP] as Date).toUTCString();
   return defaultLogger.parsePayload(payload);
 });
 
@@ -51,18 +51,16 @@ defaultLogger.transform('console', (payload) => {
   const template = `%s %s %s: %s`;
   payload.message = defaultLogger.formatMessage(
     payload, template,
-    'timestamp', 'filename',
+    ['timestamp', 'greenBright'], 'filename',
     ['level', (value) => {
-      const color = COLOR_MAP[value] || '';
       return prepareString(value)
         .align('right', defaultLogger.options.levels)
         .uppercase()
-        .colorize(color)
-        .value;
-    }], 'message',
+        .colorize(COLOR_MAP[value] || '')
+        .value();
+    }], 'message', 'email', 'name'
   );
   return payload;
 });
-
 
 export { defaultLogger };

@@ -26,7 +26,7 @@ export const FILEPATH = Symbol.for('METHOD');
 
 export const FILENAME = Symbol.for('FILENAME');
 
-export const TIMESTAMP = Symbol.for('FILENAME');
+export const TIMESTAMP = Symbol.for('TIMESTAMP');
 
 export const MESSAGE = Symbol.for('MESSAGE');
 
@@ -81,23 +81,23 @@ export type ErrorCallback = (err?: Error | null | undefined) => void;
 
 export type BaseLevel = 'write' | 'writeLn';
 
-export type Filter<Level extends string, Extend extends Record<string, any> = Record<string, any>> = <P extends Payload<Level>>(payload: P & Extend) => boolean;
+export type Filter<Level extends string, Extend extends Record<string, unknown> = Record<string, unknown>> = <P extends Payload<Level>>(payload: P & Extend) => boolean;
 
-export type Transform<Level extends string, Extend extends Record<string, any> = Record<string, any>> = <P extends Payload<Level>>(payload: P & Extend) => Payload<Level> & Extend;
+export type Transform<Level extends string, Extend extends Record<string, unknown> = Record<string, unknown>> = <P extends Payload<Level>>(payload: P & Extend) => Payload<Level> & Extend;
 
-export type LogMethod<T> = (message: any, ...args: any[]) => T;
+export type LogMethod<L> = (message: any, ...args: any[]) => L;
 
-export type LogMethods<T, Level extends string> = Record<Level, LogMethod<T>>;
+export type LogMethods<Levels extends string, Meta extends Record<string, unknown>, MetaKey extends string> = Record<Levels, LogMethod<Logger<Levels, Meta, MetaKey>>>;
 
 export type ChildOmits = 'setTransportLevel' | 'addTransport' | 'muteTransport' | 'unmuteTransport';
 
-export type ChildLogger<Level extends string> = Omit<Logger<Level>, ChildOmits> & LogMethods<Logger<Level>, Level>;
+export type ChildLogger<Level extends string, Meta extends Record<string, unknown>, MetaKey extends string> = Omit<Logger<Level, Meta, MetaKey>, ChildOmits> & LogMethods<Level, Meta, MetaKey>;
 
-export type PayloadMeta<Meta extends Record<string, unknown>, K extends string> = 
-  K extends undefined 
-  ? Meta 
+export type PayloadMeta<Meta extends Record<string, unknown>, K extends string> =
+  K extends undefined
+  ? Meta
   : Record<K, Meta>;
-  
+
 export interface Payload<Level extends string> {
 
   /**
@@ -108,7 +108,7 @@ export interface Payload<Level extends string> {
   /**
  * The payload's log id.
  */
-  [TIMESTAMP]: Date;
+  [TIMESTAMP]: Date | number | string;
 
   /**
    * The log message's line position.
@@ -200,9 +200,9 @@ interface TransformBase<Level extends string> {
 
 }
 
-export type TransportOptions<Level extends string = any, Label extends string = any> = TransportOptionsBase<Level, Label> & Record<string, any>;
+export type TransportOptions<Level extends string = any, Label extends string = any> = TransportOptionsBase<Level, Label> & Record<string, unknown>;
 
-export interface TransportOptionsBase<Level extends string = any, Label extends string = any> extends TransformBase<Level> {
+export interface TransportOptionsBase<Level extends string, Label extends string> extends TransformBase<Level> {
 
   /**
    * The name/label for the Transport.
@@ -226,7 +226,7 @@ export interface TransportOptionsBase<Level extends string = any, Label extends 
 
 }
 
-export interface LoggerOptions<Level extends string, M extends Record<string, unknown> = Record<string, unknown>, Key extends string = string> extends TransformBase<Level> {
+export interface LoggerOptions<Level extends string, Meta extends Record<string, unknown> = Record<string, unknown>, MetaKey extends string = undefined> extends TransformBase<Level> {
 
   /**
    * The label for the logger. If not provided a
@@ -235,6 +235,13 @@ export interface LoggerOptions<Level extends string, M extends Record<string, un
    * @default undefined
    */
   label?: string;
+
+  /**
+   * The initial level to be set for the logger.
+   * 
+   * @default undefined
+   */
+  level?: Level;
 
   /**
    * The Logger's log levels.
@@ -257,14 +264,7 @@ export interface LoggerOptions<Level extends string, M extends Record<string, un
    * 
    * @default undefined
    */
-  meta?: M;
-
-  /** 
-   * Built in included properties useful for logging.
-   * 
-   * uuid, logger, transport, level, trace, timestamp
-   */
-  includes?: boolean;
+  meta?: Meta;
 
   /**
    * When a meta key is provided it is set as the property name in the meta object within the SPLAT.
@@ -277,7 +277,7 @@ export interface LoggerOptions<Level extends string, M extends Record<string, un
    * @default undefined
    * 
    */
-  metaKey?: Key;
+  metaKey?: MetaKey;
 
   /**
    * When true default meta data is added to payload including, 

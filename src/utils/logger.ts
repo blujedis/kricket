@@ -118,7 +118,7 @@ function write(color: string, message: string, ...args: any[]) {
     message = color as string;
     color = undefined;
   }
-  return log(blueBright(`[KRICKET]:`) + ` ` + format(message, ...args));
+  return log(format(message, ...args));
 }
 
 log.write = write;

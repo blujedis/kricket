@@ -100,9 +100,9 @@ export function ensureArray<T = any>(value?: null | T | T[], clean = true) {
 export function colorizeString(value: any, ...colors: AnsiColor[]) {
   return colors.reduce((a, c) => {
     const fn = ansiColors[c] as StyleFunction;
-    if (!fn || !isFunction(fn))
-      return a;
-    return fn(c);
+    if (isFunction(fn))
+      return fn(value);
+    return a;
   }, String(value));
 }
 
@@ -139,7 +139,7 @@ export function prepareString(value: any) {
     uppercase,
     lowercase,
     stripColor: colorStrip,
-    value: _value
+    value: getValue
   };
 
   function align(alignment: Parameters<typeof alignString>[1], values: Parameters<typeof alignString>[2],) {
@@ -172,6 +172,10 @@ export function prepareString(value: any) {
   function colorStrip() {
     _value = stripColor(_value);
     return api
+  }
+
+  function getValue() {
+    return _value
   }
 
   return api;
