@@ -368,7 +368,7 @@ class Logger extends events_1.EventEmitter {
         };
         child = new Logger(options, true);
         // eslint-disable-next-line no-console
-        const disabled = type => (...args) => utils_1.log.warn(`${type} disabled for child Loggers.`);
+        const disabled = type => (..._args) => utils_1.log.warn(`${type} disabled for child Loggers.`);
         child.setTransportLevel = disabled('setTransportLevel');
         child.addTransport = disabled('addTransport');
         child.muteTransport = disabled('muteTransport');
@@ -646,7 +646,7 @@ class Logger extends events_1.EventEmitter {
             let ansiArgs = rest;
             let value = this.getToken(payload, token);
             if (typeof token === 'string' && value) {
-                let value = this.getToken(payload, token);
+                value = this.getToken(payload, token);
                 if (value) {
                     arg = value;
                     if ((0, utils_1.isFunction)(colorOrFn)) { // callback func returns either value or Ansicolors.

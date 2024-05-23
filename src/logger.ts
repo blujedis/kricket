@@ -5,9 +5,9 @@ import { format } from 'util';
 import { getObjectName, isPlainObject, asynceach, noop, flatten, uuidv4, log, isObject, errorToObject, ensureArray, colorizeString, isFunction } from './utils';
 import core, { Core } from './core';
 import currentLine from './utils/trace';
-import { LoggerOptions, LEVEL, MESSAGE, SPLAT, Filter, Transform, LOGGER, TRANSPORT, Callback, BaseLevel, ChildLogger, Payload, UUID, TIMESTAMP, TypeOrValue, LEVELINT, TOKEN_MAP, FormatTuple, LINE, CHAR, METHOD, FILENAME, FILEPATH, TokenKey, FormatPrimitive, FormatArg, AnsiColor } from './types';
+import { LoggerOptions, LEVEL, MESSAGE, SPLAT, Filter, Transform, LOGGER, TRANSPORT, Callback, BaseLevel, ChildLogger, Payload, UUID, TIMESTAMP, TypeOrValue, LEVELINT, TOKEN_MAP, LINE, CHAR, METHOD, FILENAME, FILEPATH, TokenKey, FormatArg, AnsiColor, FormatPrimitive, MetaKey } from './types';
 
-export class Logger<Level extends string, Meta extends Record<string, unknown>> extends EventEmitter {
+export class Logger<Level extends string, Meta extends Record<string, unknown> = undefined> extends EventEmitter {
 
   core: Core = core;
   children = new Map<string, Logger<Level, Meta>>();
@@ -353,7 +353,6 @@ export class Logger<Level extends string, Meta extends Record<string, unknown>> 
    * @param cascade when true apply to child Transports (default: true).
    */
   setLevel(level: TypeOrValue<Level>, cascade = true) {
-
     if (typeof level === 'undefined' || !this.levels.includes(level as Level)) {
       // eslint-disable-next-line no-console
       log.warn(`Level "${level}" is invalid or not found.`);
@@ -461,7 +460,7 @@ export class Logger<Level extends string, Meta extends Record<string, unknown>> 
     child = new Logger(options, true);
 
     // eslint-disable-next-line no-console
-    const disabled = type => (...args) => log.warn(`${type} disabled for child Loggers.`) as any;
+    const disabled = type => (..._args) => log.warn(`${type} disabled for child Loggers.`) as any;
 
     child.setTransportLevel = disabled('setTransportLevel');
     child.addTransport = disabled('addTransport');
@@ -843,11 +842,11 @@ export class Logger<Level extends string, Meta extends Record<string, unknown>> 
    * @param template the string template used to format the message.
    * @param args the additional arguments 
    */
-  formatMessage(payload: Payload<Level, Meta>, template: string, ...args: FormatArg<FormatPrimitive | keyof Meta>[]) {
+  formatMessage(payload: Payload<Level, Meta>, template: string, ...args: FormatArg<FormatPrimitive | MetaKey<Meta>>[]) {
 
     const normalized = args.map(arg => {
 
-      const [token, colorOrFn, ...rest] = ensureArray(arg) as FormatTuple<FormatArg<FormatPrimitive | keyof Meta>>;
+      const [token, colorOrFn, ...rest] = ensureArray(arg as any);
 
       let ansiArgs = rest;
 
@@ -855,7 +854,7 @@ export class Logger<Level extends string, Meta extends Record<string, unknown>> 
 
       if (typeof token === 'string' && value) {
 
-        let value = this.getToken(payload, token as TokenKey);
+        value = this.getToken(payload, token as TokenKey);
 
         if (value) {
 

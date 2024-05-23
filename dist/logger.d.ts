@@ -2,8 +2,8 @@
 import { EventEmitter } from 'events';
 import { Transport } from './transports';
 import { Core } from './core';
-import { LoggerOptions, Filter, Transform, Callback, ChildLogger, Payload, TypeOrValue, TokenKey, FormatPrimitive, FormatArg } from './types';
-export declare class Logger<Level extends string, Meta extends Record<string, unknown>> extends EventEmitter {
+import { LoggerOptions, Filter, Transform, Callback, ChildLogger, Payload, TypeOrValue, TokenKey, FormatArg, FormatPrimitive, MetaKey } from './types';
+export declare class Logger<Level extends string, Meta extends Record<string, unknown> = undefined> extends EventEmitter {
     options: LoggerOptions<Level, Meta>;
     isChild: boolean;
     core: Core;
@@ -301,7 +301,7 @@ export declare class Logger<Level extends string, Meta extends Record<string, un
      * @param template the string template used to format the message.
      * @param args the additional arguments
      */
-    formatMessage(payload: Payload<Level, Meta>, template: string, ...args: FormatArg<FormatPrimitive | keyof Meta>[]): string;
+    formatMessage(payload: Payload<Level, Meta>, template: string, ...args: FormatArg<FormatPrimitive | MetaKey<Meta>>[]): string;
     /**
      * Gets the value of a token within the payload.
      *

@@ -18,7 +18,7 @@ const COLOR_MAP = {
  * 
  * @param options the options used to create the Logger.
  */
-export function createLogger<Level extends string, Meta extends Record<string, unknown> = Record<string, unknown>>(options?: LoggerOptions<Level, Meta>) {
+export function createLogger<Level extends string, Meta extends Record<string, unknown> = undefined>(options?: LoggerOptions<Level, Meta>) {
   options.label = options.label || uuidv4();
   const logger = new Logger<Level, Meta>(options);
   core.loggers.set(options.label, logger);
@@ -32,6 +32,7 @@ const defaultLogger = createLogger({
   label: 'default',
   level: (process.env.LOG_LEVEL || 'info') as 'fatal' | 'error' | 'warn' | 'info' | 'debug',
   levels: ['fatal', 'error', 'warn', 'info', 'debug'],
+  meta: { age: 25 },
   transports: [
     new ConsoleTransport()
   ]
@@ -62,10 +63,12 @@ defaultLogger.transform('console', (payload) => {
   };
   payload.message = defaultLogger.formatMessage(
     payload, template,
+    ['level', fmtLevel], ['filename', 'gray'],
+    ['line', 'gray'], ['char', 'gray'],
     'timestamp', ['level', fmtLevel], 'message',
-    ['filename', 'gray'], ['line', 'gray'], ['char', 'gray']
+    ['filename', 'gray'], ['line', 'gray'], ['char', 'gray'],
   );
   return payload;
 });
 
-export { defaultLogger };
+export { defaultLogger }; 

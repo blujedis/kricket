@@ -1,6 +1,8 @@
 import ansiColors, { StyleFunction, stripColor } from 'ansi-colors';
 import { AnsiColor } from '../types';
 
+export type HandlerFunction = (...args: any[]) => any;
+
 /**
  * Checks if value is an object.
  * 
@@ -15,7 +17,7 @@ export function isObject(value: unknown): value is object {
  * 
  * @param value the value to inspect as function.
  */
-export function isFunction(value: unknown): value is Function {
+export function isFunction(value: unknown): value is HandlerFunction {
   return typeof value === 'function';
 }
 
@@ -84,7 +86,7 @@ export function errorToObject<E extends Error>(err: E) {
  * @param value the value to inspect as any array.
  * @param clean when true and is array clean any undefined.
  */
-export function ensureArray<T = any>(value?: null | T | T[], clean = true) {
+export function ensureArray<T = any>(value: null | undefined | T | T[], clean = true) {
   if (typeof value === 'undefined' || value === null || value === '') return [] as T[];
   if (Array.isArray(value))
     return (clean ? value.filter((v) => typeof v !== 'undefined') : value) as T[];

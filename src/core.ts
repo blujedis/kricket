@@ -13,7 +13,7 @@ export class Core {
    * 
    * @param label the Logger's label to lookup.
    */
-  getLogger<Level extends string, Meta extends Record<string, unknown>>(label: string) {
+  getLogger<Level extends string, Meta extends Record<string, unknown> = undefined>(label: string) {
     return this.loggers.get(label) as Logger<Level, Meta>;
   }
 

@@ -38,21 +38,21 @@ export type FormatArg<K> = K | FormatTuple<K>;
 export type TypeOrValue<Keys extends string | number | symbol> = Keys | (string & {
     value?: unknown;
 });
+export type MetaKey<Meta extends Record<string, unknown> = undefined> = Meta extends object ? keyof Meta : never;
 export type KeyOf<T> = Extract<keyof T, string>;
 export type ValueOf<K extends KeyOf<T>, T> = T[K];
 export type ValuesOf<T extends any[]> = T[number];
-export type NodeCallback<T = any, E extends object = {}> = (err?: (Error & E) | null | undefined, data?: T) => void;
+export type NodeCallback = <T, E>(err?: (Error & E) | null | undefined, data?: T) => void;
 export type Callback = (data?: any) => void;
 export type ErrorCallback = (err?: Error | null | undefined) => void;
 export type BaseLevel = 'write' | 'writeLn';
-export type Filter<Level extends string, Meta extends Record<string, unknown>> = (payload: Payload<Level, Meta>) => boolean;
-export type Transform<Level extends string, Meta extends Record<string, unknown>> = (payload: Payload<Level, Meta>) => Payload<Level, Meta>;
+export type Filter<Level extends string, Meta extends Record<string, unknown> = undefined> = (payload: Payload<Level, Meta>) => boolean;
+export type Transform<Level extends string, Meta extends Record<string, unknown> = undefined> = (payload: Payload<Level, Meta>) => Payload<Level, Meta>;
 export type LogMethod<L> = (message: any, ...args: any[]) => L;
-export type LogMethods<Levels extends string, Meta extends Record<string, unknown>> = Record<Levels, LogMethod<Logger<Levels, Meta>>>;
+export type LogMethods<Levels extends string, Meta extends Record<string, unknown> = undefined> = Record<Levels, LogMethod<Logger<Levels, Meta>>>;
 export type ChildOmits = 'setTransportLevel' | 'addTransport' | 'muteTransport' | 'unmuteTransport';
 export type ChildLogger<Level extends string, Meta extends Record<string, unknown>> = Omit<Logger<Level, Meta>, ChildOmits> & LogMethods<Level, Meta>;
-export type PayloadMeta<Meta extends Record<string, unknown>, K extends string> = K extends undefined ? Meta : Record<K, Meta>;
-export type Payload<Level extends string, Meta extends Record<string, unknown>> = PayloadBase<Level> & Meta;
+export type Payload<Level extends string, Meta extends Record<string, unknown> = undefined> = Meta extends undefined ? PayloadBase<Level> : Meta extends object ? PayloadBase<Level> & Meta : PayloadBase<Level>;
 export interface PayloadBase<Level extends string> {
     /**
      * The payload's log id.
@@ -111,7 +111,7 @@ export interface PayloadBase<Level extends string> {
      */
     [key: string]: any;
 }
-interface TransformBase<Level extends string, Meta extends Record<string, unknown>> {
+interface TransformBase<Level extends string, Meta extends Record<string, unknown> = undefined> {
     /**
      * The log Level that has been assigned.
      */
@@ -133,8 +133,8 @@ interface TransformBase<Level extends string, Meta extends Record<string, unknow
      */
     transforms?: Transform<Level, Meta>[];
 }
-export type TransportOptions<Level extends string = any, Label extends string = any, Meta extends Record<string, unknown> = Record<string, unknown>> = TransportOptionsBase<Level, Label, Meta> & Record<string, unknown>;
-export interface TransportOptionsBase<Level extends string, Label extends string, Meta extends Record<string, unknown>> extends TransformBase<Level, Meta> {
+export type TransportOptions<Level extends string = any, Label extends string = any, Meta extends Record<string, unknown> = undefined> = TransportOptionsBase<Level, Label, Meta> & Record<string, unknown>;
+export interface TransportOptionsBase<Level extends string, Label extends string, Meta extends Record<string, unknown> = undefined> extends TransformBase<Level, Meta> {
     /**
      * The name/label for the Transport.
      */
@@ -153,7 +153,7 @@ export interface TransportOptionsBase<Level extends string, Label extends string
      */
     highWaterMark?: number;
 }
-export interface LoggerOptions<Level extends string, Meta extends Record<string, unknown> = Record<string, unknown>> extends TransformBase<Level, Meta> {
+export interface LoggerOptions<Level extends string, Meta extends Record<string, unknown> = undefined> extends TransformBase<Level, Meta> {
     /**
      * The label for the logger. If not provided a
      * random id will be generated.

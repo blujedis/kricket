@@ -35,6 +35,7 @@ const defaultLogger = createLogger({
     label: 'default',
     level: (process.env.LOG_LEVEL || 'info'),
     levels: ['fatal', 'error', 'warn', 'info', 'debug'],
+    meta: { age: 25 },
     transports: [
         new transports_1.ConsoleTransport()
     ]
@@ -60,7 +61,7 @@ defaultLogger.transform('console', (payload) => {
             .colorize(COLOR_MAP[value] || '')
             .value();
     };
-    payload.message = defaultLogger.formatMessage(payload, template, 'timestamp', ['level', fmtLevel], 'message', ['filename', 'gray'], ['line', 'gray'], ['char', 'gray']);
+    payload.message = defaultLogger.formatMessage(payload, template, ['level', fmtLevel], ['filename', 'gray'], ['line', 'gray'], ['char', 'gray'], 'timestamp', ['level', fmtLevel], 'message', ['filename', 'gray'], ['line', 'gray'], ['char', 'gray']);
     return payload;
 });
 //# sourceMappingURL=kricket.js.map

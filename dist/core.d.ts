@@ -9,7 +9,7 @@ export declare class Core {
      *
      * @param label the Logger's label to lookup.
      */
-    getLogger<Level extends string, Meta extends Record<string, unknown>>(label: string): Logger<Level, Meta>;
+    getLogger<Level extends string, Meta extends Record<string, unknown> = undefined>(label: string): Logger<Level, Meta>;
 }
 declare const _default: Core;
 export default _default;

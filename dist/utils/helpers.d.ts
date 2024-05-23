@@ -1,4 +1,5 @@
 import { AnsiColor } from '../types';
+export type HandlerFunction = (...args: any[]) => any;
 /**
  * Checks if value is an object.
  *
@@ -10,7 +11,7 @@ export declare function isObject(value: unknown): value is object;
  *
  * @param value the value to inspect as function.
  */
-export declare function isFunction(value: unknown): value is Function;
+export declare function isFunction(value: unknown): value is HandlerFunction;
 /**
  * Checks if object is plain object literal.
  *
@@ -49,7 +50,7 @@ export declare function errorToObject<E extends Error>(err: E): Record<keyof E, 
  * @param value the value to inspect as any array.
  * @param clean when true and is array clean any undefined.
  */
-export declare function ensureArray<T = any>(value?: null | T | T[], clean?: boolean): T[];
+export declare function ensureArray<T = any>(value: null | undefined | T | T[], clean?: boolean): T[];
 /**
  * Colorizes a value using ansi-colors.
  *

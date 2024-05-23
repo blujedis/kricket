@@ -37,11 +37,11 @@ export declare abstract class Transport<Options extends TransportOptions = Trans
     /**
      * Gets Transport's Filters.
      */
-    get filters(): import("../types").Filter<any, Record<string, unknown>>[];
+    get filters(): import("../types").Filter<any, undefined>[];
     /**
      * Gets Transport's Transforms.
      */
-    get transforms(): import("../types").Transform<any, Record<string, unknown>>[];
+    get transforms(): import("../types").Transform<any, undefined>[];
     /**
      * Mutes the Transport.
      */
