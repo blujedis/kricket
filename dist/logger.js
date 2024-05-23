@@ -21,6 +21,9 @@ class Logger extends events_1.EventEmitter {
         this.options = options;
         this.isChild = isChild;
         this.options = { ...{ levels: [], transports: [], filters: [], transforms: [], muted: false, level: null, defaultMetaKey: '' }, ...this.options };
+        // Get the last level if no level has been provided. 
+        if (!this.options.level)
+            this.options.level = this.options.levels[this.options.levels.length - 1];
         // Bind levels
         this.levels.forEach(level => {
             this[level] = (message, ...args) => this.writer(level, message, ...args);
@@ -67,12 +70,9 @@ class Logger extends events_1.EventEmitter {
         const cb = typeof args[args.length - 1] === 'function' ? args.pop() : null;
         const meta = (0, utils_1.isPlainObject)(args[args.length - 1]) ? args.pop() : null;
         const trace = (0, trace_1.default)({ frames: 2 });
-        const globalMeta = (0, utils_1.isPlainObject)(this.options.meta) ? { ...this.options.meta } : null;
+        const globalMeta = (0, utils_1.isPlainObject)(this.options.meta) ? { ...this.options.meta } : {};
         const timestamp = new Date();
-        let mergedMeta = (!meta && !globalMeta ? null : { ...(globalMeta || {}), ...(meta || {}) });
-        if (this.options.metaKey)
-            mergedMeta = mergedMeta === null ? {} : { [this.options.metaKey]: mergedMeta };
-        const initIncludes = this.options.includes ? {
+        const initIncludes = {
             [types_1.UUID]: id,
             [types_1.LEVELINT]: index,
             [types_1.TIMESTAMP]: timestamp,
@@ -82,12 +82,13 @@ class Logger extends events_1.EventEmitter {
             [types_1.METHOD]: trace.method,
             [types_1.FILEPATH]: trace.filepath,
             [types_1.FILENAME]: trace.filename,
-        } : {};
+            ...globalMeta
+        };
         const rawPayload = {
             ...initIncludes,
             [types_1.LEVEL]: label,
             [types_1.MESSAGE]: message,
-            [types_1.SPLAT]: mergedMeta ? [...args, { ...mergedMeta }] : args,
+            [types_1.SPLAT]: meta ? [...args, meta] : args,
             message
         };
         // Emit raw payload.
@@ -96,7 +97,7 @@ class Logger extends events_1.EventEmitter {
         const event = (transport) => {
             return (done) => {
                 try {
-                    const transportIncludes = this.options.includes ? {
+                    const transportIncludes = {
                         [types_1.UUID]: id,
                         [types_1.LEVELINT]: index,
                         [types_1.TIMESTAMP]: timestamp,
@@ -107,12 +108,13 @@ class Logger extends events_1.EventEmitter {
                         [types_1.METHOD]: trace.method,
                         [types_1.FILEPATH]: trace.filepath,
                         [types_1.FILENAME]: trace.filename,
-                    } : {};
+                        ...globalMeta
+                    };
                     const payload = {
                         ...transportIncludes,
                         [types_1.LEVEL]: label,
                         [types_1.MESSAGE]: message,
-                        [types_1.SPLAT]: mergedMeta ? [...args, { ...mergedMeta }] : args,
+                        [types_1.SPLAT]: meta ? [...args, { ...meta }] : args,
                         message
                     };
                     // Inspect transport level.
@@ -158,7 +160,6 @@ class Logger extends events_1.EventEmitter {
      * @param payload the payload to pass when filtering.
      */
     filtered(transport, payload) {
-        console.log(transport.label, [...this.filters, ...transport.filters]);
         return [...this.filters, ...transport.filters]
             .some(filter => filter(payload));
     }
@@ -180,7 +181,7 @@ class Logger extends events_1.EventEmitter {
                 tname = (0, utils_1.getObjectName)(transformer);
                 if (tname === 'function')
                     tname = 'anonymous';
-                transformed = transformer(transformed);
+                transformed = transformer(transformed); // TODO: fix types
                 valid = (0, utils_1.isPlainObject)(transformed);
             }
             catch (ex) {
@@ -603,14 +604,8 @@ class Logger extends events_1.EventEmitter {
      *
      * @param payload the payload object to be extended.
      * @param extend the object to extend payload with.
-     * @param useMetaKey when true the extended object is assiged to metaKey name in payload.
      */
-    extendPayload(payload, extend, useMetaKey = false) {
-        if (useMetaKey) {
-            if (!this.options.metaKey)
-                throw new Error(`Cannot use "metaKey" of undefined. Is it set at "options.metaKey"?`);
-            return (payload[this.options.metaKey] = extend);
-        }
+    extendPayload(payload, extend) {
         for (const k in extend) {
             if (!Object.prototype.hasOwnProperty.call(extend, k))
                 continue;
@@ -635,33 +630,62 @@ class Logger extends events_1.EventEmitter {
             meta = { ...meta, err: (0, utils_1.errorToObject)(err) };
         }
         payload.message = (0, util_1.format)(payload.message, ...payload[types_1.SPLAT]);
-        return this.extendPayload(payload, { ...meta, ...extend }, true);
+        return this.extendPayload(payload, { ...meta, ...extend });
     }
-    formatMessage(payloadOrTemplate, template, ...args) {
-        let payload = {};
-        if (typeof payloadOrTemplate === 'string') {
-            if (typeof template !== 'undefined')
-                args.unshift(template);
-            template = payloadOrTemplate;
-        }
-        else if ((0, utils_1.isObject)(payloadOrTemplate)) {
-            payload = payloadOrTemplate;
-        }
+    /**
+     * Formats a message using Node's util.format function. Arguments which match
+     * payload token keys will be mapped to their corresponding values.
+     *
+     * @param payload the current payload use to parse tokens from.
+     * @param template the string template used to format the message.
+     * @param args the additional arguments
+     */
+    formatMessage(payload, template, ...args) {
         const normalized = args.map(arg => {
-            const [token, ...rest] = (0, utils_1.ensureArray)(arg);
-            if (typeof token === 'string' && typeof types_1.TOKEN_MAP[token] !== 'undefined') {
-                let value = payload[types_1.TOKEN_MAP[token]];
-                if (value)
+            const [token, colorOrFn, ...rest] = (0, utils_1.ensureArray)(arg);
+            let ansiArgs = rest;
+            let value = this.getToken(payload, token);
+            if (typeof token === 'string' && value) {
+                let value = this.getToken(payload, token);
+                if (value) {
                     arg = value;
-                if (!rest.length) // if no color values return existing or mapped arg.
+                    if ((0, utils_1.isFunction)(colorOrFn)) { // callback func returns either value or Ansicolors.
+                        const result = colorOrFn(value, token);
+                        if (Array.isArray(result)) {
+                            const [resultVal, ...resultRest] = result;
+                            arg = resultVal;
+                            ansiArgs = [...ansiArgs, ...resultRest];
+                        }
+                        else {
+                            arg = result;
+                        }
+                    }
+                    else if (typeof colorOrFn !== 'undefined') {
+                        ansiArgs = [colorOrFn, ...ansiArgs];
+                    }
+                }
+                if (!ansiArgs.length) // if no color values return existing or mapped arg.
                     return arg;
-                return (0, utils_1.colorizeString)(arg, ...rest); // colorize the argument.
+                return (0, utils_1.colorizeString)(arg, ...ansiArgs); // colorize the argument.
+            }
+            else if ((0, utils_1.isFunction)(colorOrFn)) {
+                throw new Error(`Format arg for token/value "${token}" is invalid. Functions can only be called when using a known payload token e.g. ['uuid', 'timestamp'...]`);
             }
             return arg;
         });
         return (0, util_1.format)(template, ...normalized); // return formatted string using normalized args.
     }
+    /**
+     * Gets the value of a token within the payload.
+     *
+     * @param payload the payload object to get token from.
+     * @param key the key to get value for.
+     */
     getToken(payload, key) {
+        const sym = types_1.TOKEN_MAP[key];
+        if (!sym)
+            return payload[key] || null;
+        return payload[sym];
     }
 }
 exports.Logger = Logger;

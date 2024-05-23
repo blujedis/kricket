@@ -124,9 +124,9 @@ exports.ensureArray = ensureArray;
 function colorizeString(value, ...colors) {
     return colors.reduce((a, c) => {
         const fn = ansi_colors_1.default[c];
-        if (!fn || !isFunction(fn))
-            return a;
-        return fn(c);
+        if (isFunction(fn))
+            return fn(value);
+        return a;
     }, String(value));
 }
 exports.colorizeString = colorizeString;
@@ -161,25 +161,36 @@ function prepareString(value) {
         uppercase,
         lowercase,
         stripColor: colorStrip,
-        value: _value
+        value: getValue
     };
     function align(alignment, values) {
         _value = alignString(_value, alignment, values);
+        return api;
     }
     function colorize(...args) {
+        if (!args.length)
+            return api;
         _value = colorizeString(_value, ...args);
+        return api;
     }
     function capitalize() {
         _value = _value.charAt(0).toUpperCase() + _value.slice(1);
+        return api;
     }
     function uppercase() {
         _value = _value.toUpperCase();
+        return api;
     }
     function lowercase() {
         _value = _value.toLowerCase();
+        return api;
     }
     function colorStrip() {
         _value = (0, ansi_colors_1.stripColor)(_value);
+        return api;
+    }
+    function getValue() {
+        return _value;
     }
     return api;
 }

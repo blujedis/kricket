@@ -17,7 +17,7 @@ export declare abstract class Transport<Options extends TransportOptions = Trans
      *
      * @param chunk the current logged chunk.
      */
-    format(chunk: string): string;
+    format(chunk: string): any;
     /**
      * Gets the label for the Transport.
      */
@@ -37,11 +37,11 @@ export declare abstract class Transport<Options extends TransportOptions = Trans
     /**
      * Gets Transport's Filters.
      */
-    get filters(): import("../types").Filter<any, Record<string, any>>[];
+    get filters(): import("../types").Filter<any, Record<string, unknown>>[];
     /**
      * Gets Transport's Transforms.
      */
-    get transforms(): import("../types").Transform<any, Record<string, any>>[];
+    get transforms(): import("../types").Transform<any, Record<string, unknown>>[];
     /**
      * Mutes the Transport.
      */

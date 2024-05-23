@@ -10,7 +10,6 @@ const testLogger = createLogger({
   transports: [dummyTransport],
 });
 
-
 describe('Kricket', () => {
 
   it('Should write to buffer then log', (done) => {
@@ -18,6 +17,7 @@ describe('Kricket', () => {
       .write('buffer message')
       .writeEnd((data) => {
         data = JSON.parse(data[0]);
+        defaultLogger.warn('testing logger.')
         assert.equal(data.message, 'buffer message');
         done();
       });
@@ -38,6 +38,18 @@ describe('Kricket', () => {
     testLogger.setLevel('warn');
     assert.equal(testLogger.isLevelActive('warn'), true);
     assert.equal(testLogger.isLevelActive('info'), false);
+  });
+
+  it('Child logger should contain "api" flag in result.', (done) => {
+    const child = testLogger.child('api');
+    child
+      .write('child log message')
+      .writeEnd((data) => {
+        data = JSON.parse(data[0]);
+        assert.equal(data.message, 'child log message');
+        assert.equal(data.api, true);
+        done();
+      });
   });
 
   it('Should transform message adding level label to messages.', (done) => {
@@ -61,6 +73,7 @@ describe('Kricket', () => {
     assert.instanceOf(Transport, ConsoleTransport);
     done();
   });
+
 
   it('Should remove Console Transport', (done) => {
     testLogger.removeTransport('console');

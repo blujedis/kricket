@@ -1,5 +1,12 @@
 # Kicket Changes
 
+## (05-22-2024)
+
+- Include line, character method and filename as built in payload data that can be parsed. 
+- Simplified meta data, made more consistent with Child loggers. 
+- Improved default logger.
+- Added built in payload parser and formatting helpers.
+
 ## (05-20-2024)
 
 - Remove defaultMeta in favor of symbol that automatically is stripped when converting to JSON.

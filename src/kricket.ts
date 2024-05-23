@@ -18,11 +18,11 @@ const COLOR_MAP = {
  * 
  * @param options the options used to create the Logger.
  */
-export function createLogger<Level extends string, Meta extends Record<string, unknown>, MetaKey extends string>(options?: LoggerOptions<Level, Meta, MetaKey>) {
+export function createLogger<Level extends string, Meta extends Record<string, unknown> = Record<string, unknown>>(options?: LoggerOptions<Level, Meta>) {
   options.label = options.label || uuidv4();
-  const logger = new Logger<Level, Meta, MetaKey>(options);
+  const logger = new Logger<Level, Meta>(options);
   core.loggers.set(options.label, logger);
-  return logger as Logger<Level, Meta, MetaKey> & LogMethods<Level, Meta, MetaKey>;
+  return logger as Logger<Level, Meta> & LogMethods<Level, Meta>;
 }
 
 /**
@@ -30,7 +30,7 @@ export function createLogger<Level extends string, Meta extends Record<string, u
  */
 const defaultLogger = createLogger({
   label: 'default',
-  level: (process.env.LOG_LEVEL || 'info') as 'info',
+  level: (process.env.LOG_LEVEL || 'info') as 'fatal' | 'error' | 'warn' | 'info' | 'debug',
   levels: ['fatal', 'error', 'warn', 'info', 'debug'],
   transports: [
     new ConsoleTransport()
@@ -42,23 +42,28 @@ defaultLogger.filter('console', (payload) => {
 });
 
 defaultLogger.transform((payload) => {
-  payload[TIMESTAMP] = (payload[TIMESTAMP] as Date).toUTCString();
+  const ts = (payload[TIMESTAMP] as Date).toISOString();
+  let [date, time] = ts.split('T');
+  date = date.split('-').slice(1).join('-');
+  time = time.split(/\..+$/)[0];
+  payload[TIMESTAMP] = `${time} ${date}`;
   return defaultLogger.parsePayload(payload);
 });
 
 defaultLogger.transform('console', (payload) => {
   // timestamp, filename, level, message
-  const template = `%s %s %s: %s`;
+  const template = `%s %s: %s (%s-%s:%s)`;
+
+  const fmtLevel = (value) => {
+    return prepareString(value)
+      .align('right', defaultLogger.options.levels)
+      .colorize(COLOR_MAP[value] || '')
+      .value();
+  };
   payload.message = defaultLogger.formatMessage(
     payload, template,
-    ['timestamp', 'greenBright'], 'filename',
-    ['level', (value) => {
-      return prepareString(value)
-        .align('right', defaultLogger.options.levels)
-        .uppercase()
-        .colorize(COLOR_MAP[value] || '')
-        .value();
-    }], 'message', 'email', 'name'
+    'timestamp', ['level', fmtLevel], 'message',
+    ['filename', 'gray'], ['line', 'gray'], ['char', 'gray']
   );
   return payload;
 });

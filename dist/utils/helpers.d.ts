@@ -67,11 +67,11 @@ export declare function colorizeString(value: any, ...colors: AnsiColor[]): stri
  */
 export declare function alignString(value: any, align: 'left' | 'right' | 'center', values: string[]): string;
 export declare function prepareString(value: any): {
-    colorize: (...args: Parameters<typeof colorizeString>[1][]) => void;
-    align: (alignment: Parameters<typeof alignString>[1], values: Parameters<typeof alignString>[2]) => void;
-    capitalize: () => void;
-    uppercase: () => void;
-    lowercase: () => void;
-    stripColor: () => void;
-    value: string;
+    colorize: (...args: Parameters<typeof colorizeString>[1][]) => any;
+    align: (alignment: Parameters<typeof alignString>[1], values: Parameters<typeof alignString>[2]) => any;
+    capitalize: () => any;
+    uppercase: () => any;
+    lowercase: () => any;
+    stripColor: () => any;
+    value: () => string;
 };

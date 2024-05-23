@@ -55,12 +55,6 @@ export const defaultLogger = createLogger('default', {
 });
 ```
 
-#### Logger Labels
-
-As shown above the default Logger is generated with the label **default**. This allows you to lookup other Loggers you might have generated from any other Logger which can be helpful in some instances.
-
-However a label is not required you can also create a logger without a label although a random generated string will be created for you behind the scenes.
-
 ### Limiting Output by Level
 
 Considering the above let's say we want to limit any message above the "warn" level.
@@ -112,6 +106,12 @@ defaultLogger.transform('console', payload => {
 })
 ```
 
+## Logger Labels
+
+As shown above the default Logger is generated with the label **default**. This allows you to lookup other Loggers you might have generated from any other Logger which can be helpful in some instances.
+
+However a label is not required you can also create a logger without a label although a random generated string will be created for you behind the scenes.
+
 **The above works the same for Filters.**
 
 ## Output Format
@@ -121,7 +121,15 @@ By default Kricket outputs JSON to each transport. This can be disabled as it is
 ```ts
 import { ConsoleTransport } from 'kricket';
 const consoleTransport = new ConsoleTransport({ asJSON: false });
+
+defaultLogger.transform('console', payload => {
+  const template = `%s %s: %s`;
+  payload.message = util.format(template, payload[TIMESTAMP], payload[LEVEL], payload[FORMAT]);
+  return payload;
+});
 ```
+
+The above when used with the console trasnsport will output `payload.message` to its `transport.log()` method. Other loggers will still output as JSON for outputting to file, a stream or whatever you choose.
 
 ## Transports
 

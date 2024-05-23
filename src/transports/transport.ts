@@ -11,7 +11,6 @@ export abstract class Transport<Options extends TransportOptions = TransportOpti
 
   static Type;
 
-
   _options: Options;
   _buffer = '';
 
@@ -39,7 +38,7 @@ export abstract class Transport<Options extends TransportOptions = TransportOpti
     // Loose check maybe should be more comprehensive.
     if (this.isJSON || chunk.charAt(0) !== '{')
       return chunk;
-    const payload = JSON.parse(chunk) as Payload<any>;
+    const payload = JSON.parse(chunk) as Payload<any, any>;
     return payload.message;
   }
 
@@ -107,7 +106,7 @@ export abstract class Transport<Options extends TransportOptions = TransportOpti
    * @param level the level to set the Logger to.
    * @param logger the parent Logger containing log levels.
    */
-  setLevel(level: string, logger: Logger<any, any, any>) {
+  setLevel(level: string, logger: Logger<any, any>) {
     if (typeof level === 'undefined' || !logger.levels.includes(level))
       throw new Error(`Level "${level}" is invalid or not found.`);
     this._options.level = level;
