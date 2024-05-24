@@ -2,8 +2,9 @@
 import { Logger } from './logger';
 import { ConsoleTransport } from './transports';
 import core from './core';
-import { prepareString, uuidv4 } from './utils';
-import { LEVEL, LoggerOptions, LogMethods, TIMESTAMP } from './types';
+import { format } from 'util';
+import { colorizeString, prepareString, uuidv4 } from './utils';
+import { AnsiColor, CHAR, FILENAME, LEVEL, LINE, LoggerOptions, LogMethods, TIMESTAMP } from './types';
 
 const COLOR_MAP = {
   fatal: 'bgRedBright',
@@ -43,31 +44,27 @@ defaultLogger.filter('console', (payload) => {
 });
 
 defaultLogger.transform((payload) => {
-  const ts = (payload[TIMESTAMP] as Date).toISOString();
-  let [date, time] = ts.split('T');
-  date = date.split('-').slice(1).join('-');
-  time = time.split(/\..+$/)[0];
-  payload[TIMESTAMP] = `${time} ${date}`;
   return defaultLogger.parsePayload(payload);
 });
 
 defaultLogger.transform('console', (payload) => {
-  // timestamp, filename, level, message
-  const template = `%s %s: %s (%s-%s:%s)`;
 
-  const fmtLevel = (value) => {
-    return prepareString(value)
-      .align('right', defaultLogger.options.levels)
-      .colorize(COLOR_MAP[value] || '')
-      .value();
-  };
-  payload.message = defaultLogger.formatMessage(
-    payload, template,
-    ['level', fmtLevel], ['filename', 'gray'],
-    ['line', 'gray'], ['char', 'gray'],
-    'timestamp', ['level', fmtLevel], 'message',
-    ['filename', 'gray'], ['line', 'gray'], ['char', 'gray'],
-  );
+  // Make timestamp a hair more readable. 
+  let timestamp = (payload[TIMESTAMP] as Date).toISOString();
+  let [date, time] = timestamp.split('T');
+  date = date.split('-').slice(1).join('-');
+  time = time.split(/\..+$/)[0];
+  timestamp = `${date} ${time}`;
+
+  // timestamp, level, message, filename, line, char
+  const template = `%s %s: %s %s`;
+  const filename = colorizeString(`(${payload[FILENAME]}:${payload[LINE]}:${payload[CHAR]})`, 'gray');
+  const level = prepareString(payload[LEVEL])
+    .align('right', defaultLogger.options.levels)
+    .colorize(COLOR_MAP[payload[LEVEL]] as AnsiColor)
+    .value();
+
+  payload.message = format(template, timestamp, level, payload.message, filename)
   return payload;
 });
 

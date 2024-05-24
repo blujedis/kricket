@@ -2,7 +2,7 @@
 import { EventEmitter } from 'events';
 import { Transport } from './transports';
 import { Core } from './core';
-import { LoggerOptions, Filter, Transform, Callback, ChildLogger, Payload, TypeOrValue, TokenKey, FormatArg, FormatPrimitive, MetaKey } from './types';
+import { LoggerOptions, Filter, Transform, Callback, ChildLogger, Payload, TypeOrValue } from './types';
 export declare class Logger<Level extends string, Meta extends Record<string, unknown> = undefined> extends EventEmitter {
     options: LoggerOptions<Level, Meta>;
     isChild: boolean;
@@ -286,27 +286,28 @@ export declare class Logger<Level extends string, Meta extends Record<string, un
      * @param payload the payload object to be extended.
      * @param extend the object to extend payload with.
      */
-    extendPayload<P extends Payload<Level, Meta>, E extends Partial<P>>(payload: P, extend: E): P & E;
+    extendPayload<Extend extends Partial<Payload<Level, Meta>>>(payload: Payload<Level, Meta>, extend: Extend): Payload<Level, Meta> & Extend;
     /**
      * Parses payload inspecting for error argument as message and/or meta object within splat.
      *
+     * @example
+     * logger.transform(payload => {
+     *  // type Payload will be extended with below
+     *  // {
+     *  //  error?: { name, message, stack },
+     *  //  prop: 'value'
+     *  // }
+     *  // payload = parsePayload(payload, { prop: 'value' });
+     * });
+     *
      * @param payload the payload object to be parsed.
      */
-    parsePayload<P extends Payload<Level, Meta>, E extends Partial<P>>(payload: P, extend?: E): P & E;
-    /**
-     * Formats a message using Node's util.format function. Arguments which match
-     * payload token keys will be mapped to their corresponding values.
-     *
-     * @param payload the current payload use to parse tokens from.
-     * @param template the string template used to format the message.
-     * @param args the additional arguments
-     */
-    formatMessage(payload: Payload<Level, Meta>, template: string, ...args: FormatArg<FormatPrimitive | MetaKey<Meta>>[]): string;
-    /**
-     * Gets the value of a token within the payload.
-     *
-     * @param payload the payload object to get token from.
-     * @param key the key to get value for.
-     */
-    getToken(payload: Payload<Level, Meta>, key: TypeOrValue<TokenKey>): any;
+    parsePayload<Extend extends Partial<Payload<Level, Meta>>>(payload: Payload<Level, Meta>, extend?: Extend): Payload<Level, Meta> & Extend & {
+        error?: {
+            name: string;
+            message: string;
+            stack: string;
+            [key: string]: any;
+        };
+    };
 }

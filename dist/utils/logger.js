@@ -5,7 +5,7 @@
  * @deprecated favor throwing errors as that's all this was used for.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.log = exports.colorize = exports.ANSI_COLORS = void 0;
+exports.log = exports.ANSI_COLORS = void 0;
 const ansi_colors_1 = require("ansi-colors");
 const util_1 = require("util");
 exports.ANSI_COLORS = {
@@ -34,7 +34,6 @@ const REVERSE_TYPES = {
 function colorize(str, color) {
     return exports.ANSI_COLORS[color](str);
 }
-exports.colorize = colorize;
 function writer(str, shouldExit, cb) {
     if (typeof shouldExit === 'function') {
         cb = shouldExit;

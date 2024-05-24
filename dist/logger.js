@@ -616,6 +616,16 @@ class Logger extends events_1.EventEmitter {
     /**
      * Parses payload inspecting for error argument as message and/or meta object within splat.
      *
+     * @example
+     * logger.transform(payload => {
+     *  // type Payload will be extended with below
+     *  // {
+     *  //  error?: { name, message, stack },
+     *  //  prop: 'value'
+     *  // }
+     *  // payload = parsePayload(payload, { prop: 'value' });
+     * });
+     *
      * @param payload the payload object to be parsed.
      */
     parsePayload(payload, extend = {}) {
@@ -627,65 +637,10 @@ class Logger extends events_1.EventEmitter {
         if ((payload[types_1.MESSAGE]) instanceof Error) {
             const err = payload[types_1.MESSAGE];
             payload.message = err.message;
-            meta = { ...meta, err: (0, utils_1.errorToObject)(err) };
+            meta = { ...meta, error: (0, utils_1.errorToObject)(err) };
         }
         payload.message = (0, util_1.format)(payload.message, ...payload[types_1.SPLAT]);
         return this.extendPayload(payload, { ...meta, ...extend });
-    }
-    /**
-     * Formats a message using Node's util.format function. Arguments which match
-     * payload token keys will be mapped to their corresponding values.
-     *
-     * @param payload the current payload use to parse tokens from.
-     * @param template the string template used to format the message.
-     * @param args the additional arguments
-     */
-    formatMessage(payload, template, ...args) {
-        const normalized = args.map(arg => {
-            const [token, colorOrFn, ...rest] = (0, utils_1.ensureArray)(arg);
-            let ansiArgs = rest;
-            let value = this.getToken(payload, token);
-            if (typeof token === 'string' && value) {
-                value = this.getToken(payload, token);
-                if (value) {
-                    arg = value;
-                    if ((0, utils_1.isFunction)(colorOrFn)) { // callback func returns either value or Ansicolors.
-                        const result = colorOrFn(value, token);
-                        if (Array.isArray(result)) {
-                            const [resultVal, ...resultRest] = result;
-                            arg = resultVal;
-                            ansiArgs = [...ansiArgs, ...resultRest];
-                        }
-                        else {
-                            arg = result;
-                        }
-                    }
-                    else if (typeof colorOrFn !== 'undefined') {
-                        ansiArgs = [colorOrFn, ...ansiArgs];
-                    }
-                }
-                if (!ansiArgs.length) // if no color values return existing or mapped arg.
-                    return arg;
-                return (0, utils_1.colorizeString)(arg, ...ansiArgs); // colorize the argument.
-            }
-            else if ((0, utils_1.isFunction)(colorOrFn)) {
-                throw new Error(`Format arg for token/value "${token}" is invalid. Functions can only be called when using a known payload token e.g. ['uuid', 'timestamp'...]`);
-            }
-            return arg;
-        });
-        return (0, util_1.format)(template, ...normalized); // return formatted string using normalized args.
-    }
-    /**
-     * Gets the value of a token within the payload.
-     *
-     * @param payload the payload object to get token from.
-     * @param key the key to get value for.
-     */
-    getToken(payload, key) {
-        const sym = types_1.TOKEN_MAP[key];
-        if (!sym)
-            return payload[key] || null;
-        return payload[sym];
     }
 }
 exports.Logger = Logger;

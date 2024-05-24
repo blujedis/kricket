@@ -2,10 +2,10 @@ import { EventEmitter } from 'events';
 import { Transport } from './transports';
 import fastJson from 'fast-json-stable-stringify';
 import { format } from 'util';
-import { getObjectName, isPlainObject, asynceach, noop, flatten, uuidv4, log, isObject, errorToObject, ensureArray, colorizeString, isFunction } from './utils';
+import { getObjectName, isPlainObject, asynceach, noop, flatten, uuidv4, log, isObject, errorToObject } from './utils';
 import core, { Core } from './core';
 import currentLine from './utils/trace';
-import { LoggerOptions, LEVEL, MESSAGE, SPLAT, Filter, Transform, LOGGER, TRANSPORT, Callback, BaseLevel, ChildLogger, Payload, UUID, TIMESTAMP, TypeOrValue, LEVELINT, TOKEN_MAP, LINE, CHAR, METHOD, FILENAME, FILEPATH, TokenKey, FormatArg, AnsiColor, FormatPrimitive, MetaKey } from './types';
+import { LoggerOptions, LEVEL, MESSAGE, SPLAT, Filter, Transform, LOGGER, TRANSPORT, Callback, BaseLevel, ChildLogger, Payload, UUID, TIMESTAMP, TypeOrValue, LEVELINT, LINE, CHAR, METHOD, FILENAME, FILEPATH } from './types';
 
 export class Logger<Level extends string, Meta extends Record<string, unknown> = undefined> extends EventEmitter {
 
@@ -799,23 +799,36 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
    * @param payload the payload object to be extended.
    * @param extend the object to extend payload with.
    */
-  extendPayload<P extends Payload<Level, Meta>, E extends Partial<P>>(payload: P, extend: E) {
+  extendPayload<Extend extends Partial<Payload<Level, Meta>>>(payload: Payload<Level, Meta>, extend: Extend) {
     for (const k in extend) {
       if (!Object.prototype.hasOwnProperty.call(extend, k)) continue;
       payload[k] = extend[k] as any;
     }
-    return payload as P & E;
+    return payload as Payload<Level, Meta> & Extend;
   }
 
 
   /**
    * Parses payload inspecting for error argument as message and/or meta object within splat.
    * 
+   * @example
+   * logger.transform(payload => {
+   *  // type Payload will be extended with below
+   *  // {
+   *  //  error?: { name, message, stack },
+   *  //  prop: 'value'
+   *  // }
+   *  // payload = parsePayload(payload, { prop: 'value' });
+   * });
+   * 
    * @param payload the payload object to be parsed. 
    */
-  parsePayload<P extends Payload<Level, Meta>, E extends Partial<P>>(payload: P, extend = {} as E) {
+  parsePayload<Extend extends Partial<Payload<Level, Meta>>>(
+    payload: Payload<Level, Meta>, extend = {} as Extend) {
 
-    let meta = {} as E;
+    type ExtendWithError = Extend & { error?: { name: string, message: string, stack: string, [key: string]: any } };
+
+    let meta = {} as ExtendWithError;
 
     // Check if last arg in splat is an object. 
     if (isObject(payload[SPLAT].slice(-1)[0]))
@@ -823,9 +836,9 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
 
     // if payload message is an error convert to object, set message to error's message.
     if ((payload[MESSAGE]) instanceof Error) {
-      const err = payload[MESSAGE] as any;
+      const err = payload[MESSAGE] as Error;
       payload.message = err.message;
-      meta = { ...meta, err: errorToObject(err) };
+      meta = { ...meta, error: errorToObject(err) };
     }
 
     payload.message = format(payload.message, ...payload[SPLAT]);
@@ -842,62 +855,62 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
    * @param template the string template used to format the message.
    * @param args the additional arguments 
    */
-  formatMessage(payload: Payload<Level, Meta>, template: string, ...args: FormatArg<FormatPrimitive | MetaKey<Meta>>[]) {
+  // formatMessage(payload: Payload<Level, Meta>, template: string, ...args: FormatArg<FormatPrimitive | MetaKey<Meta>>[]) {
 
-    const normalized = args.map(arg => {
+  //   const normalized = args.map(arg => {
 
-      const [token, colorOrFn, ...rest] = ensureArray(arg as any);
+  //     const [token, colorOrFn, ...rest] = ensureArray(arg as any);
 
-      let ansiArgs = rest;
+  //     let ansiArgs = rest;
 
-      let value = this.getToken(payload, token as TypeOrValue<TokenKey>);
+  //     let value = this.getToken(payload, token as TypeOrValue<TokenKey>);
 
-      if (typeof token === 'string' && value) {
+  //     if (typeof token === 'string' && value) {
 
-        value = this.getToken(payload, token as TokenKey);
+  //       value = this.getToken(payload, token);
 
-        if (value) {
+  //       if (value) {
 
-          arg = value;
+  //         arg = value;
 
-          if (isFunction(colorOrFn)) { // callback func returns either value or Ansicolors.
+  //         if (isFunction(colorOrFn)) { // callback func returns either value or Ansicolors.
 
-            const result = colorOrFn(value, token);
+  //           const result = colorOrFn(value, token);
 
-            if (Array.isArray(result)) {
-              const [resultVal, ...resultRest] = result;
-              arg = resultVal;
-              ansiArgs = [...ansiArgs as AnsiColor[], ...resultRest as AnsiColor[]];
-            }
-            else {
-              arg = result;
-            }
+  //           if (Array.isArray(result)) {
+  //             const [resultVal, ...resultRest] = result;
+  //             arg = resultVal;
+  //             ansiArgs = [...ansiArgs as AnsiColor[], ...resultRest as AnsiColor[]];
+  //           }
+  //           else {
+  //             arg = result;
+  //           }
 
 
-          }
-          else if (typeof colorOrFn !== 'undefined') {
-            ansiArgs = [colorOrFn, ...ansiArgs];
-          }
+  //         }
+  //         else if (typeof colorOrFn !== 'undefined') {
+  //           ansiArgs = [colorOrFn, ...ansiArgs];
+  //         }
 
-        }
+  //       }
 
-        if (!ansiArgs.length) // if no color values return existing or mapped arg.
-          return arg;
+  //       if (!ansiArgs.length) // if no color values return existing or mapped arg.
+  //         return arg;
 
-        return colorizeString(arg, ...ansiArgs); // colorize the argument.
+  //       return colorizeString(arg, ...ansiArgs); // colorize the argument.
 
-      }
-      else if (isFunction(colorOrFn)) {
-        throw new Error(`Format arg for token/value "${token as string}" is invalid. Functions can only be called when using a known payload token e.g. ['uuid', 'timestamp'...]`)
-      }
+  //     }
+  //     else if (isFunction(colorOrFn)) {
+  //       throw new Error(`Format arg for token/value "${token as string}" is invalid. Functions can only be called when using a known payload token e.g. ['uuid', 'timestamp'...]`)
+  //     }
 
-      return arg;
+  //     return arg;
 
-    });
+  //   });
 
-    return format(template, ...normalized); // return formatted string using normalized args.
+  //   return format(template, ...normalized); // return formatted string using normalized args.
 
-  }
+  // }
 
   /**
    * Gets the value of a token within the payload.
@@ -905,10 +918,23 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
    * @param payload the payload object to get token from.
    * @param key the key to get value for.
    */
-  getToken(payload: Payload<Level, Meta>, key: TypeOrValue<TokenKey>) {
-    const sym = TOKEN_MAP[key];
-    if (!sym) return payload[key] || null;
-    return payload[sym as keyof Payload<Level, Meta>];
-  }
+  // getToken(payload: Payload<Level, Meta>, key: TypeOrValue<TokenKey> | MetaKey<Meta>) {
+  //   const symKey = TOKEN_MAP[key as keyof typeof TOKEN_MAP];
+  //   if (!symKey) return payload[key] || null;
+  //   return payload[symKey as keyof typeof payload];
+  // }
+
+  /**
+   * Gets the value of a token within the payload.
+   * 
+   * @param payload the payload object to get token from.
+   * @param key the key to get value for.
+   */
+  // getTokens<K extends MetaKey<Meta> | TokenKey>(payload: Payload<Level, Meta>, ...keys: K[]) {
+  //   return keys.reduce((a, c) => {
+  //     a[c] = this.getToken(payload, c);
+  //     return a;
+  //   }, {} as Record<K, any>);
+  // }
 
 }

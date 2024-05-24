@@ -31,13 +31,6 @@ declare const REVERSE_TYPES: {
     yellow: string;
     cyan: string;
 };
-/**
- * Colorizes a string.
- *
- * @param str the string to be colorized.
- * @param color the ansi-color to apply.
- */
-export declare function colorize(str: string, color: Color): string;
 export interface LogOptions {
     /**
      * Prefix line with this string or true uses [kricket]. (default: true)

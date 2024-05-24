@@ -7,6 +7,7 @@ exports.defaultLogger = exports.createLogger = void 0;
 const logger_1 = require("./logger");
 const transports_1 = require("./transports");
 const core_1 = __importDefault(require("./core"));
+const util_1 = require("util");
 const utils_1 = require("./utils");
 const types_1 = require("./types");
 const COLOR_MAP = {
@@ -45,23 +46,23 @@ defaultLogger.filter('console', (payload) => {
     return !defaultLogger.isLevelActive(payload[types_1.LEVEL]);
 });
 defaultLogger.transform((payload) => {
-    const ts = payload[types_1.TIMESTAMP].toISOString();
-    let [date, time] = ts.split('T');
-    date = date.split('-').slice(1).join('-');
-    time = time.split(/\..+$/)[0];
-    payload[types_1.TIMESTAMP] = `${time} ${date}`;
     return defaultLogger.parsePayload(payload);
 });
 defaultLogger.transform('console', (payload) => {
-    // timestamp, filename, level, message
-    const template = `%s %s: %s (%s-%s:%s)`;
-    const fmtLevel = (value) => {
-        return (0, utils_1.prepareString)(value)
-            .align('right', defaultLogger.options.levels)
-            .colorize(COLOR_MAP[value] || '')
-            .value();
-    };
-    payload.message = defaultLogger.formatMessage(payload, template, ['level', fmtLevel], ['filename', 'gray'], ['line', 'gray'], ['char', 'gray'], 'timestamp', ['level', fmtLevel], 'message', ['filename', 'gray'], ['line', 'gray'], ['char', 'gray']);
+    // Make timestamp a hair more readable. 
+    let timestamp = payload[types_1.TIMESTAMP].toISOString();
+    let [date, time] = timestamp.split('T');
+    date = date.split('-').slice(1).join('-');
+    time = time.split(/\..+$/)[0];
+    timestamp = `${date} ${time}`;
+    // timestamp, level, message, filename, line, char
+    const template = `%s %s: %s %s`;
+    const filename = (0, utils_1.colorizeString)(`(${payload[types_1.FILENAME]}:${payload[types_1.LINE]}:${payload[types_1.CHAR]})`, 'gray');
+    const level = (0, utils_1.prepareString)(payload[types_1.LEVEL])
+        .align('right', defaultLogger.options.levels)
+        .colorize(COLOR_MAP[payload[types_1.LEVEL]])
+        .value();
+    payload.message = (0, util_1.format)(template, timestamp, level, payload.message, filename);
     return payload;
 });
 //# sourceMappingURL=kricket.js.map

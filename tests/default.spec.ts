@@ -1,6 +1,6 @@
 import 'mocha';
 import { assert } from 'chai';
-import { createLogger, DummyTransport, LEVEL, ConsoleTransport, defaultLogger } from '../src';
+import { createLogger, DummyTransport, LEVEL, ConsoleTransport } from '../src';
 
 const dummyTransport = new DummyTransport();
 
@@ -17,7 +17,6 @@ describe('Kricket', () => {
       .write('buffer message')
       .writeEnd((data) => {
         data = JSON.parse(data[0]);
-        defaultLogger.warn('testing logger.')
         assert.equal(data.message, 'buffer message');
         done();
       });

@@ -4,7 +4,7 @@
  * @deprecated favor throwing errors as that's all this was used for.
  */
 
-import { red, yellow, cyan, white, bgBlue, blueBright } from 'ansi-colors';
+import { red, yellow, cyan, white, bgBlue } from 'ansi-colors';
 import { format } from 'util';
 
 export type LogGroup<T> = T & {
@@ -51,7 +51,7 @@ const REVERSE_TYPES = {
  * @param str the string to be colorized.
  * @param color the ansi-color to apply.
  */
-export function colorize(str: string, color: Color) {
+function colorize(str: string, color: Color) {
   return ANSI_COLORS[color](str);
 }
 
