@@ -3,7 +3,7 @@ import { Logger } from './logger';
 import { ConsoleTransport } from './transports';
 import core from './core';
 import { format } from 'util';
-import { colorizeString, prepareString, uuidv4 } from './utils';
+import { alignString, colorizeString, uuidv4 } from './utils';
 import { AnsiColor, CHAR, FILENAME, LEVEL, LINE, LoggerOptions, LogMethods, TIMESTAMP } from './types';
 
 const COLOR_MAP = {
@@ -59,12 +59,9 @@ defaultLogger.transform('console', (payload) => {
   // timestamp, level, message, filename, line, char
   const template = `%s %s: %s %s`;
   const filename = colorizeString(`(${payload[FILENAME]}:${payload[LINE]}:${payload[CHAR]})`, 'gray');
-  const level = prepareString(payload[LEVEL])
-    .align('right', defaultLogger.options.levels)
-    .colorize(COLOR_MAP[payload[LEVEL]] as AnsiColor)
-    .value();
-
-  payload.message = format(template, timestamp, level, payload.message, filename)
+  let level = alignString(payload[LEVEL], 'right', defaultLogger.options.levels);
+  level = colorizeString(payload[LEVEL], COLOR_MAP[payload[LEVEL]] as AnsiColor);
+  payload.message = format(template, colorizeString(timestamp, 'gray'), level, payload.message, filename)
   return payload;
 });
 

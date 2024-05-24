@@ -1,6 +1,6 @@
 import 'mocha';
 import { assert } from 'chai';
-import { createLogger, DummyTransport, LEVEL, ConsoleTransport } from '../src';
+import { createLogger, DummyTransport, LEVEL, ConsoleTransport, defaultLogger } from '../src';
 
 const dummyTransport = new DummyTransport();
 

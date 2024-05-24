@@ -1,4 +1,4 @@
-import ansiColors, { StyleFunction, stripColor } from 'ansi-colors';
+import ansiColors, { StyleFunction, strip, stripColor } from 'ansi-colors';
 import { AnsiColor } from '../types';
 
 export type HandlerFunction = (...args: any[]) => any;
@@ -109,14 +109,23 @@ export function colorizeString(value: any, ...colors: AnsiColor[]) {
 }
 
 /**
- * Aligns a string based on all possible values.
+ * Removes ansi color from string.
  * 
+ * @param value the value to remove ansi color from.
+ */
+export function uncolorizeString(value: any) {
+  return stripColor(String(value));
+}
+
+/**
+ * Aligns a string based on all possible values.
  * 
  * @param value the value to be aligned. 
  * @param align whether to align left right or center relative to all possible values.
  * @param values the possible values which alignment is relative to.
  */
 export function alignString(value: any, align: 'left' | 'right' | 'center', values: string[]) {
+  value = stripColor(value);
   const maxLen = values.reduce((a, c) => (c.length > a ? c.length : a), 0);
   value = String(value);
   value = stripColor(value); // ensure we don't count any ansi color tokens. 
@@ -128,58 +137,4 @@ export function alignString(value: any, align: 'left' | 'right' | 'center', valu
   const floor = Math.floor(len / 2);
   const rem = len % 2;
   return ' '.repeat(rem) + ' '.repeat(floor) + value + ' '.repeat(floor);
-}
-
-export function prepareString(value: any) {
-
-  let _value = String(value);
-
-  const api = {
-    colorize,
-    align,
-    capitalize,
-    uppercase,
-    lowercase,
-    stripColor: colorStrip,
-    value: getValue
-  };
-
-  function align(alignment: Parameters<typeof alignString>[1], values: Parameters<typeof alignString>[2],) {
-    _value = alignString(_value, alignment, values);
-    return api;
-  }
-
-  function colorize(...args: Parameters<typeof colorizeString>[1][]) {
-    if (!args.length)
-      return api;
-    _value = colorizeString(_value, ...args);
-    return api;
-  }
-
-  function capitalize() {
-    _value = _value.charAt(0).toUpperCase() + _value.slice(1);
-    return api;
-  }
-
-  function uppercase() {
-    _value = _value.toUpperCase();
-    return api;
-  }
-
-  function lowercase() {
-    _value = _value.toLowerCase();
-    return api
-  }
-
-  function colorStrip() {
-    _value = stripColor(_value);
-    return api
-  }
-
-  function getValue() {
-    return _value
-  }
-
-  return api;
-
 }

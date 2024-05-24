@@ -1,7 +1,7 @@
 import { createLogger, ConsoleTransport, FileTransport, LEVEL, MESSAGE, SPLAT } from '../src';
 import { StyleFunction } from 'ansi-colors';
 import { stripColor, redBright, bgRedBright, blueBright, yellowBright, cyanBright } from 'ansi-colors';
-import { format, inspect } from 'util';
+import { format } from 'util';
 import { errorToObject } from '../src/utils';
 
 type Level = keyof typeof COLOR_MAP;

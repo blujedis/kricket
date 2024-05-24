@@ -23,7 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.prepareString = exports.alignString = exports.colorizeString = exports.ensureArray = exports.errorToObject = exports.uuidv4 = exports.flatten = exports.noop = exports.getObjectName = exports.isPlainObject = exports.isFunction = exports.isObject = void 0;
+exports.alignString = exports.uncolorizeString = exports.colorizeString = exports.ensureArray = exports.errorToObject = exports.uuidv4 = exports.flatten = exports.noop = exports.getObjectName = exports.isPlainObject = exports.isFunction = exports.isObject = void 0;
 const ansi_colors_1 = __importStar(require("ansi-colors"));
 /**
  * Checks if value is an object.
@@ -131,14 +131,23 @@ function colorizeString(value, ...colors) {
 }
 exports.colorizeString = colorizeString;
 /**
- * Aligns a string based on all possible values.
+ * Removes ansi color from string.
  *
+ * @param value the value to remove ansi color from.
+ */
+function uncolorizeString(value) {
+    return (0, ansi_colors_1.stripColor)(String(value));
+}
+exports.uncolorizeString = uncolorizeString;
+/**
+ * Aligns a string based on all possible values.
  *
  * @param value the value to be aligned.
  * @param align whether to align left right or center relative to all possible values.
  * @param values the possible values which alignment is relative to.
  */
 function alignString(value, align, values) {
+    value = (0, ansi_colors_1.stripColor)(value);
     const maxLen = values.reduce((a, c) => (c.length > a ? c.length : a), 0);
     value = String(value);
     value = (0, ansi_colors_1.stripColor)(value); // ensure we don't count any ansi color tokens. 
@@ -152,47 +161,4 @@ function alignString(value, align, values) {
     return ' '.repeat(rem) + ' '.repeat(floor) + value + ' '.repeat(floor);
 }
 exports.alignString = alignString;
-function prepareString(value) {
-    let _value = String(value);
-    const api = {
-        colorize,
-        align,
-        capitalize,
-        uppercase,
-        lowercase,
-        stripColor: colorStrip,
-        value: getValue
-    };
-    function align(alignment, values) {
-        _value = alignString(_value, alignment, values);
-        return api;
-    }
-    function colorize(...args) {
-        if (!args.length)
-            return api;
-        _value = colorizeString(_value, ...args);
-        return api;
-    }
-    function capitalize() {
-        _value = _value.charAt(0).toUpperCase() + _value.slice(1);
-        return api;
-    }
-    function uppercase() {
-        _value = _value.toUpperCase();
-        return api;
-    }
-    function lowercase() {
-        _value = _value.toLowerCase();
-        return api;
-    }
-    function colorStrip() {
-        _value = (0, ansi_colors_1.stripColor)(_value);
-        return api;
-    }
-    function getValue() {
-        return _value;
-    }
-    return api;
-}
-exports.prepareString = prepareString;
 //# sourceMappingURL=helpers.js.map

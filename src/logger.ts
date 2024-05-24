@@ -76,7 +76,7 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
     const index = this.options.levels.indexOf(label as Level);
     const cb = typeof args[args.length - 1] === 'function' ? args.pop() : null;
     const meta = isPlainObject(args[args.length - 1]) ? args.pop() : null;
-    const trace = currentLine({ frames: 2  });
+    const trace = currentLine({ frames: 3 });
     const globalMeta = isPlainObject(this.options.meta) ? { ...this.options.meta } : {};
     const timestamp = new Date();
 

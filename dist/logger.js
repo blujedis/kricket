@@ -69,7 +69,7 @@ class Logger extends events_1.EventEmitter {
         const index = this.options.levels.indexOf(label);
         const cb = typeof args[args.length - 1] === 'function' ? args.pop() : null;
         const meta = (0, utils_1.isPlainObject)(args[args.length - 1]) ? args.pop() : null;
-        const trace = (0, trace_1.default)({ frames: 2 });
+        const trace = (0, trace_1.default)({ frames: 3 });
         const globalMeta = (0, utils_1.isPlainObject)(this.options.meta) ? { ...this.options.meta } : {};
         const timestamp = new Date();
         const initIncludes = {

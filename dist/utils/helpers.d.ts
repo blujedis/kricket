@@ -59,20 +59,16 @@ export declare function ensureArray<T = any>(value: null | undefined | T | T[], 
  */
 export declare function colorizeString(value: any, ...colors: AnsiColor[]): string;
 /**
- * Aligns a string based on all possible values.
+ * Removes ansi color from string.
  *
+ * @param value the value to remove ansi color from.
+ */
+export declare function uncolorizeString(value: any): string;
+/**
+ * Aligns a string based on all possible values.
  *
  * @param value the value to be aligned.
  * @param align whether to align left right or center relative to all possible values.
  * @param values the possible values which alignment is relative to.
  */
 export declare function alignString(value: any, align: 'left' | 'right' | 'center', values: string[]): string;
-export declare function prepareString(value: any): {
-    colorize: (...args: Parameters<typeof colorizeString>[1][]) => any;
-    align: (alignment: Parameters<typeof alignString>[1], values: Parameters<typeof alignString>[2]) => any;
-    capitalize: () => any;
-    uppercase: () => any;
-    lowercase: () => any;
-    stripColor: () => any;
-    value: () => string;
-};

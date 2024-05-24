@@ -58,11 +58,9 @@ defaultLogger.transform('console', (payload) => {
     // timestamp, level, message, filename, line, char
     const template = `%s %s: %s %s`;
     const filename = (0, utils_1.colorizeString)(`(${payload[types_1.FILENAME]}:${payload[types_1.LINE]}:${payload[types_1.CHAR]})`, 'gray');
-    const level = (0, utils_1.prepareString)(payload[types_1.LEVEL])
-        .align('right', defaultLogger.options.levels)
-        .colorize(COLOR_MAP[payload[types_1.LEVEL]])
-        .value();
-    payload.message = (0, util_1.format)(template, timestamp, level, payload.message, filename);
+    let level = (0, utils_1.alignString)(payload[types_1.LEVEL], 'right', defaultLogger.options.levels);
+    level = (0, utils_1.colorizeString)(payload[types_1.LEVEL], COLOR_MAP[payload[types_1.LEVEL]]);
+    payload.message = (0, util_1.format)(template, (0, utils_1.colorizeString)(timestamp, 'gray'), level, payload.message, filename);
     return payload;
 });
 //# sourceMappingURL=kricket.js.map
