@@ -95,6 +95,10 @@ export interface PayloadBase<Level extends string> {
     */
     [LEVEL]: Level;
     /**
+     * The log level integer.
+     */
+    [LEVELINT]: number;
+    /**
      * Array containing payload arguments beyond the primary message.
      */
     [SPLAT]: any[];

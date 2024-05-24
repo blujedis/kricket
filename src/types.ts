@@ -62,7 +62,7 @@ export type FormatFn<K> = (value: any, token: K) => K | [K, ...AnsiColor[]]
 
 export type FormatTuple<K> = [K, ...AnsiColor[]] | [K, FormatFn<K>]
 
-export type FormatArg<K> =  K | FormatTuple<K>;
+export type FormatArg<K> = K | FormatTuple<K>;
 
 export type TypeOrValue<Keys extends string | number | symbol> = Keys | (string & { value?: unknown });
 
@@ -94,11 +94,6 @@ export type ChildOmits = 'setTransportLevel' | 'addTransport' | 'muteTransport' 
 
 export type ChildLogger<Level extends string, Meta extends Record<string, unknown>> =
   Omit<Logger<Level, Meta>, ChildOmits> & LogMethods<Level, Meta>;
-
-// export type PayloadMeta<Meta extends Record<string, unknown>, K extends string> =
-//   K extends undefined
-//   ? Meta
-//   : Record<K, Meta>;
 
 export type Payload<Level extends string, Meta extends Record<string, unknown> = undefined> =
   Meta extends undefined
@@ -158,6 +153,11 @@ export interface PayloadBase<Level extends string> {
   * The payload's log level.
   */
   [LEVEL]: Level;
+
+  /**
+   * The log level integer.
+   */
+  [LEVELINT]: number;
 
   /**
    * Array containing payload arguments beyond the primary message.
