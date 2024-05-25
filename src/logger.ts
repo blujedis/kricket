@@ -838,8 +838,7 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
     // if payload message is an error convert to object, set message to error's message.
     if ((payload[MESSAGE]) instanceof Error) {
       const err = payload[MESSAGE] as Error;
-      const stack = colorizeString((err.stack || '').split(EOL).slice(1).map(v => '  ' + v).join(EOL), 'gray');
-      payload.message = `${err.name || 'Error'}: ${err.message}` + EOL + stack;
+      payload.message = `${err.name || 'Error'}: ${err.message}`;
       meta = { ...meta, error: errorToObject(err) };
     }
 
