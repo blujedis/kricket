@@ -11,6 +11,7 @@ const utils_1 = require("./utils");
 const core_1 = __importDefault(require("./core"));
 const trace_1 = __importDefault(require("./utils/trace"));
 const types_1 = require("./types");
+const os_1 = require("os");
 class Logger extends events_1.EventEmitter {
     options;
     isChild;
@@ -636,7 +637,8 @@ class Logger extends events_1.EventEmitter {
         // if payload message is an error convert to object, set message to error's message.
         if ((payload[types_1.MESSAGE]) instanceof Error) {
             const err = payload[types_1.MESSAGE];
-            payload.message = err.message;
+            const stack = (0, utils_1.colorizeString)((err.stack || '').split(os_1.EOL).slice(1).map(v => '  ' + v).join(os_1.EOL), 'gray');
+            payload.message = `${err.name || 'Error'}: ${err.message}` + os_1.EOL + stack;
             meta = { ...meta, error: (0, utils_1.errorToObject)(err) };
         }
         payload.message = (0, util_1.format)(payload.message, ...payload[types_1.SPLAT]);
