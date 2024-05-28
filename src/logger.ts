@@ -2,11 +2,10 @@ import { EventEmitter } from 'events';
 import { Transport } from './transports';
 import fastJson from 'fast-json-stable-stringify';
 import { format } from 'util';
-import { getObjectName, isPlainObject, asynceach, noop, flatten, uuidv4, log, isObject, errorToObject, colorizeString } from './utils';
+import { getObjectName, isPlainObject, asynceach, noop, flatten, uuidv4, log, isObject, errorToObject } from './utils';
 import core, { Core } from './core';
 import currentLine from './utils/trace';
-import { LoggerOptions, LEVEL, MESSAGE, SPLAT, Filter, Transform, LOGGER, TRANSPORT, Callback, BaseLevel, ChildLogger, Payload, UUID, TIMESTAMP, TypeOrValue, LEVELINT, LINE, CHAR, METHOD, FILENAME, FILEPATH } from './types';
-import { EOL } from 'os';
+import { LoggerOptions, LEVEL, MESSAGE, SPLAT, Filter, Transform, LOGGER, TRANSPORT, Callback, BaseLevel, ChildLogger, Payload, ID, TIMESTAMP, TypeOrValue, LEVELINT, LINE, CHAR, METHOD, FILENAME, FILEPATH } from './types';
 
 export class Logger<Level extends string, Meta extends Record<string, unknown> = undefined> extends EventEmitter {
 
@@ -82,7 +81,7 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
     const timestamp = new Date();
 
     const initIncludes = {
-      [UUID]: id,
+      [ID]: id,
       [LEVELINT]: index,
       [TIMESTAMP]: timestamp,
       [LOGGER]: this.label,
@@ -113,7 +112,7 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
         try {
 
           const transportIncludes = {
-            [UUID]: id,
+            [ID]: id,
             [LEVELINT]: index,
             [TIMESTAMP]: timestamp,
             [LOGGER]: this.label,

@@ -34,7 +34,6 @@ exports.createLogger = createLogger;
  */
 const defaultLogger = createLogger({
     label: 'default',
-    level: (process.env.LOG_LEVEL || 'info'),
     levels: ['fatal', 'error', 'warn', 'info', 'debug'],
     meta: { age: 25 },
     transports: [

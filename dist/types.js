@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TOKEN_MAP = exports.EOL = exports.SPLAT = exports.MESSAGE = exports.TIMESTAMP = exports.FILENAME = exports.FILEPATH = exports.METHOD = exports.CHAR = exports.LINE = exports.LEVELINT = exports.LEVEL = exports.TRANSPORT = exports.LOGGER = exports.UUID = void 0;
+exports.TOKEN_MAP = exports.EOL = exports.SPLAT = exports.MESSAGE = exports.TIMESTAMP = exports.FILENAME = exports.FILEPATH = exports.METHOD = exports.CHAR = exports.LINE = exports.LEVELINT = exports.LEVEL = exports.TRANSPORT = exports.LOGGER = exports.ID = void 0;
 //  CONSTANTS
 // ----------------------------------------------------------
-exports.UUID = Symbol.for('UUID');
+exports.ID = Symbol.for('ID');
 exports.LOGGER = Symbol.for('LOGGER');
 exports.TRANSPORT = Symbol.for('TRANSPORT');
 exports.LEVEL = Symbol.for('LEVEL');
@@ -18,7 +18,7 @@ exports.MESSAGE = Symbol.for('MESSAGE');
 exports.SPLAT = Symbol.for('SPLAT');
 exports.EOL = '\n';
 exports.TOKEN_MAP = {
-    uuid: exports.UUID,
+    id: exports.ID,
     logger: exports.LOGGER,
     transport: exports.TRANSPORT,
     level: exports.LEVEL,

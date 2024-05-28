@@ -6,7 +6,7 @@ import type ansiColors from 'ansi-colors';
 //  CONSTANTS
 // ----------------------------------------------------------
 
-export const UUID = Symbol.for('UUID');
+export const ID = Symbol.for('ID');
 
 export const LOGGER = Symbol.for('LOGGER');
 
@@ -35,7 +35,7 @@ export const SPLAT = Symbol.for('SPLAT');
 export const EOL = '\n';
 
 export const TOKEN_MAP = {
-  uuid: UUID,
+  id: ID,
   logger: LOGGER,
   transport: TRANSPORT,
   level: LEVEL,
@@ -107,7 +107,7 @@ export interface PayloadBase<Level extends string> {
   /**
    * The payload's log id.
    */
-  [UUID]: string;
+  [ID]: string;
 
   /**
  * The payload's log id.

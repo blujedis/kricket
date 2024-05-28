@@ -73,7 +73,7 @@ class Logger extends events_1.EventEmitter {
         const globalMeta = (0, utils_1.isPlainObject)(this.options.meta) ? { ...this.options.meta } : {};
         const timestamp = new Date();
         const initIncludes = {
-            [types_1.UUID]: id,
+            [types_1.ID]: id,
             [types_1.LEVELINT]: index,
             [types_1.TIMESTAMP]: timestamp,
             [types_1.LOGGER]: this.label,
@@ -98,7 +98,7 @@ class Logger extends events_1.EventEmitter {
             return (done) => {
                 try {
                     const transportIncludes = {
-                        [types_1.UUID]: id,
+                        [types_1.ID]: id,
                         [types_1.LEVELINT]: index,
                         [types_1.TIMESTAMP]: timestamp,
                         [types_1.LOGGER]: this.label,

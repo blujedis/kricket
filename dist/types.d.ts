@@ -2,7 +2,7 @@ import { Transport } from './transports';
 import { Logger } from './logger';
 import { type Location } from './utils/trace';
 import type ansiColors from 'ansi-colors';
-export declare const UUID: unique symbol;
+export declare const ID: unique symbol;
 export declare const LOGGER: unique symbol;
 export declare const TRANSPORT: unique symbol;
 export declare const LEVEL: unique symbol;
@@ -17,7 +17,7 @@ export declare const MESSAGE: unique symbol;
 export declare const SPLAT: unique symbol;
 export declare const EOL = "\n";
 export declare const TOKEN_MAP: {
-    uuid: symbol;
+    id: symbol;
     logger: symbol;
     transport: symbol;
     level: symbol;
@@ -57,7 +57,7 @@ export interface PayloadBase<Level extends string> {
     /**
      * The payload's log id.
      */
-    [UUID]: string;
+    [ID]: string;
     /**
    * The payload's log id.
    */

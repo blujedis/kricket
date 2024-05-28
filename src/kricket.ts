@@ -31,7 +31,6 @@ export function createLogger<Level extends string, Meta extends Record<string, u
  */
 const defaultLogger = createLogger({
   label: 'default',
-  level: (process.env.LOG_LEVEL || 'info') as 'fatal' | 'error' | 'warn' | 'info' | 'debug',
   levels: ['fatal', 'error', 'warn', 'info', 'debug'],
   meta: { age: 25 },
   transports: [
