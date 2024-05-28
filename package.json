@@ -9,8 +9,8 @@
   "scripts": {
     "clean": "rimraf dist",
     "build": "tsc -b",
-    "lint": "eslint .**/*.ts --no-warn-ignored",
-    "lint:fix": "eslint .**/*.ts --fix --no-warn-ignored",
+    "lint": "npx eslint -c ./eslint.config.cjs",
+    "lint:fix": "npx eslint -c ./eslint.config.cjs --fix",
     "watch": "tsc -b -w",
     "docs": "rimraf docs/ && typedoc src/index.ts && touch ./docs/.nojekyll",
     "test": "mocha tests/**/*.spec.ts* --require ./register.js --bail",

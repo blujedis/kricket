@@ -585,8 +585,8 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
    * @param args optional format args.
    */
   writeLn(message: string, ...args: any[]) {
-    message = format(message, ...args);
-    this.writer('writeLn', message);
+    // message = format(message, ...args);
+    this.writer('writeLn', message, ...args);
     return this;
   }
 
@@ -597,8 +597,8 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
    * @param args optional format args.
    */
   write(message: string, ...args: any[]) {
-    message = format(message, ...args);
-    this.writer('write', message);
+    // message = format(message, ...args);
+    this.writer('write', message, ...args);
     return this;
   }
 

@@ -428,8 +428,8 @@ class Logger extends events_1.EventEmitter {
      * @param args optional format args.
      */
     writeLn(message, ...args) {
-        message = (0, util_1.format)(message, ...args);
-        this.writer('writeLn', message);
+        // message = format(message, ...args);
+        this.writer('writeLn', message, ...args);
         return this;
     }
     /**
@@ -439,8 +439,8 @@ class Logger extends events_1.EventEmitter {
      * @param args optional format args.
      */
     write(message, ...args) {
-        message = (0, util_1.format)(message, ...args);
-        this.writer('write', message);
+        // message = format(message, ...args);
+        this.writer('write', message, ...args);
         return this;
     }
     /**
