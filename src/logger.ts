@@ -2,11 +2,10 @@ import { EventEmitter } from 'events';
 import { Transport } from './transports';
 import fastJson from 'fast-json-stable-stringify';
 import { format } from 'util';
-import { getObjectName, isPlainObject, asynceach, noop, flatten, uuidv4, log, isObject, errorToObject, colorizeString } from './utils';
+import { getObjectName, isPlainObject, asynceach, noop, flatten, uuidv4, log, isObject, errorToObject } from './utils';
 import core, { Core } from './core';
 import currentLine from './utils/trace';
 import { LoggerOptions, LEVEL, MESSAGE, SPLAT, Filter, Transform, LOGGER, TRANSPORT, Callback, BaseLevel, ChildLogger, Payload, ID, TIMESTAMP, TypeOrValue, LEVELINT, LINE, CHAR, METHOD, FILENAME, FILEPATH } from './types';
-import { EOL } from 'os';
 
 export class Logger<Level extends string, Meta extends Record<string, unknown> = undefined> extends EventEmitter {
 
@@ -838,7 +837,6 @@ export class Logger<Level extends string, Meta extends Record<string, unknown> =
     // if payload message is an error convert to object, set message to error's message.
     if ((payload[MESSAGE]) instanceof Error) {
       const err = payload[MESSAGE] as Error;
-      
       meta = { ...meta, error: errorToObject(err) };
     }
 
